@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jewellery Calculator</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>💎 Jewellery Calculator</h1>
+        <button id="theme-toggle" class="btn-theme-toggle" title="Toggle Dark Mode">🌙</button>
+    </header>
+
+    <main id="app-content">
+        <!-- Home View -->
+        <section id="view-home">
+            <h2>Choose a calculator:</h2>
+            <div class="cards-container">
+                <div class="card active" id="card-bangle">
+                    <div class="card-icon">💎</div>
+                    <h3>Studded Bangle</h3>
+                    <p>Calculate stones for round & oval bangles</p>
+                </div>
+                <div class="card" id="card-ring">
+                    <div class="card-icon">💍</div>
+                    <h3>Ring</h3>
+                    <p>Full & half eternity ring calculations</p>
+                </div>
+                <div class="card disabled" id="card-earring">
+                    <div class="card-icon">👂</div>
+                    <h3>Earring / Stud</h3>
+                    <p>Coming Soon</p>
+                </div>
+                <div class="card disabled" id="card-necklace">
+                    <div class="card-icon">📿</div>
+                    <h3>Necklace</h3>
+                    <p>Coming Soon</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Studded Bangle View -->
+        <section id="view-bangle" class="hidden">
+            <div class="view-toolbar">
+                <button class="btn-back" id="btn-bangle-back">&larr; Back</button>
+                <h2>Studded Bangle Calculator</h2>
+            </div>
+
+            <div class="split-layout">
+                <!-- LEFT: Form -->
+                <div class="split-left">
+                    <div id="bangle-form-errors" class="error-banner hidden"></div>
+
+                    <form id="bangle-form">
+                        <fieldset>
+                            <legend>Bangle Dimensions</legend>
+
+                            <!-- Diameter / Closing Mode Toggle -->
+                            <div class="input-mode-group full-width">
+                                <label class="group-label">Bangle Diameter / Closing:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="diameterMode" id="diam-mode-easy" value="easy" checked>
+                                    <label for="diam-mode-easy">Easy Select</label>
+                                    <input type="radio" name="diameterMode" id="diam-mode-manual" value="manual">
+                                    <label for="diam-mode-manual">Manual Entry</label>
+                                </div>
+                            </div>
+
+                            <!-- EASY SELECT: Code dropdown + info -->
+                            <div id="easy-select-group">
+                                <label for="closing-code-select" class="group-label">Select Closing Code:</label>
+                                <select id="closing-code-select"></select>
+                                <div id="easy-select-info" class="easy-select-info"></div>
+                            </div>
+
+                            <!-- MANUAL ENTRY: existing shape toggle + inputs (hidden by default now) -->
+                            <div id="manual-entry-group" class="hidden">
+                                <div class="input-mode-group full-width">
+                                    <label class="group-label">Bangle Shape:</label>
+                                    <div class="segmented-toggle">
+                                        <input type="radio" name="bangleShape" id="shape-round" value="Round" checked>
+                                        <label for="shape-round">Round</label>
+                                        <input type="radio" name="bangleShape" id="shape-oval" value="Oval">
+                                        <label for="shape-oval">Oval</label>
+                                    </div>
+                                </div>
+
+                                <div id="input-round-group">
+                                    <label for="bangle-diameter">Inner Diameter (mm):</label>
+                                    <input type="number" id="bangle-diameter" name="diameter" step="0.1">
+                                </div>
+
+                                <div id="input-oval-group" class="hidden">
+                                    <div class="input-group">
+                                        <label for="bangle-short-diameter">Short Inner Diameter (mm):</label>
+                                        <input type="number" id="bangle-short-diameter" name="shortDiameter" step="0.1">
+                                    </div>
+                                    <div class="input-group" style="margin-top:0.5rem;">
+                                        <label for="bangle-long-diameter">Long Inner Diameter (mm):</label>
+                                        <input type="number" id="bangle-long-diameter" name="longDiameter" step="0.1">
+                                    </div>
+                                </div>
+
+                                <div class="presets-row">
+                                    <label class="group-label">Quick select (Indian sizes):</label>
+                                    <div id="bangle-presets" class="preset-buttons"></div>
+                                </div>
+                            </div>
+
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="bangle-height">Height (mm):</label>
+                                    <input type="number" id="bangle-height" name="height" step="0.1" required>
+                                </div>
+                                <div class="field">
+                                    <label for="bangle-rows">Rows:</label>
+                                    <input type="number" id="bangle-rows" name="rows" required>
+                                </div>
+                            </div>
+
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="bangle-quantity">Quantity:</label>
+                                    <input type="number" id="bangle-quantity" name="quantity" required>
+                                </div>
+                                <div class="field">
+                                    <!-- Placeholder to keep layout even -->
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Stone Details</legend>
+
+                            <div class="input-mode-group full-width" style="margin-bottom: 0.75rem;">
+                                <label class="group-label">Setting Style:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="settingStyleBangle" id="setting-standard-bangle" value="standard" checked>
+                                    <label for="setting-standard-bangle">Standard</label>
+                                    <input type="radio" name="settingStyleBangle" id="setting-nick-bangle" value="nick">
+                                    <label for="setting-nick-bangle">Nick Plate</label>
+                                </div>
+                            </div>
+
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="stone-shape">Shape:</label>
+                                    <select id="stone-shape" name="stoneShape" required></select>
+                                </div>
+                                <div class="field" id="stone-size-standard-group-bangle">
+                                    <label for="stone-size">Size (mm):</label>
+                                    <input type="number" id="stone-size" name="stoneSize" step="any">
+                                </div>
+                                <div class="field hidden" id="stone-size-nick-group-bangle">
+                                    <label for="stone-size-nick-bangle">Diamond Size (mm):</label>
+                                    <select id="stone-size-nick-bangle" name="stoneSizeNickBangle"></select>
+                                </div>
+                            </div>
+                            
+                            <div id="nick-setting-info-bangle" class="easy-select-info hidden"></div>
+
+                            <div class="input-mode-group full-width" style="margin-top: 0.5rem;">
+                                <label class="group-label">Spacing Calculation:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="spacingMode" id="spacing-gap" value="gap" checked>
+                                    <label for="spacing-gap">Prong Spacing</label>
+                                    <input type="radio" name="spacingMode" id="spacing-target" value="target">
+                                    <label for="spacing-target">Target Stones</label>
+                                </div>
+                            </div>
+
+                            <div class="input-mode-group full-width" id="input-prong-group">
+                                <label class="group-label">Prong Style:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="prongStyleBangle" id="prong-common-bangle" value="common" checked>
+                                    <label for="prong-common-bangle">Common Prong</label>
+                                    <input type="radio" name="prongStyleBangle" id="prong-self-bangle" value="self">
+                                    <label for="prong-self-bangle">Self Prong</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group hidden" id="input-target-group">
+                                <label for="target-stones">Target Stones (per row):</label>
+                                <input type="number" id="target-stones" name="targetStones" min="1">
+                                <div class="input-hint">App will compute required gap</div>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-calculate" id="btn-calculate">CALCULATE</button>
+                            <button type="button" class="btn-reset" id="btn-reset-bangle">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- RIGHT: Result -->
+                <div class="split-right">
+                    <div id="bangle-result-panel" class="result-panel">
+                        <div class="result-placeholder">
+                            <div class="placeholder-icon">📊</div>
+                            <h3>Results will appear here</h3>
+                            <p>Fill the form and click CALCULATE</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ring Form View -->
+        <section id="view-ring" class="hidden">
+            <div class="view-toolbar">
+                <button class="btn-back" id="btn-ring-back">&larr; Back</button>
+                <h2>Ring Calculator</h2>
+            </div>
+
+            <div class="split-layout">
+                <!-- LEFT: Form -->
+                <div class="split-left">
+                    <div id="ring-form-errors" class="error-banner hidden"></div>
+                    
+                    <form id="ring-form">
+                        <fieldset>
+                            <legend>Ring Details</legend>
+                            
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="ring-size-standard">Size Standard:</label>
+                                    <select id="ring-size-standard">
+                                        <option value="US">US Sizes</option>
+                                        <option value="IN">Indian Sizes</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label for="ring-size-value">Ring Size:</label>
+                                    <select id="ring-size-value"></select>
+                                </div>
+                            </div>
+
+                            <label for="ring-coverage">Stone Coverage (%):</label>
+                            <input type="number" id="ring-coverage" min="10" max="100" value="100" required>
+                            <span class="input-hint">100 = Full Eternity, 50 = Half Eternity</span>
+
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="ring-rows">Rows:</label>
+                                    <input type="number" id="ring-rows" min="1" required>
+                                </div>
+                                <div class="field">
+                                    <label for="ring-quantity">Quantity (Pieces):</label>
+                                    <input type="number" id="ring-quantity" min="1" required>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Stone Details</legend>
+
+                            <div class="input-mode-group full-width" style="margin-bottom: 0.75rem;">
+                                <label class="group-label">Setting Style:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="settingStyleRing" id="setting-standard-ring" value="standard" checked>
+                                    <label for="setting-standard-ring">Standard</label>
+                                    <input type="radio" name="settingStyleRing" id="setting-nick-ring" value="nick">
+                                    <label for="setting-nick-ring">Nick Plate</label>
+                                </div>
+                            </div>
+
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="ring-stone-shape">Shape:</label>
+                                    <select id="ring-stone-shape"></select>
+                                </div>
+                                <div class="field" id="stone-size-standard-group-ring">
+                                    <label for="ring-stone-size">Size (mm):</label>
+                                    <input type="number" id="ring-stone-size" step="0.1" min="0.1">
+                                </div>
+                                <div class="field hidden" id="stone-size-nick-group-ring">
+                                    <label for="stone-size-nick-ring">Diamond Size (mm):</label>
+                                    <select id="stone-size-nick-ring"></select>
+                                </div>
+                            </div>
+                            
+                            <div id="nick-setting-info-ring" class="easy-select-info hidden"></div>
+
+                            <div class="input-mode-group full-width" style="margin-top: 0.5rem;">
+                                <label class="group-label">Prong Style:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="prongStyleRing" id="prong-common-ring" value="common" checked>
+                                    <label for="prong-common-ring">Common Prong</label>
+                                    <input type="radio" name="prongStyleRing" id="prong-self-ring" value="self">
+                                    <label for="prong-self-ring">Self Prong</label>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-calculate">CALCULATE</button>
+                            <button type="button" class="btn-reset" id="btn-reset-ring">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- RIGHT: Result -->
+                <div class="split-right">
+                    <div id="ring-result-panel" class="result-panel">
+                        <div class="result-placeholder">
+                            <div class="placeholder-icon">📊</div>
+                            <h3>Results will appear here</h3>
+                            <p>Fill the form and click CALCULATE</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Result View (kept for print only) -->
+        <section id="view-result" class="hidden">
+            <h2>CALCULATION RESULT</h2>
+            <div id="result-content"></div>
+            <div class="result-actions">
+                <button class="btn-edit" id="btn-edit-calc">Edit Calculation</button>
+                <button class="btn-new" id="btn-new-calc">New Calculation</button>
+                <button class="btn-print" id="btn-print-result">Print Result</button>
+            </div>
+        </section>
+
+        <!-- Coming Soon View -->
+        <section id="view-coming-soon" class="hidden">
+            <div class="coming-soon-card">
+                <h2>Coming Soon</h2>
+                <p>This calculator is not yet available.</p>
+                <button class="btn-back" id="btn-soon-back">&larr; Back to Calculators</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Jewellery Calculator</p>
+    </footer>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

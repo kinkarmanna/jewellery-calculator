@@ -109,7 +109,7 @@ export function renderResult(data) {
             
             ${data.inputs.useNickPlate ? `
             <div class="result-row">
-                <span class="result-label">Setting Style:</span>
+                <span class="result-label">Setting Type:</span>
                 <span class="result-value" style="color: var(--accent); font-weight: bold;">NICK PLATE</span>
             </div>
             <div class="result-row" style="color: var(--text-muted); font-size: 0.85em;">

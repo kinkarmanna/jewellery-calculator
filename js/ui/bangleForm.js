@@ -265,7 +265,7 @@ function handleFormSubmit(e) {
 
     // If Easy Select is active but no code is chosen, show an error
     if (activeDiameterMode === 'easy' && !closingCodeSelect.value) {
-        showErrors(['Please select a closing code (A–Z) or switch to Manual Entry.']);
+        showErrors(['Please select a size code (A–Z) or switch to Manual Entry.']);
         return;
     }
 

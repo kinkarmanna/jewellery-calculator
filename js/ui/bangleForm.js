@@ -14,7 +14,8 @@ const stoneSizeNickSelect = document.getElementById('stone-size-nick-bangle');
 const nickInfoBanner = document.getElementById('nick-setting-info-bangle');
 
 // Stone input mode elements (Weight ↔ Size)
-const stoneInputModeRadios = document.querySelectorAll('input[name="stoneInputModeBangle"]');
+const btnSwapStoneMode = document.getElementById('btn-swap-stone-bangle');
+const swapContainer = document.getElementById('stone-swap-container-bangle');
 const stoneWeightGroup = document.getElementById('stone-weight-group-bangle');
 const stoneSizeManualGroup = document.getElementById('stone-size-manual-group-bangle');
 const stoneWeightInput = document.getElementById('stone-weight-bangle');
@@ -72,6 +73,10 @@ function sizeToWeight(size) {
     return entry ? entry.weight : null;
 }
 
+function toggleStoneInputMode() {
+    switchStoneInputMode(activeStoneInputMode === 'weight' ? 'size' : 'weight');
+}
+
 function switchStoneInputMode(mode) {
     activeStoneInputMode = mode;
     if (activeSettingStyle === 'nick') return; // Nick plate controls its own display
@@ -111,9 +116,7 @@ function updateWeightFromSize() {
 
 export function initBangleForm() {
     // Stone input mode toggle (Weight ↔ Size)
-    stoneInputModeRadios.forEach(radio => {
-        radio.addEventListener('change', () => switchStoneInputMode(radio.value));
-    });
+    btnSwapStoneMode.addEventListener('click', toggleStoneInputMode);
     stoneWeightInput.addEventListener('input', updateSizeFromWeight);
     stoneSizeInput.addEventListener('input', updateWeightFromSize);
 
@@ -275,7 +278,6 @@ export function resetBangleForm() {
     switchSettingStyle('standard');
 
     // Reset stone input mode to Weight
-    document.getElementById('stone-input-weight-bangle').checked = true;
     switchStoneInputMode('weight');
 
     // Reset prong style
@@ -387,9 +389,7 @@ function handleFormSubmit(e) {
 function switchSettingStyle(style) {
     activeSettingStyle = style;
     
-    // Hide/show the input mode toggle based on setting style
-    const modeToggle = document.querySelector('input[name="stoneInputModeBangle"]').closest('.input-mode-group');
-    if (modeToggle) modeToggle.classList.toggle('hidden', style === 'nick');
+    swapContainer.classList.toggle('hidden', style === 'nick');
     
     if (style === 'nick') {
         stoneWeightGroup.classList.add('hidden');

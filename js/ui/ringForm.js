@@ -16,7 +16,8 @@ const stoneSizeNickSelect = document.getElementById('stone-size-nick-ring');
 const nickInfoBanner = document.getElementById('nick-setting-info-ring');
 
 // Stone input mode elements (Weight ↔ Size)
-const stoneInputModeRadios = document.querySelectorAll('input[name="stoneInputModeRing"]');
+const btnSwapStoneMode = document.getElementById('btn-swap-stone-ring');
+const swapContainer = document.getElementById('stone-swap-container-ring');
 const stoneWeightGroup = document.getElementById('stone-weight-group-ring');
 const stoneSizeManualGroup = document.getElementById('stone-size-manual-group-ring');
 const stoneWeightInput = document.getElementById('stone-weight-ring');
@@ -45,6 +46,10 @@ function weightToSize(weight) {
 function sizeToWeight(size) {
     const entry = STONE_WEIGHT_CHART.find(e => e.diameter === size);
     return entry ? entry.weight : null;
+}
+
+function toggleStoneInputMode() {
+    switchStoneInputMode(activeStoneInputMode === 'weight' ? 'size' : 'weight');
 }
 
 function switchStoneInputMode(mode) {
@@ -85,9 +90,7 @@ function updateWeightFromSize() {
 
 export function initRingForm() {
     // Stone input mode toggle (Weight ↔ Size)
-    stoneInputModeRadios.forEach(radio => {
-        radio.addEventListener('change', () => switchStoneInputMode(radio.value));
-    });
+    btnSwapStoneMode.addEventListener('click', toggleStoneInputMode);
     stoneWeightInput.addEventListener('input', updateSizeFromWeight);
     stoneSizeInput.addEventListener('input', updateWeightFromSize);
 
@@ -135,8 +138,7 @@ function populateSizeValues() {
 function switchSettingStyle(style) {
     activeSettingStyle = style;
     
-    const modeToggle = document.querySelector('input[name="stoneInputModeRing"]').closest('.input-mode-group');
-    if (modeToggle) modeToggle.classList.toggle('hidden', style === 'nick');
+    swapContainer.classList.toggle('hidden', style === 'nick');
     
     if (style === 'nick') {
         stoneWeightGroup.classList.add('hidden');
@@ -187,7 +189,6 @@ export function resetRingForm() {
     switchSettingStyle('standard');
 
     // Reset stone input mode to Weight
-    document.getElementById('stone-input-weight-ring').checked = true;
     switchStoneInputMode('weight');
 
     // Reset prong style

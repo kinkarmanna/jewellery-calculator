@@ -140,17 +140,7 @@
                                 </div>
                             </div>
 
-                            <div class="input-mode-group full-width" style="margin-bottom: 0.5rem;">
-                                <label class="group-label">Stone Input:</label>
-                                <div class="segmented-toggle">
-                                    <input type="radio" name="stoneInputModeBangle" id="stone-input-weight-bangle" value="weight" checked>
-                                    <label for="stone-input-weight-bangle">Weight (ct)</label>
-                                    <input type="radio" name="stoneInputModeBangle" id="stone-input-size-bangle" value="size">
-                                    <label for="stone-input-size-bangle">Size (mm)</label>
-                                </div>
-                            </div>
-
-                            <div class="field-row">
+                            <div class="field-row with-swap">
                                 <div class="field" id="stone-weight-group-bangle">
                                     <label for="stone-weight-bangle">Weight (ct):</label>
                                     <input type="number" id="stone-weight-bangle" name="stoneWeight" step="0.001" min="0.004">
@@ -159,6 +149,11 @@
                                     <label for="stone-size">Size (mm):</label>
                                     <input type="number" id="stone-size" name="stoneSize" step="any">
                                 </div>
+
+                                <div class="swap-button-container" id="stone-swap-container-bangle">
+                                    <button type="button" class="btn-swap" id="btn-swap-stone-bangle" title="Switch Input Mode">⇄</button>
+                                </div>
+
                                 <div class="field" id="stone-size-standard-group-bangle">
                                     <label for="stone-size-display-bangle" id="stone-size-display-label-bangle">Size (mm):</label>
                                     <input type="text" id="stone-size-display-bangle" readonly disabled>
@@ -277,17 +272,7 @@
                                 </div>
                             </div>
 
-                            <div class="input-mode-group full-width" style="margin-bottom: 0.5rem;">
-                                <label class="group-label">Stone Input:</label>
-                                <div class="segmented-toggle">
-                                    <input type="radio" name="stoneInputModeRing" id="stone-input-weight-ring" value="weight" checked>
-                                    <label for="stone-input-weight-ring">Weight (ct)</label>
-                                    <input type="radio" name="stoneInputModeRing" id="stone-input-size-ring" value="size">
-                                    <label for="stone-input-size-ring">Size (mm)</label>
-                                </div>
-                            </div>
-
-                            <div class="field-row">
+                            <div class="field-row with-swap">
                                 <div class="field" id="stone-weight-group-ring">
                                     <label for="stone-weight-ring">Weight (ct):</label>
                                     <input type="number" id="stone-weight-ring" name="stoneWeightRing" step="0.001" min="0.004">
@@ -296,6 +281,11 @@
                                     <label for="ring-stone-size">Size (mm):</label>
                                     <input type="number" id="ring-stone-size" step="0.1" min="0.1">
                                 </div>
+
+                                <div class="swap-button-container" id="stone-swap-container-ring">
+                                    <button type="button" class="btn-swap" id="btn-swap-stone-ring" title="Switch Input Mode">⇄</button>
+                                </div>
+
                                 <div class="field" id="stone-size-standard-group-ring">
                                     <label for="stone-size-display-ring">Size (mm):</label>
                                     <input type="text" id="stone-size-display-ring" readonly disabled>

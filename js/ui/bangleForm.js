@@ -1,10 +1,9 @@
-import { DEFAULT_BANGLE_VALUES, STONE_SHAPES, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js';
+import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js';
 import { calculateBangleDetails } from '../calculations/bangleCalculator.js';
 import { renderResult } from './resultView.js';
 
 const form = document.getElementById('bangle-form');
 const errorBanner = document.getElementById('bangle-form-errors');
-const shapeSelect = document.getElementById('stone-shape');
 
 // Nick setting elements
 const settingStyleRadios = document.querySelectorAll('input[name="settingStyleBangle"]');
@@ -14,7 +13,15 @@ const stoneSizeInput = document.getElementById('stone-size');
 const stoneSizeNickSelect = document.getElementById('stone-size-nick-bangle');
 const nickInfoBanner = document.getElementById('nick-setting-info-bangle');
 
+// Stone input mode elements (Weight ↔ Size)
+const stoneInputModeRadios = document.querySelectorAll('input[name="stoneInputModeBangle"]');
+const stoneWeightGroup = document.getElementById('stone-weight-group-bangle');
+const stoneSizeManualGroup = document.getElementById('stone-size-manual-group-bangle');
+const stoneWeightInput = document.getElementById('stone-weight-bangle');
+const stoneSizeDisplay = document.getElementById('stone-size-display-bangle');
+
 let activeSettingStyle = 'standard'; // 'standard' or 'nick'
+let activeStoneInputMode = 'weight'; // 'weight' or 'size'
 
 // Diameter mode elements (Easy Select vs Manual Entry)
 const diamModeRadios = document.querySelectorAll('input[name="diameterMode"]');
@@ -45,14 +52,70 @@ let activeBangleShape = 'Round';
 let activeSpacingMode = 'gap';
 let activeProngStyle = 'common';
 
+// ── Weight ↔ Size lookup helpers ──
+function weightToSize(weight) {
+    // Find closest matching weight in chart, return the diameter
+    let closest = null;
+    let minDiff = Infinity;
+    for (const entry of STONE_WEIGHT_CHART) {
+        const diff = Math.abs(entry.weight - weight);
+        if (diff < minDiff) {
+            minDiff = diff;
+            closest = entry;
+        }
+    }
+    return closest ? closest.diameter : null;
+}
+
+function sizeToWeight(size) {
+    const entry = STONE_WEIGHT_CHART.find(e => e.diameter === size);
+    return entry ? entry.weight : null;
+}
+
+function switchStoneInputMode(mode) {
+    activeStoneInputMode = mode;
+    if (activeSettingStyle === 'nick') return; // Nick plate controls its own display
+
+    stoneWeightGroup.classList.toggle('hidden', mode !== 'weight');
+    stoneSizeManualGroup.classList.toggle('hidden', mode !== 'size');
+    // Show auto-display of size when in weight mode, show auto-display of weight when in size mode
+    stoneSizeStandardGroup.classList.remove('hidden');
+    if (mode === 'weight') {
+        document.getElementById('stone-size-display-label-bangle').textContent = 'Size (mm):';
+        updateSizeFromWeight();
+    } else {
+        document.getElementById('stone-size-display-label-bangle').textContent = 'Weight (ct):';
+        updateWeightFromSize();
+    }
+}
+
+function updateSizeFromWeight() {
+    const weight = parseFloat(stoneWeightInput.value);
+    if (!isNaN(weight) && weight > 0) {
+        const size = weightToSize(weight);
+        stoneSizeDisplay.value = size !== null ? `${size} mm` : '—';
+    } else {
+        stoneSizeDisplay.value = '';
+    }
+}
+
+function updateWeightFromSize() {
+    const size = parseFloat(stoneSizeInput.value);
+    if (!isNaN(size) && size > 0) {
+        const weight = sizeToWeight(size);
+        stoneSizeDisplay.value = weight !== null ? `${weight} ct` : '—';
+    } else {
+        stoneSizeDisplay.value = '';
+    }
+}
+
 export function initBangleForm() {
-    // Populate stone shapes
-    STONE_SHAPES.forEach(shape => {
-        const option = document.createElement('option');
-        option.value = shape.id;
-        option.textContent = shape.label;
-        shapeSelect.appendChild(option);
+    // Stone input mode toggle (Weight ↔ Size)
+    stoneInputModeRadios.forEach(radio => {
+        radio.addEventListener('change', () => switchStoneInputMode(radio.value));
     });
+    stoneWeightInput.addEventListener('input', updateSizeFromWeight);
+    stoneSizeInput.addEventListener('input', updateWeightFromSize);
 
     // Populate Nick Setting Diamond Sizes
     NICK_SETTING_DATA.forEach(data => {
@@ -211,6 +274,10 @@ export function resetBangleForm() {
     document.getElementById('setting-standard-bangle').checked = true;
     switchSettingStyle('standard');
 
+    // Reset stone input mode to Weight
+    document.getElementById('stone-input-weight-bangle').checked = true;
+    switchStoneInputMode('weight');
+
     // Reset prong style
     document.getElementById('prong-common-bangle').checked = true;
     activeProngStyle = 'common';
@@ -221,8 +288,11 @@ export function resetBangleForm() {
     heightInput.value = DEFAULT_BANGLE_VALUES.height;
     document.getElementById('bangle-rows').value = DEFAULT_BANGLE_VALUES.rows;
     document.getElementById('bangle-quantity').value = DEFAULT_BANGLE_VALUES.quantity;
-    shapeSelect.value = DEFAULT_BANGLE_VALUES.stoneShape;
-    document.getElementById('stone-size').value = DEFAULT_BANGLE_VALUES.stoneSize;
+    stoneSizeInput.value = DEFAULT_BANGLE_VALUES.stoneSize;
+    // Set default weight from chart lookup
+    const defaultWeight = sizeToWeight(DEFAULT_BANGLE_VALUES.stoneSize);
+    stoneWeightInput.value = defaultWeight || 0.033;
+    updateSizeFromWeight();
     targetInput.value = '';
     
     hideErrors();
@@ -269,6 +339,21 @@ function handleFormSubmit(e) {
         return;
     }
 
+    // Resolve stone size based on input mode
+    let resolvedStoneSize;
+    if (activeSettingStyle === 'nick') {
+        resolvedStoneSize = parseFloat(stoneSizeNickSelect.value);
+    } else if (activeStoneInputMode === 'weight') {
+        const weight = parseFloat(stoneWeightInput.value);
+        resolvedStoneSize = weightToSize(weight);
+        if (!resolvedStoneSize) {
+            showErrors(['Could not find a matching stone size for the entered weight.']);
+            return;
+        }
+    } else {
+        resolvedStoneSize = parseFloat(stoneSizeInput.value);
+    }
+
     const params = {
         bangleShape: activeBangleShape,
         diameter: parseFloat(diameterInput.value),
@@ -277,8 +362,8 @@ function handleFormSubmit(e) {
         height: parseFloat(heightInput.value),
         rows: parseInt(document.getElementById('bangle-rows').value, 10),
         quantity: parseInt(document.getElementById('bangle-quantity').value, 10),
-        stoneShape: shapeSelect.value,
-        stoneSize: activeSettingStyle === 'nick' ? parseFloat(stoneSizeNickSelect.value) : parseFloat(stoneSizeInput.value),
+        stoneShape: 'Round',
+        stoneSize: resolvedStoneSize,
         useNickPlate: activeSettingStyle === 'nick',
         spacingMode: activeSpacingMode,
         stoneGap: activeSettingStyle === 'nick' ? 0 : (activeSpacingMode === 'gap' ? PRONG_GAPS[activeProngStyle] : 0),
@@ -302,16 +387,29 @@ function handleFormSubmit(e) {
 function switchSettingStyle(style) {
     activeSettingStyle = style;
     
-    stoneSizeStandardGroup.classList.toggle('hidden', style !== 'standard');
-    stoneSizeNickGroup.classList.toggle('hidden', style !== 'nick');
-    
-    stoneSizeInput.required = (style === 'standard');
-    stoneSizeNickSelect.required = (style === 'nick');
+    // Hide/show the input mode toggle based on setting style
+    const modeToggle = document.querySelector('input[name="stoneInputModeBangle"]').closest('.input-mode-group');
+    if (modeToggle) modeToggle.classList.toggle('hidden', style === 'nick');
     
     if (style === 'nick') {
+        stoneWeightGroup.classList.add('hidden');
+        stoneSizeManualGroup.classList.add('hidden');
+        stoneSizeStandardGroup.classList.add('hidden');
+        stoneSizeNickGroup.classList.remove('hidden');
+        
+        stoneSizeNickSelect.required = true;
+        stoneWeightInput.required = false;
+        stoneSizeInput.required = false;
+        
         updateNickSettingInfo();
         nickInfoBanner.classList.remove('hidden');
     } else {
+        stoneSizeNickGroup.classList.add('hidden');
+        stoneSizeNickSelect.required = false;
+        
+        // Restore standard weight/size visibility
+        switchStoneInputMode(activeStoneInputMode);
+        
         nickInfoBanner.classList.add('hidden');
     }
 }

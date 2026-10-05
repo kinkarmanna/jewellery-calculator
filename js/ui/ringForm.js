@@ -1,4 +1,4 @@
-import { DEFAULT_RING_VALUES, STONE_SHAPES, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js';
+import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js';
 import { calculateRingDetails } from '../calculations/ringCalculator.js';
 import { renderResult } from './resultView.js';
 
@@ -6,7 +6,6 @@ const form = document.getElementById('ring-form');
 const errorBanner = document.getElementById('ring-form-errors');
 const standardSelect = document.getElementById('ring-size-standard');
 const sizeValueSelect = document.getElementById('ring-size-value');
-const shapeSelect = document.getElementById('ring-stone-shape');
 
 // Nick setting elements
 const settingStyleRadios = document.querySelectorAll('input[name="settingStyleRing"]');
@@ -16,19 +15,81 @@ const stoneSizeInput = document.getElementById('ring-stone-size');
 const stoneSizeNickSelect = document.getElementById('stone-size-nick-ring');
 const nickInfoBanner = document.getElementById('nick-setting-info-ring');
 
+// Stone input mode elements (Weight ↔ Size)
+const stoneInputModeRadios = document.querySelectorAll('input[name="stoneInputModeRing"]');
+const stoneWeightGroup = document.getElementById('stone-weight-group-ring');
+const stoneSizeManualGroup = document.getElementById('stone-size-manual-group-ring');
+const stoneWeightInput = document.getElementById('stone-weight-ring');
+const stoneSizeDisplay = document.getElementById('stone-size-display-ring');
+
 const prongRadios = document.querySelectorAll('input[name="prongStyleRing"]');
 
 let activeSettingStyle = 'standard'; // 'standard' or 'nick'
+let activeStoneInputMode = 'weight'; // 'weight' or 'size'
 let activeProngStyle = 'common';
 
+// ── Weight ↔ Size lookup helpers ──
+function weightToSize(weight) {
+    let closest = null;
+    let minDiff = Infinity;
+    for (const entry of STONE_WEIGHT_CHART) {
+        const diff = Math.abs(entry.weight - weight);
+        if (diff < minDiff) {
+            minDiff = diff;
+            closest = entry;
+        }
+    }
+    return closest ? closest.diameter : null;
+}
+
+function sizeToWeight(size) {
+    const entry = STONE_WEIGHT_CHART.find(e => e.diameter === size);
+    return entry ? entry.weight : null;
+}
+
+function switchStoneInputMode(mode) {
+    activeStoneInputMode = mode;
+    if (activeSettingStyle === 'nick') return; 
+
+    stoneWeightGroup.classList.toggle('hidden', mode !== 'weight');
+    stoneSizeManualGroup.classList.toggle('hidden', mode !== 'size');
+    stoneSizeStandardGroup.classList.remove('hidden');
+    if (mode === 'weight') {
+        document.querySelector('label[for="stone-size-display-ring"]').textContent = 'Size (mm):';
+        updateSizeFromWeight();
+    } else {
+        document.querySelector('label[for="stone-size-display-ring"]').textContent = 'Weight (ct):';
+        updateWeightFromSize();
+    }
+}
+
+function updateSizeFromWeight() {
+    const weight = parseFloat(stoneWeightInput.value);
+    if (!isNaN(weight) && weight > 0) {
+        const size = weightToSize(weight);
+        stoneSizeDisplay.value = size !== null ? `${size} mm` : '—';
+    } else {
+        stoneSizeDisplay.value = '';
+    }
+}
+
+function updateWeightFromSize() {
+    const size = parseFloat(stoneSizeInput.value);
+    if (!isNaN(size) && size > 0) {
+        const weight = sizeToWeight(size);
+        stoneSizeDisplay.value = weight !== null ? `${weight} ct` : '—';
+    } else {
+        stoneSizeDisplay.value = '';
+    }
+}
+
 export function initRingForm() {
-    // Populate stone shapes
-    STONE_SHAPES.forEach(shape => {
-        const option = document.createElement('option');
-        option.value = shape.id;
-        option.textContent = shape.label;
-        shapeSelect.appendChild(option);
+    // Stone input mode toggle (Weight ↔ Size)
+    stoneInputModeRadios.forEach(radio => {
+        radio.addEventListener('change', () => switchStoneInputMode(radio.value));
     });
+    stoneWeightInput.addEventListener('input', updateSizeFromWeight);
+    stoneSizeInput.addEventListener('input', updateWeightFromSize);
 
     // Populate Nick Setting Diamond Sizes
     NICK_SETTING_DATA.forEach(data => {
@@ -74,16 +135,27 @@ function populateSizeValues() {
 function switchSettingStyle(style) {
     activeSettingStyle = style;
     
-    stoneSizeStandardGroup.classList.toggle('hidden', style !== 'standard');
-    stoneSizeNickGroup.classList.toggle('hidden', style !== 'nick');
-    
-    stoneSizeInput.required = (style === 'standard');
-    stoneSizeNickSelect.required = (style === 'nick');
+    const modeToggle = document.querySelector('input[name="stoneInputModeRing"]').closest('.input-mode-group');
+    if (modeToggle) modeToggle.classList.toggle('hidden', style === 'nick');
     
     if (style === 'nick') {
+        stoneWeightGroup.classList.add('hidden');
+        stoneSizeManualGroup.classList.add('hidden');
+        stoneSizeStandardGroup.classList.add('hidden');
+        stoneSizeNickGroup.classList.remove('hidden');
+        
+        stoneSizeNickSelect.required = true;
+        stoneWeightInput.required = false;
+        stoneSizeInput.required = false;
+        
         updateNickSettingInfo();
         nickInfoBanner.classList.remove('hidden');
     } else {
+        stoneSizeNickGroup.classList.add('hidden');
+        stoneSizeNickSelect.required = false;
+        
+        switchStoneInputMode(activeStoneInputMode);
+        
         nickInfoBanner.classList.add('hidden');
     }
 }
@@ -114,6 +186,10 @@ export function resetRingForm() {
     document.getElementById('setting-standard-ring').checked = true;
     switchSettingStyle('standard');
 
+    // Reset stone input mode to Weight
+    document.getElementById('stone-input-weight-ring').checked = true;
+    switchStoneInputMode('weight');
+
     // Reset prong style
     document.getElementById('prong-common-ring').checked = true;
     activeProngStyle = 'common';
@@ -121,8 +197,11 @@ export function resetRingForm() {
     document.getElementById('ring-coverage').value = DEFAULT_RING_VALUES.coverage;
     document.getElementById('ring-rows').value = DEFAULT_RING_VALUES.rows;
     document.getElementById('ring-quantity').value = DEFAULT_RING_VALUES.quantity;
-    shapeSelect.value = DEFAULT_RING_VALUES.stoneShape;
+    
     stoneSizeInput.value = DEFAULT_RING_VALUES.stoneSize;
+    const defaultWeight = sizeToWeight(DEFAULT_RING_VALUES.stoneSize);
+    stoneWeightInput.value = defaultWeight || 0.033;
+    updateSizeFromWeight();
     
     hideErrors();
 }
@@ -131,14 +210,28 @@ function handleFormSubmit(e) {
     e.preventDefault();
     hideErrors();
 
+    let resolvedStoneSize;
+    if (activeSettingStyle === 'nick') {
+        resolvedStoneSize = parseFloat(stoneSizeNickSelect.value);
+    } else if (activeStoneInputMode === 'weight') {
+        const weight = parseFloat(stoneWeightInput.value);
+        resolvedStoneSize = weightToSize(weight);
+        if (!resolvedStoneSize) {
+            showErrors(['Could not find a matching stone size for the entered weight.']);
+            return;
+        }
+    } else {
+        resolvedStoneSize = parseFloat(stoneSizeInput.value);
+    }
+
     const params = {
         sizeStandard: standardSelect.value,
         sizeValue: parseFloat(sizeValueSelect.value),
         coverage: parseFloat(document.getElementById('ring-coverage').value),
         rows: parseInt(document.getElementById('ring-rows').value, 10),
         quantity: parseInt(document.getElementById('ring-quantity').value, 10),
-        stoneShape: shapeSelect.value,
-        stoneSize: activeSettingStyle === 'nick' ? parseFloat(stoneSizeNickSelect.value) : parseFloat(stoneSizeInput.value),
+        stoneShape: 'Round',
+        stoneSize: resolvedStoneSize,
         useNickPlate: activeSettingStyle === 'nick',
         stoneGap: activeSettingStyle === 'nick' ? 0 : PRONG_GAPS[activeProngStyle],
         prongStyle: activeProngStyle

@@ -1,6 +1,6 @@
-import { showView } from './navigation.js';
-import { resetBangleForm } from './bangleForm.js';
-import { resetRingForm } from './ringForm.js';
+import { showView } from './navigation.js?v=2';
+import { resetBangleForm } from './bangleForm.js?v=2';
+import { resetRingForm } from './ringForm.js?v=2';
 
 let lastType = 'Bangle';
 

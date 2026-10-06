@@ -1,5 +1,5 @@
 // Pure bangle calculation functions — no DOM or UI logic
-import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js';
+import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=2';
 
 export function calculateInnerDiameter(bangleShape, diameter, shortDiameter, longDiameter) {
     if (bangleShape === 'Oval') {

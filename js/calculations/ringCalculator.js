@@ -1,4 +1,4 @@
-import { RING_SIZES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js';
+import { RING_SIZES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=2';
 
 export function getRingDiameter(sizeStandard, sizeValue) {
     if (!RING_SIZES[sizeStandard]) return 0;

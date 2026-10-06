@@ -170,7 +170,6 @@ function updateNickSettingInfo() {
             <span class="info-code">Nick Plate</span>
             <span class="info-dims">
                 Plate OD: <strong>${data.od} mm</strong> &nbsp;|&nbsp; 
-                Plate ID: ${data.id} mm &nbsp;|&nbsp; 
                 Thickness: ${data.thickness} mm
             </span>
             <div style="margin-top: 0.25rem; font-size: 0.8rem; color: var(--text-muted);">

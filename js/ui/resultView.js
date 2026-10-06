@@ -114,7 +114,7 @@ export function renderResult(data) {
             </div>
             <div class="result-row" style="color: var(--text-muted); font-size: 0.85em;">
                 <span class="result-label">Nick Plate Specs:</span>
-                <span class="result-value">OD: ${data.outputs.nickPlateData.od} | ID: ${data.outputs.nickPlateData.id} | Th: ${data.outputs.nickPlateData.thickness}</span>
+                <span class="result-value">OD: ${data.outputs.nickPlateData.od} | Th: ${data.outputs.nickPlateData.thickness}</span>
             </div>
             <div class="result-row">
                 <span class="result-label">Stone:</span>

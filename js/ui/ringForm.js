@@ -234,7 +234,7 @@ function handleFormSubmit(e) {
         stoneShape: 'Round',
         stoneSize: resolvedStoneSize,
         useNickPlate: activeSettingStyle === 'nick',
-        stoneGap: activeSettingStyle === 'nick' ? 0 : PRONG_GAPS[activeProngStyle],
+        stoneGap: PRONG_GAPS[activeProngStyle],
         prongStyle: activeProngStyle
     };
 

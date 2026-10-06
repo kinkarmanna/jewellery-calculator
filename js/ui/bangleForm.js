@@ -368,7 +368,7 @@ function handleFormSubmit(e) {
         stoneSize: resolvedStoneSize,
         useNickPlate: activeSettingStyle === 'nick',
         spacingMode: activeSpacingMode,
-        stoneGap: activeSettingStyle === 'nick' ? 0 : (activeSpacingMode === 'gap' ? PRONG_GAPS[activeProngStyle] : 0),
+        stoneGap: activeSpacingMode === 'gap' ? PRONG_GAPS[activeProngStyle] : 0,
         prongStyle: activeProngStyle,
         targetStones: parseInt(targetInput.value, 10)
     };

@@ -166,6 +166,10 @@ export function renderResult(data) {
             <h3>Total Stones Required</h3>
             <div class="total-number">${data.outputs.totalStones}</div>
             <div class="total-sub">For ${data.inputs.quantity} ${itemName}(s)</div>
+            ${data.type === 'Bangle' ? `
+            <div style="margin-top: 0.6rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); font-style: italic; line-height: 1.3;">
+                (If the product has a lock mechanism, 2 stones need to be reduced.)
+            </div>` : ''}
             ${data.inputs.stoneShape === 'Round' && data.outputs.totalCaratWeight ? `
             <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.2);">
                 <div style="font-size: 0.85rem; opacity: 0.85;">Estimated Total Weight</div>

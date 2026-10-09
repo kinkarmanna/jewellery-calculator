@@ -116,14 +116,15 @@ main {
 }
 
 .card:hover:not(.disabled) {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
     border-color: var(--accent);
 }
 
 .card.active {
     border-color: var(--accent);
-    background: linear-gradient(to bottom, #fffbeb, var(--surface));
+    background: linear-gradient(145deg, #fffcf0, var(--surface));
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
 }
 
 .card.disabled {
@@ -132,17 +133,27 @@ main {
 }
 
 .card-icon {
-    font-size: 2.5rem;
-    margin-bottom: 0.75rem;
+    font-size: 3rem;
+    width: 85px;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem auto;
+    background: var(--surface-alt);
+    border-radius: 50%;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .card-image {
-    width: 60px;
-    height: 60px;
+    width: 85px;
+    height: 85px;
     object-fit: cover;
     border-radius: 50%;
-    margin-bottom: 0.75rem;
-    border: 2px solid var(--border);
+    margin: 0 auto 1.25rem auto;
+    display: block;
+    border: 3px solid var(--surface);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.08);
     background: white;
 }
 
@@ -677,7 +688,8 @@ footer {
 }
 [data-theme="dark"] .card.disabled { opacity: 0.4; }
 [data-theme="dark"] .card.active {
-    background: linear-gradient(to bottom, #1c1a10, var(--surface));
+    background: linear-gradient(145deg, #2a2415, var(--surface));
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 [data-theme="dark"] .segmented-toggle { background: #0f1320; }
 [data-theme="dark"] .btn-reset:hover,

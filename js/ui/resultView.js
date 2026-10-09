@@ -1,6 +1,6 @@
-import { showView } from './navigation.js?v=5';
-import { resetBangleForm } from './bangleForm.js?v=5';
-import { resetRingForm } from './ringForm.js?v=5';
+import { showView } from './navigation.js?v=6';
+import { resetBangleForm } from './bangleForm.js?v=6';
+import { resetRingForm } from './ringForm.js?v=6';
 
 let lastType = 'Bangle';
 
@@ -181,7 +181,7 @@ export function renderResult(data) {
         <div class="result-card pricing-card" style="margin-top: 1rem;">
             <h3>💵 Estimated Value</h3>
             <div class="pricing-row">
-                <span class="result-label">Stone Value (${data.outputs.totalStones} pcs @ ₹${data.outputs.pricing.stoneRate}):</span>
+                <span class="result-label">Stone Value (${data.outputs.totalCaratWeight} ct @ ₹${data.outputs.pricing.stoneRate}/ct):</span>
                 <span class="result-value">₹${data.outputs.pricing.stoneValue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
             </div>
             <div class="pricing-row">

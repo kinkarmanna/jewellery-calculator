@@ -1,13 +1,15 @@
 // Shared logic for calculating the monetary value of jewelry items
 
-export function calculatePricing(totalStones, stoneRate, goldWeight, goldRate, makingPercent) {
-    if (typeof totalStones !== 'number' || totalStones < 0) totalStones = 0;
+export function calculatePricing(totalCarats, stoneRate, goldWeight, goldRate, makingPercent) {
+    let carats = parseFloat(totalCarats) || 0;
+    if (carats < 0) carats = 0;
+    
     if (typeof stoneRate !== 'number' || stoneRate < 0) stoneRate = 0;
     if (typeof goldWeight !== 'number' || goldWeight < 0) goldWeight = 0;
     if (typeof goldRate !== 'number' || goldRate < 0) goldRate = 0;
     if (typeof makingPercent !== 'number' || makingPercent < 0) makingPercent = 0;
 
-    const stoneValue = totalStones * stoneRate;
+    const stoneValue = carats * stoneRate;
     const goldValue = goldWeight * goldRate;
     const totalMaterialValue = stoneValue + goldValue;
     

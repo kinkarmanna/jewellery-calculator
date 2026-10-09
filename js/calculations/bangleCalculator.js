@@ -1,6 +1,6 @@
 // Pure bangle calculation functions — no DOM or UI logic
-import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=5';
-import { calculatePricing } from './valueCalculator.js?v=5';
+import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=6';
+import { calculatePricing } from './valueCalculator.js?v=6';
 
 export function calculateInnerDiameter(bangleShape, diameter, shortDiameter, longDiameter) {
     if (bangleShape === 'Oval') {
@@ -130,7 +130,7 @@ export function calculateBangleDetails(params = {}) {
     let pricing = null;
     if (params.includeValue) {
         pricing = calculatePricing(
-            totalStones,
+            totalCaratWeight,
             params.stoneRate,
             params.goldWeight,
             params.goldRate,

@@ -3,7 +3,6 @@
 export function calculatePricing(totalCarats, stoneRate, goldWeight, goldRate, makingPercent) {
     let carats = parseFloat(totalCarats) || 0;
     if (carats < 0) carats = 0;
-    
     if (typeof stoneRate !== 'number' || stoneRate < 0) stoneRate = 0;
     if (typeof goldWeight !== 'number' || goldWeight < 0) goldWeight = 0;
     if (typeof goldRate !== 'number' || goldRate < 0) goldRate = 0;

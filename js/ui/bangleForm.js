@@ -1,6 +1,6 @@
-import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=4';
-import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=4';
-import { renderResult } from './resultView.js?v=4';
+import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=5';
+import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=5';
+import { renderResult } from './resultView.js?v=5';
 
 const form = document.getElementById('bangle-form');
 const errorBanner = document.getElementById('bangle-form-errors');
@@ -169,6 +169,13 @@ export function initBangleForm() {
     // Prong style toggle
     prongRadios.forEach(radio => {
         radio.addEventListener('change', (e) => activeProngStyle = e.target.value);
+    });
+
+    // Value Calculation toggle
+    const toggleValueBangle = document.getElementById('toggle-value-bangle');
+    const valueGroupBangle = document.getElementById('value-group-bangle');
+    toggleValueBangle.addEventListener('change', (e) => {
+        valueGroupBangle.classList.toggle('hidden', !e.target.checked);
     });
 
     // Event listeners
@@ -356,6 +363,8 @@ function handleFormSubmit(e) {
         resolvedStoneSize = parseFloat(stoneSizeInput.value);
     }
 
+    const includeValue = document.getElementById('toggle-value-bangle').checked;
+
     const params = {
         bangleShape: activeBangleShape,
         diameter: parseFloat(diameterInput.value),
@@ -370,7 +379,12 @@ function handleFormSubmit(e) {
         spacingMode: activeSpacingMode,
         stoneGap: activeSpacingMode === 'gap' ? PRONG_GAPS[activeProngStyle] : 0,
         prongStyle: activeProngStyle,
-        targetStones: parseInt(targetInput.value, 10)
+        targetStones: parseInt(targetInput.value, 10),
+        includeValue: includeValue,
+        stoneRate: parseFloat(document.getElementById('val-stone-rate-bangle').value) || 0,
+        goldWeight: parseFloat(document.getElementById('val-gold-weight-bangle').value) || 0,
+        goldRate: parseFloat(document.getElementById('val-gold-rate-bangle').value) || 0,
+        makingPercent: parseFloat(document.getElementById('val-making-bangle').value) || 0
     };
 
     const errors = validateBangleParams(params);

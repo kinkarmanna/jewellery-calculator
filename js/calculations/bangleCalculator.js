@@ -1,5 +1,6 @@
 // Pure bangle calculation functions — no DOM or UI logic
-import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=4';
+import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=5';
+import { calculatePricing } from './valueCalculator.js?v=5';
 
 export function calculateInnerDiameter(bangleShape, diameter, shortDiameter, longDiameter) {
     if (bangleShape === 'Oval') {
@@ -126,6 +127,17 @@ export function calculateBangleDetails(params = {}) {
     // Calculate estimated total carat weight if shape is Round
     const totalCaratWeight = estimateCaratWeight(stoneShape, stoneSize, totalStones);
 
+    let pricing = null;
+    if (params.includeValue) {
+        pricing = calculatePricing(
+            totalStones,
+            params.stoneRate,
+            params.goldWeight,
+            params.goldRate,
+            params.makingPercent
+        );
+    }
+
     return {
         type: 'Bangle',
         inputs: { ...params },
@@ -140,7 +152,8 @@ export function calculateBangleDetails(params = {}) {
             totalStones,
             effectiveElementSize,
             nickPlateData,
-            totalCaratWeight
+            totalCaratWeight,
+            pricing
         }
     };
 }

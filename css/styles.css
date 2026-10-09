@@ -708,3 +708,104 @@ footer {
          b o r d e r - c o l o r :   v a r ( - - a c c e n t ) ; 
  }  
  
+
+/* ── Toggle Switch ── */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.5rem 0 0.5rem 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--border);
+    transition: .3s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+}
+
+.slider.round {
+    border-radius: 24px;
+}
+.slider.round:before {
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+.toggle-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+/* ── Value Calc Group ── */
+#value-group-bangle, #value-group-ring {
+    margin-top: 1rem;
+    background: var(--bg);
+    border: 1px dashed var(--border-strong);
+}
+
+/* ── Pricing Card ── */
+.pricing-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+}
+
+.pricing-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.35rem 0;
+    font-size: 0.9rem;
+}
+
+.pricing-row.subtotal {
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    font-weight: 600;
+}
+
+.pricing-row.total {
+    background: var(--surface-alt);
+    border-top: 2px solid var(--text);
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: var(--radius);
+}

@@ -1,6 +1,6 @@
-import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=4';
-import { calculateRingDetails } from '../calculations/ringCalculator.js?v=4';
-import { renderResult } from './resultView.js?v=4';
+import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=5';
+import { calculateRingDetails } from '../calculations/ringCalculator.js?v=5';
+import { renderResult } from './resultView.js?v=5';
 
 const form = document.getElementById('ring-form');
 const errorBanner = document.getElementById('ring-form-errors');
@@ -116,6 +116,13 @@ export function initRingForm() {
 
     stoneSizeNickSelect.addEventListener('change', updateNickSettingInfo);
 
+    // Value Calculation toggle
+    const toggleValueRing = document.getElementById('toggle-value-ring');
+    const valueGroupRing = document.getElementById('value-group-ring');
+    toggleValueRing.addEventListener('change', (e) => {
+        valueGroupRing.classList.toggle('hidden', !e.target.checked);
+    });
+
     form.addEventListener('submit', handleFormSubmit);
     document.getElementById('btn-reset-ring').addEventListener('click', resetRingForm);
 
@@ -224,6 +231,8 @@ function handleFormSubmit(e) {
         resolvedStoneSize = parseFloat(stoneSizeInput.value);
     }
 
+    const includeValue = document.getElementById('toggle-value-ring').checked;
+
     const params = {
         sizeStandard: standardSelect.value,
         sizeValue: parseFloat(sizeValueSelect.value),
@@ -234,7 +243,12 @@ function handleFormSubmit(e) {
         stoneSize: resolvedStoneSize,
         useNickPlate: activeSettingStyle === 'nick',
         stoneGap: PRONG_GAPS[activeProngStyle],
-        prongStyle: activeProngStyle
+        prongStyle: activeProngStyle,
+        includeValue: includeValue,
+        stoneRate: parseFloat(document.getElementById('val-stone-rate-ring').value) || 0,
+        goldWeight: parseFloat(document.getElementById('val-gold-weight-ring').value) || 0,
+        goldRate: parseFloat(document.getElementById('val-gold-rate-ring').value) || 0,
+        makingPercent: parseFloat(document.getElementById('val-making-ring').value) || 0
     };
 
     const errors = validateRingParams(params);

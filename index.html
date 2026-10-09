@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Jewellery Calculator</title>
-    <link rel="stylesheet" href="css/styles.css?v=4">
+    <link rel="stylesheet" href="css/styles.css?v=5">
 </head>
 <body>
     <header>
@@ -196,6 +196,43 @@
                             </div>
                         </fieldset>
 
+                        <!-- Value Calculation Toggle -->
+                        <div class="toggle-container">
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-value-bangle">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="toggle-label">Calculate Estimated Value</span>
+                        </div>
+
+                        <fieldset id="value-group-bangle" class="hidden">
+                            <legend>Value Estimation</legend>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="val-stone-rate-bangle">Stone Rate (₹/pc):</label>
+                                    <input type="number" id="val-stone-rate-bangle" step="any" min="0">
+                                </div>
+                                <div class="field">
+                                    <label for="val-gold-weight-bangle">Gold Weight (g):</label>
+                                    <input type="number" id="val-gold-weight-bangle" step="any" min="0">
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="val-gold-rate-bangle">Gold Rate (₹/g):</label>
+                                    <input type="number" id="val-gold-rate-bangle" step="any" min="0">
+                                </div>
+                                <div class="field">
+                                    <label for="val-making-bangle">Making Charge (%):</label>
+                                    <input type="number" id="val-making-bangle" step="any" min="0">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>GST (%):</label>
+                                <input type="number" value="3" readonly disabled>
+                            </div>
+                        </fieldset>
+
                         <div class="form-actions">
                             <button type="submit" class="btn-calculate" id="btn-calculate">CALCULATE</button>
                             <button type="button" class="btn-reset" id="btn-reset-bangle">Reset</button>
@@ -312,6 +349,43 @@
                             </div>
                         </fieldset>
 
+                        <!-- Value Calculation Toggle -->
+                        <div class="toggle-container">
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-value-ring">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="toggle-label">Calculate Estimated Value</span>
+                        </div>
+
+                        <fieldset id="value-group-ring" class="hidden">
+                            <legend>Value Estimation</legend>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="val-stone-rate-ring">Stone Rate (₹/pc):</label>
+                                    <input type="number" id="val-stone-rate-ring" step="any" min="0">
+                                </div>
+                                <div class="field">
+                                    <label for="val-gold-weight-ring">Gold Weight (g):</label>
+                                    <input type="number" id="val-gold-weight-ring" step="any" min="0">
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="val-gold-rate-ring">Gold Rate (₹/g):</label>
+                                    <input type="number" id="val-gold-rate-ring" step="any" min="0">
+                                </div>
+                                <div class="field">
+                                    <label for="val-making-ring">Making Charge (%):</label>
+                                    <input type="number" id="val-making-ring" step="any" min="0">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>GST (%):</label>
+                                <input type="number" value="3" readonly disabled>
+                            </div>
+                        </fieldset>
+
                         <div class="form-actions">
                             <button type="submit" class="btn-calculate">CALCULATE</button>
                             <button type="button" class="btn-reset" id="btn-reset-ring">Reset</button>
@@ -357,6 +431,6 @@
         <p>&copy; 2026 Jewellery Calculator</p>
     </footer>
 
-    <script type="module" src="js/app.js?v=4"></script>
+    <script type="module" src="js/app.js?v=5"></script>
 </body>
 </html>

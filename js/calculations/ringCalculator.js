@@ -1,4 +1,5 @@
-import { RING_SIZES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=4';
+import { RING_SIZES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=5';
+import { calculatePricing } from './valueCalculator.js?v=5';
 
 export function getRingDiameter(sizeStandard, sizeValue) {
     if (!RING_SIZES[sizeStandard]) return 0;
@@ -92,6 +93,17 @@ export function calculateRingDetails(params = {}) {
     
     const totalCaratWeight = estimateCaratWeight(stoneShape, stoneSize, totalStones);
 
+    let pricing = null;
+    if (params.includeValue) {
+        pricing = calculatePricing(
+            totalStones,
+            params.stoneRate,
+            params.goldWeight,
+            params.goldRate,
+            params.makingPercent
+        );
+    }
+
     return {
         type: 'Ring',
         inputs: { ...params, diameter },
@@ -104,7 +116,8 @@ export function calculateRingDetails(params = {}) {
             totalStones,
             effectiveElementSize,
             nickPlateData,
-            totalCaratWeight
+            totalCaratWeight,
+            pricing
         }
     };
 }

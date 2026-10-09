@@ -1,6 +1,6 @@
-import { showView } from './navigation.js?v=4';
-import { resetBangleForm } from './bangleForm.js?v=4';
-import { resetRingForm } from './ringForm.js?v=4';
+import { showView } from './navigation.js?v=5';
+import { resetBangleForm } from './bangleForm.js?v=5';
+import { resetRingForm } from './ringForm.js?v=5';
 
 let lastType = 'Bangle';
 
@@ -176,6 +176,36 @@ export function renderResult(data) {
                 <div style="font-size: 1.25rem; font-weight: 700;">${data.outputs.totalCaratWeight} ct</div>
             </div>` : ''}
         </div>
+
+        ${data.outputs.pricing ? `
+        <div class="result-card pricing-card" style="margin-top: 1rem;">
+            <h3>💵 Estimated Value</h3>
+            <div class="pricing-row">
+                <span class="result-label">Stone Value (${data.outputs.totalStones} pcs @ ₹${data.outputs.pricing.stoneRate}):</span>
+                <span class="result-value">₹${data.outputs.pricing.stoneValue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            <div class="pricing-row">
+                <span class="result-label">Gold Value (${data.outputs.pricing.goldWeight}g @ ₹${data.outputs.pricing.goldRate}):</span>
+                <span class="result-value">₹${data.outputs.pricing.goldValue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            <div class="pricing-row">
+                <span class="result-label">Making Charge (${data.outputs.pricing.makingPercent}%):</span>
+                <span class="result-value">₹${data.outputs.pricing.makingCharge.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            <div class="pricing-row subtotal">
+                <span class="result-label">Subtotal:</span>
+                <span class="result-value">₹${data.outputs.pricing.subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            <div class="pricing-row">
+                <span class="result-label">GST (3%):</span>
+                <span class="result-value">₹${data.outputs.pricing.gstAmount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+            <div class="pricing-row total">
+                <span class="result-label" style="color: var(--text);">Grand Total:</span>
+                <span class="result-value" style="color: var(--accent);">₹${data.outputs.pricing.grandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            </div>
+        </div>
+        ` : ''}
 
         <div class="panel-actions">
             <button class="btn-print" onclick="window.print()">🖨 Print</button>

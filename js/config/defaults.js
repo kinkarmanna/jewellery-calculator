@@ -209,3 +209,5 @@ export const STONE_WEIGHT_CHART = [
     { diameter: 8.9, weight: 2.62 }, { diameter: 9.0, weight: 2.71 }, { diameter: 9.1, weight: 2.80 },
     { diameter: 9.2, weight: 2.90 }, { diameter: 9.3, weight: 2.99 }, { diameter: 9.4, weight: 3.09 }
 ];
+e x p o r t   c o n s t   D E F A U L T _ B R A C E L E T _ V A L U E S   =   {   l e n g t h :   7 . 0 ,   l o c k L e n g t h :   1 0 . 0 ,   r o w s :   1 ,   q u a n t i t y :   1 ,   s t o n e S h a p e :   ' R o u n d ' ,   s t o n e S i z e :   2 . 0 ,   s t o n e G a p :   0 . 5 ,   w a s t a g e P e r c e n t :   0   } ;  
+ 

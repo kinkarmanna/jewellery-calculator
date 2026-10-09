@@ -1,7 +1,8 @@
-import { showView } from './ui/navigation.js?v=7';
-import { initBangleForm } from './ui/bangleForm.js?v=7';
-import { initRingForm } from './ui/ringForm.js?v=7';
-import { initResultView } from './ui/resultView.js?v=7';
+import { showView } from './ui/navigation.js?v=10';
+import { initBangleForm } from './ui/bangleForm.js?v=10';
+import { initRingForm } from './ui/ringForm.js?v=10';
+import { initBraceletForm } from './ui/braceletForm.js?v=10';
+import { initResultView } from './ui/resultView.js?v=10';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Theme toggle logic
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize component logic
     initBangleForm();
     initRingForm();
+    initBraceletForm();
     initResultView();
 
     // Bind Home screen cards
@@ -44,7 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const comingSoonCards = ['card-earring', 'card-necklace'];
+    const braceletCard = document.getElementById('card-bracelet');
+    if (braceletCard) {
+        braceletCard.addEventListener('click', () => {
+            showView('view-bracelet');
+        });
+    }
+
+    const comingSoonCards = ['card-earring'];
     comingSoonCards.forEach(id => {
         const card = document.getElementById(id);
         if (card) {
@@ -62,6 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnRingBack = document.getElementById('btn-ring-back');
     if (btnRingBack) {
         btnRingBack.addEventListener('click', () => {
+            showView('view-home');
+        });
+    }
+
+    const btnBraceletBack = document.getElementById('btn-bracelet-back');
+    if (btnBraceletBack) {
+        btnBraceletBack.addEventListener('click', () => {
             showView('view-home');
         });
     }

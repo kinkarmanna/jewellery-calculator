@@ -1,6 +1,7 @@
-import { showView } from './navigation.js?v=7';
-import { resetBangleForm } from './bangleForm.js?v=7';
-import { resetRingForm } from './ringForm.js?v=7';
+import { showView } from './navigation.js?v=10';
+import { resetBangleForm } from './bangleForm.js?v=10';
+import { resetRingForm } from './ringForm.js?v=10';
+import { resetBraceletForm } from './braceletForm.js?v=10';
 
 let lastType = 'Bangle';
 
@@ -14,6 +15,9 @@ export function initResultView() {
         if (lastType === 'Ring') {
             resetRingForm();
             showView('view-ring');
+        } else if (lastType === 'Tennis Bracelet') {
+            resetBraceletForm();
+            showView('view-bracelet');
         } else {
             resetBangleForm();
             showView('view-bangle');
@@ -29,7 +33,10 @@ export function renderResult(data) {
     lastType = data.type || 'Bangle';
     
     // Determine the correct inline panel
-    const panelId = lastType === 'Ring' ? 'ring-result-panel' : 'bangle-result-panel';
+    let panelId = 'bangle-result-panel';
+    if (lastType === 'Ring') panelId = 'ring-result-panel';
+    if (lastType === 'Tennis Bracelet') panelId = 'bracelet-result-panel';
+    
     const container = document.getElementById(panelId);
     if (!container) return;
 
@@ -51,6 +58,20 @@ export function renderResult(data) {
             <div class="result-row">
                 <span class="result-label">Setting Circumference:</span>
                 <span class="result-value">${data.outputs.circumference.toFixed(1)} mm</span>
+            </div>`;
+    } else if (lastType === 'Tennis Bracelet') {
+        dimensionRow = `
+            <div class="result-row">
+                <span class="result-label">Total Length:</span>
+                <span class="result-value">${data.inputs.lengthInches} inches (${data.outputs.lengthMm.toFixed(1)} mm)</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Lock Length:</span>
+                <span class="result-value">${data.inputs.lockLengthMm} mm</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Usable Setting Length:</span>
+                <span class="result-value">${data.outputs.usableLength.toFixed(1)} mm</span>
             </div>`;
     } else {
         if (data.inputs.bangleShape === 'Oval') {

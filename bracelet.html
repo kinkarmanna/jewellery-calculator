@@ -1,0 +1,142 @@
+        <section id="view-bracelet" class="hidden">
+            <div class="view-toolbar">
+                <button class="btn-back" id="btn-bracelet-back">← Back</button>
+                <h2>Tennis Bracelet Calculator</h2>
+            </div>
+            
+            <div class="split-layout">
+                <div class="split-left">
+                    <form id="bracelet-form">
+                        <div class="error-banner hidden" id="bracelet-form-errors">
+                            <strong>Please correct the following:</strong>
+                            <ul id="bracelet-error-list"></ul>
+                        </div>
+
+                        <!-- 1. Dimensions -->
+                        <fieldset>
+                            <legend>Bracelet Dimensions</legend>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="bracelet-length">Total Length (inches):</label>
+                                    <input type="number" id="bracelet-length" name="length" step="0.1" min="1">
+                                </div>
+                                <div class="field">
+                                    <label for="bracelet-lock">Lock Length (mm):</label>
+                                    <input type="number" id="bracelet-lock" name="lockLength" step="0.1" min="0">
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="bracelet-rows">Number of Rows:</label>
+                                    <input type="number" id="bracelet-rows" name="rows" min="1" value="1">
+                                </div>
+                                <div class="field">
+                                    <label for="bracelet-quantity">Quantity:</label>
+                                    <input type="number" id="bracelet-quantity" name="quantity" min="1" value="1">
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- 2. Stone Details -->
+                        <fieldset>
+                            <legend>Stone Details</legend>
+                            
+                            <div class="input-mode-group full-width" style="margin-bottom: 0.75rem;">
+                                <label class="group-label">Setting Type:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="settingStyleBracelet" id="setting-standard-bracelet" value="standard" checked>
+                                    <label for="setting-standard-bracelet">Prong Setting</label>
+                                    <input type="radio" name="settingStyleBracelet" id="setting-nick-bracelet" value="nick">
+                                    <label for="setting-nick-bracelet">Nick Plate</label>
+                                </div>
+                            </div>
+
+                            <div class="field-row with-swap">
+                                <div class="field hidden" id="stone-weight-group-bracelet">
+                                    <label for="stone-weight-bracelet">Weight (ct):</label>
+                                    <input type="number" id="stone-weight-bracelet" name="stoneWeightBracelet" step="0.001" min="0.004">
+                                </div>
+                                <div class="field" id="stone-size-manual-group-bracelet">
+                                    <label for="bracelet-stone-size">Size (mm):</label>
+                                    <input type="number" id="bracelet-stone-size" step="0.1" min="0.1">
+                                </div>
+
+                                <div class="swap-button-container" id="stone-swap-container-bracelet">
+                                    <button type="button" class="btn-swap" id="btn-swap-stone-bracelet" title="Switch Input Mode">⇄</button>
+                                </div>
+
+                                <div class="field hidden" id="stone-size-standard-group-bracelet">
+                                </div>
+                                <div class="field hidden" id="stone-size-nick-group-bracelet">
+                                    <label for="bracelet-stone-size-nick">Nick Diamond Size:</label>
+                                    <select id="bracelet-stone-size-nick"></select>
+                                </div>
+                            </div>
+                            <div id="nick-info-bracelet"></div>
+
+                            <div class="input-mode-group full-width" id="prong-style-group-bracelet" style="margin-top: 1rem;">
+                                <label class="group-label">Prong Style (Gap):</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="prongStyleBracelet" id="prong-common-bracelet" value="common" checked>
+                                    <label for="prong-common-bracelet">Common Prong</label>
+                                    <input type="radio" name="prongStyleBracelet" id="prong-self-bracelet" value="self">
+                                    <label for="prong-self-bracelet">Self Prong</label>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Value Calculation Toggle -->
+                        <div class="toggle-container">
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-value-bracelet">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="toggle-label">Calculate Estimated Value</span>
+                        </div>
+
+                        <fieldset id="value-group-bracelet" class="hidden">
+                            <legend>Value Estimation</legend>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="val-stone-rate-bracelet">Stone Rate (₹/ct):</label>
+                                    <input type="number" id="val-stone-rate-bracelet" step="any" min="0">
+                                </div>
+                                <div class="field">
+                                    <label for="val-gold-weight-bracelet">Gold Weight (g):</label>
+                                    <input type="number" id="val-gold-weight-bracelet" step="any" min="0">
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="val-gold-rate-bracelet">Gold Rate (₹/g):</label>
+                                    <input type="number" id="val-gold-rate-bracelet" step="any" min="0">
+                                </div>
+                                <div class="field">
+                                    <label for="val-making-bracelet">Making Charge (%):</label>
+                                    <input type="number" id="val-making-bracelet" step="any" min="0">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>GST (%):</label>
+                                <input type="number" value="3" readonly disabled>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-calculate">CALCULATE</button>
+                            <button type="button" class="btn-reset" id="btn-reset-bracelet">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="split-right">
+                    <div id="bracelet-result-panel" class="result-panel">
+                        <div class="result-placeholder">
+                            <div class="placeholder-icon">📊</div>
+                            <h3>Results will appear here</h3>
+                            <p>Fill the form and click CALCULATE</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>

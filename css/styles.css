@@ -136,6 +136,16 @@ main {
     margin-bottom: 0.75rem;
 }
 
+.card-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 0.75rem;
+    border: 2px solid var(--border);
+    background: white;
+}
+
 .card h3 {
     font-size: 1.1rem;
     margin-bottom: 0.4rem;

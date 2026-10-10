@@ -1,7 +1,7 @@
-import { showView } from './navigation.js?v=11';
-import { resetBangleForm } from './bangleForm.js?v=11';
-import { resetRingForm } from './ringForm.js?v=11';
-import { resetBraceletForm } from './braceletForm.js?v=11';
+import { showView } from './navigation.js?v=12';
+import { resetBangleForm } from './bangleForm.js?v=12';
+import { resetRingForm } from './ringForm.js?v=12';
+import { resetBraceletForm } from './braceletForm.js?v=12';
 
 let lastType = 'Bangle';
 
@@ -49,7 +49,7 @@ export function renderResult(data) {
         dimensionRow = `
             <div class="result-row">
                 <span class="result-label">Ring Size:</span>
-                <span class="result-value">${data.inputs.sizeStandard} ${data.inputs.sizeValue} (Ø ${data.inputs.diameter} mm)</span>
+                <span class="result-value">Ø ${data.inputs.diameter} mm</span>
             </div>
             <div class="result-row">
                 <span class="result-label">Stone Coverage:</span>

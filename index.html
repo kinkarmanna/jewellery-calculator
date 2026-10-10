@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Jewellery Calculator</title>
-    <link rel="stylesheet" href="css/styles.css?v=13">
+    <link rel="stylesheet" href="css/styles.css?v=12">
 </head>
 <body>
     <header>
@@ -271,21 +271,15 @@
                             
                             <div class="field-row">
                                 <div class="field">
-                                    <label for="ring-size-standard">Size Standard:</label>
-                                    <select id="ring-size-standard">
-                                        <option value="US">US Sizes</option>
-                                        <option value="IN">Indian Sizes</option>
-                                    </select>
+                                    <label for="ring-diameter">Inner Diameter (mm):</label>
+                                    <input type="number" id="ring-diameter" step="0.1" min="1" required>
                                 </div>
                                 <div class="field">
-                                    <label for="ring-size-value">Ring Size:</label>
-                                    <select id="ring-size-value"></select>
+                                    <label for="ring-coverage">Coverage (%):</label>
+                                    <input type="number" id="ring-coverage" min="10" max="100" required>
                                 </div>
                             </div>
-
-                            <label for="ring-coverage">Stone Coverage (%):</label>
-                            <input type="number" id="ring-coverage" min="10" max="100" value="100" required>
-                            <span class="input-hint">100 = Full Eternity, 50 = Half Eternity</span>
+                            <span class="input-hint">Coverage: 100 = Full Eternity, 50 = Half</span>
 
                             <div class="field-row">
                                 <div class="field">
@@ -575,6 +569,6 @@
         <p>&copy; 2026 Jewellery Calculator</p>
     </footer>
 
-    <script type="module" src="js/app.js?v=13"></script>
+    <script type="module" src="js/app.js?v=12"></script>
 </body>
 </html>

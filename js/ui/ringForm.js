@@ -1,11 +1,10 @@
-import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=11';
-import { calculateRingDetails } from '../calculations/ringCalculator.js?v=11';
-import { renderResult } from './resultView.js?v=11';
+import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=12';
+import { calculateRingDetails } from '../calculations/ringCalculator.js?v=12';
+import { renderResult } from './resultView.js?v=12';
 
 const form = document.getElementById('ring-form');
 const errorBanner = document.getElementById('ring-form-errors');
-const standardSelect = document.getElementById('ring-size-standard');
-const sizeValueSelect = document.getElementById('ring-size-value');
+const diameterInput = document.getElementById('ring-diameter');
 
 // Nick setting elements
 const settingStyleRadios = document.querySelectorAll('input[name="settingStyleRing"]');
@@ -102,8 +101,6 @@ export function initRingForm() {
         stoneSizeNickSelect.appendChild(option);
     });
 
-    standardSelect.addEventListener('change', populateSizeValues);
-    
     // Setting style toggle
     settingStyleRadios.forEach(radio => {
         radio.addEventListener('change', () => switchSettingStyle(radio.value));
@@ -127,19 +124,6 @@ export function initRingForm() {
     document.getElementById('btn-reset-ring').addEventListener('click', resetRingForm);
 
     resetRingForm();
-}
-
-function populateSizeValues() {
-    sizeValueSelect.innerHTML = '';
-    const standard = standardSelect.value;
-    const sizes = RING_SIZES[standard] || [];
-    
-    sizes.forEach(s => {
-        const option = document.createElement('option');
-        option.value = s.size;
-        option.textContent = `${standard} ${s.size} (Ø ${s.diameter}mm)`;
-        sizeValueSelect.appendChild(option);
-    });
 }
 
 function switchSettingStyle(style) {
@@ -186,9 +170,7 @@ function updateNickSettingInfo() {
 }
 
 export function resetRingForm() {
-    standardSelect.value = DEFAULT_RING_VALUES.sizeStandard;
-    populateSizeValues();
-    sizeValueSelect.value = DEFAULT_RING_VALUES.sizeValue;
+    diameterInput.value = 18.0;
 
     // Reset setting style
     document.getElementById('setting-standard-ring').checked = true;
@@ -234,8 +216,7 @@ function handleFormSubmit(e) {
     const includeValue = document.getElementById('toggle-value-ring').checked;
 
     const params = {
-        sizeStandard: standardSelect.value,
-        sizeValue: parseFloat(sizeValueSelect.value),
+        diameter: parseFloat(diameterInput.value),
         coverage: parseFloat(document.getElementById('ring-coverage').value),
         rows: parseInt(document.getElementById('ring-rows').value, 10),
         quantity: parseInt(document.getElementById('ring-quantity').value, 10),

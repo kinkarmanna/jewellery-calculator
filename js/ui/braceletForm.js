@@ -1,6 +1,6 @@
-import { DEFAULT_BRACELET_VALUES, STONE_WEIGHT_CHART, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=11';
-import { calculateBraceletDetails } from '../calculations/braceletCalculator.js?v=11';
-import { renderResult } from './resultView.js?v=11';
+import { DEFAULT_BRACELET_VALUES, STONE_WEIGHT_CHART, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=13';
+import { calculateBraceletDetails } from '../calculations/braceletCalculator.js?v=13';
+import { renderResult } from './resultView.js?v=13';
 
 const form = document.getElementById('bracelet-form');
 const errorBanner = document.getElementById('bracelet-form-errors');

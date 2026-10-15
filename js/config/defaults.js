@@ -4,6 +4,7 @@ export const DEFAULT_BANGLE_VALUES = {
     shortDiameter: 54.0,        // mm (for Oval)
     longDiameter: 60.0,         // mm (for Oval)
     height: 4.0,                // mm
+    coverage: 100,              // % (100% full eternity/full bangle, 50% half, or custom %)
     rows: 1,
     quantity: 1,
     stoneShape: 'Round',
@@ -30,6 +31,7 @@ export const VALIDATION_RULES = {
     shortDiameter: { min: 10, max: 200, type: 'number' },
     longDiameter: { min: 10, max: 200, type: 'number' },
     height: { min: 0.1, max: 50, type: 'number' },
+    coverage: { min: 1, max: 100, type: 'number' },
     rows: { min: 1, max: 50, type: 'number' },
     quantity: { min: 1, max: 1000, type: 'number' },
     stoneSize: { min: 0.1, max: 50, type: 'number' }

@@ -1,6 +1,7 @@
 import {
     calculateInnerDiameter,
     calculateOuterCircumference,
+    calculateSettingCircumference,
     calculateBangleDetails
 } from '../js/calculations/bangleCalculator.js';
 import assert from 'assert';
@@ -123,6 +124,40 @@ runOutputTest("Target Stones: 120 (exceeds max of 102)", {
 }, {
     stonesPerRow: 102, // capped at 102
     absoluteMaxStonesPerRow: 102
+});
+
+console.log("\n── Stone Coverage (50% / Half Bangle & Custom %) ──");
+runTest("Setting Circ (200mm, 50% coverage)", calculateSettingCircumference(200, 50), 100);
+runTest("Setting Circ (200mm, 100% coverage)", calculateSettingCircumference(200, 100), 200);
+
+// Round Bangle with 50% coverage (half bangle): 82 / 2 = 41 stones
+runOutputTest("Round Bangle 50% Coverage (Half Bangle)", {
+    bangleShape: 'Round', diameter: 57.3, height: 4.0, coverage: 50,
+    rows: 1, quantity: 1,
+    stoneShape: 'Round', stoneSize: 2.0, stoneGap: 0.5
+}, {
+    innerDiameter: 57.3,
+    outerCircumference: 205.12,
+    settingCircumference: 102.56,
+    stonesPerRow: 41,
+    baseStones: 41,
+    finalStonesPerBangle: 41,
+    totalStones: 41
+});
+
+// Oval Bangle with 50% coverage
+runOutputTest("Oval Bangle 50% Coverage", {
+    bangleShape: 'Oval', shortDiameter: 54.0, longDiameter: 60.0, height: 4.0, coverage: 50,
+    rows: 1, quantity: 1,
+    stoneShape: 'Round', stoneSize: 2.0, stoneGap: 0.5
+}, {
+    innerDiameter: 57.0,
+    outerCircumference: 204.20,
+    settingCircumference: 102.10,
+    stonesPerRow: 40,
+    baseStones: 40,
+    finalStonesPerBangle: 40,
+    totalStones: 40
 });
 
 // ─── Summary ──────────────────────────────────────────────────────

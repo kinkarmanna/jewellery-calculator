@@ -1,6 +1,6 @@
-import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=14';
-import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=14';
-import { renderResult } from './resultView.js?v=14';
+import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=15';
+import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=15';
+import { renderResult } from './resultView.js?v=15';
 
 const form = document.getElementById('bangle-form');
 const errorBanner = document.getElementById('bangle-form-errors');
@@ -39,6 +39,9 @@ const diameterInput = document.getElementById('bangle-diameter');
 const shortDiameterInput = document.getElementById('bangle-short-diameter');
 const longDiameterInput = document.getElementById('bangle-long-diameter');
 const heightInput = document.getElementById('bangle-height');
+const coverageInput = document.getElementById('bangle-coverage');
+const btnCoverage100 = document.getElementById('btn-coverage-100');
+const btnCoverage50 = document.getElementById('btn-coverage-50');
 
 // Spacing mode elements
 const spacingRadios = document.querySelectorAll('input[name="spacingMode"]');
@@ -180,6 +183,21 @@ export function initBangleForm() {
         valueGroupBangle.classList.toggle('hidden', !e.target.checked);
     });
 
+    // Stone coverage presets & input
+    if (btnCoverage100) {
+        btnCoverage100.addEventListener('click', () => setCoverageValue(100));
+    }
+    if (btnCoverage50) {
+        btnCoverage50.addEventListener('click', () => setCoverageValue(50));
+    }
+    if (coverageInput) {
+        coverageInput.addEventListener('input', () => {
+            const val = parseFloat(coverageInput.value);
+            btnCoverage100?.classList.toggle('active', val === 100);
+            btnCoverage50?.classList.toggle('active', val === 50);
+        });
+    }
+
     // Event listeners
     form.addEventListener('submit', handleFormSubmit);
     document.getElementById('btn-reset-bangle').addEventListener('click', resetBangleForm);
@@ -264,6 +282,14 @@ function switchDiameterMode(mode) {
     }
 }
 
+function setCoverageValue(val) {
+    if (coverageInput) {
+        coverageInput.value = val;
+    }
+    btnCoverage100?.classList.toggle('active', val === 100);
+    btnCoverage50?.classList.toggle('active', val === 50);
+}
+
 export function resetBangleForm() {
     // Reset diameter mode to Easy Select
     document.getElementById('diam-mode-easy').checked = true;
@@ -299,6 +325,7 @@ export function resetBangleForm() {
     heightInput.value = DEFAULT_BANGLE_VALUES.height;
     document.getElementById('bangle-rows').value = DEFAULT_BANGLE_VALUES.rows;
     document.getElementById('bangle-quantity').value = DEFAULT_BANGLE_VALUES.quantity;
+    setCoverageValue(DEFAULT_BANGLE_VALUES.coverage || 100);
     stoneSizeInput.value = DEFAULT_BANGLE_VALUES.stoneSize;
     // Set default weight from chart lookup
     const defaultWeight = sizeToWeight(DEFAULT_BANGLE_VALUES.stoneSize);
@@ -309,7 +336,7 @@ export function resetBangleForm() {
     hideErrors();
 
     // Clear preset highlight
-    document.querySelectorAll('.preset-buttons button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#bangle-presets button').forEach(b => b.classList.remove('active'));
 }
 
 function switchSpacingMode(mode) {
@@ -328,7 +355,7 @@ function switchBangleShape(shape) {
 
 function applyPreset(preset, btn) {
     // Highlight active preset
-    document.querySelectorAll('.preset-buttons button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#bangle-presets button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
     // Set value based on current shape
@@ -373,6 +400,7 @@ function handleFormSubmit(e) {
         shortDiameter: parseFloat(shortDiameterInput.value),
         longDiameter: parseFloat(longDiameterInput.value),
         height: parseFloat(heightInput.value),
+        coverage: parseFloat(coverageInput ? coverageInput.value : 100) || 100,
         rows: parseInt(document.getElementById('bangle-rows').value, 10),
         quantity: parseInt(document.getElementById('bangle-quantity').value, 10),
         stoneShape: 'Round',
@@ -472,6 +500,7 @@ function validateBangleParams(params) {
     // Validate remaining common fields
     const bounds = [
         { key: 'height', label: 'Height' },
+        { key: 'coverage', label: 'Stone coverage' },
         { key: 'rows', label: 'Rows' },
         { key: 'stoneSize', label: 'Stone size' }
     ];

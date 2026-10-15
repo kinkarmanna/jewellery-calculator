@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Jewellery Calculator</title>
-    <link rel="stylesheet" href="css/styles.css?v=14">
+    <link rel="stylesheet" href="css/styles.css?v=15">
 </head>
 <body>
     <header>
@@ -125,7 +125,15 @@
                                     <input type="number" id="bangle-quantity" name="quantity" required>
                                 </div>
                                 <div class="field">
-                                    <!-- Placeholder to keep layout even -->
+                                    <label for="bangle-coverage">Stone Coverage (%):</label>
+                                    <input type="number" id="bangle-coverage" name="coverage" min="1" max="100" value="100" step="any" required>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: -0.4rem; margin-bottom: 0.5rem;">
+                                <span class="input-hint" style="margin: 0;">100% = Full Bangle, 50% = Half</span>
+                                <div class="preset-buttons" style="gap: 0.25rem;">
+                                    <button type="button" id="btn-coverage-100" class="active" style="height: 24px; padding: 0 0.5rem; font-size: 0.72rem;">100% (Full)</button>
+                                    <button type="button" id="btn-coverage-50" style="height: 24px; padding: 0 0.5rem; font-size: 0.72rem;">50% (Half)</button>
                                 </div>
                             </div>
                         </fieldset>
@@ -569,6 +577,6 @@
         <p>&copy; 2026 Jewellery Calculator</p>
     </footer>
 
-    <script type="module" src="js/app.js?v=14"></script>
+    <script type="module" src="js/app.js?v=15"></script>
 </body>
 </html>

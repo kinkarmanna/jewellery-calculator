@@ -1,6 +1,6 @@
 // Pure bangle calculation functions — no DOM or UI logic
-import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=14';
-import { calculatePricing } from './valueCalculator.js?v=14';
+import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=15';
+import { calculatePricing } from './valueCalculator.js?v=15';
 
 export function calculateInnerDiameter(bangleShape, diameter, shortDiameter, longDiameter) {
     if (bangleShape === 'Oval') {
@@ -16,6 +16,15 @@ export function calculateOuterCircumference(innerDiameter, height) {
     if (typeof innerDiameter !== 'number' || innerDiameter <= 0 || typeof height !== 'number' || height < 0) return 0;
     // Height is wall thickness on one side; outer diameter = inner + height×2
     return (innerDiameter + height * 2) * Math.PI;
+}
+
+export function calculateSettingCircumference(outerCircumference, coverage = 100) {
+    if (typeof outerCircumference !== 'number' || outerCircumference <= 0 ||
+        typeof coverage !== 'number' || coverage <= 0) {
+        return 0;
+    }
+    const validCoverage = coverage > 100 ? 100 : coverage;
+    return outerCircumference * (validCoverage / 100);
 }
 
 export function calculateStonesPerRow(circumference, elementSize, gap) {
@@ -75,6 +84,7 @@ export function calculateBangleDetails(params = {}) {
         shortDiameter = 0,
         longDiameter = 0,
         height = 4.0,
+        coverage = 100,
         rows,
         quantity,
         stoneShape,
@@ -89,6 +99,10 @@ export function calculateBangleDetails(params = {}) {
     const innerDiameter = calculateInnerDiameter(bangleShape, diameter, shortDiameter, longDiameter);
     const outerCircumference = calculateOuterCircumference(innerDiameter, height);
 
+    // Stone setting area / circumference based on coverage percentage (100% = full, 50% = half, or any %)
+    const validCoverage = (typeof coverage === 'number' && coverage > 0 && coverage <= 100) ? coverage : 100;
+    const settingCircumference = calculateSettingCircumference(outerCircumference, validCoverage);
+
     // Determine the effective size for spacing calculation
     let effectiveElementSize = stoneSize;
     let nickPlateData = null;
@@ -100,8 +114,8 @@ export function calculateBangleDetails(params = {}) {
         }
     }
     
-    // Absolute maximum stones with 0 gap using the outer circumference and the effective element size
-    const absoluteMaxStonesPerRow = effectiveElementSize > 0 ? Math.floor(outerCircumference / effectiveElementSize) : 0;
+    // Absolute maximum stones with 0 gap using setting circumference and effective element size
+    const absoluteMaxStonesPerRow = effectiveElementSize > 0 ? Math.floor(settingCircumference / effectiveElementSize) : 0;
     const absoluteMaxStones = calculateBaseStones(absoluteMaxStonesPerRow, rows);
 
     let stonesPerRow = 0;
@@ -113,11 +127,11 @@ export function calculateBangleDetails(params = {}) {
             stonesPerRow = absoluteMaxStonesPerRow; // Cap at physical maximum
         }
         if (stonesPerRow > 0) {
-            computedGap = (outerCircumference / stonesPerRow) - effectiveElementSize;
+            computedGap = (settingCircumference / stonesPerRow) - effectiveElementSize;
             if (computedGap < 0) computedGap = 0;
         }
     } else {
-        stonesPerRow = calculateStonesPerRow(outerCircumference, effectiveElementSize, stoneGap);
+        stonesPerRow = calculateStonesPerRow(settingCircumference, effectiveElementSize, stoneGap);
     }
 
     const baseStones = calculateBaseStones(stonesPerRow, rows);
@@ -140,10 +154,11 @@ export function calculateBangleDetails(params = {}) {
 
     return {
         type: 'Bangle',
-        inputs: { ...params },
+        inputs: { ...params, coverage: validCoverage },
         outputs: {
             innerDiameter,
             outerCircumference,
+            settingCircumference,
             absoluteMaxStonesPerRow,
             computedGap,
             stonesPerRow,

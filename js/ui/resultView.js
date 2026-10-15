@@ -1,7 +1,7 @@
-import { showView } from './navigation.js?v=14';
-import { resetBangleForm } from './bangleForm.js?v=14';
-import { resetRingForm } from './ringForm.js?v=14';
-import { resetBraceletForm } from './braceletForm.js?v=14';
+import { showView } from './navigation.js?v=15';
+import { resetBangleForm } from './bangleForm.js?v=15';
+import { resetRingForm } from './ringForm.js?v=15';
+import { resetBraceletForm } from './braceletForm.js?v=15';
 
 let lastType = 'Bangle';
 
@@ -108,7 +108,19 @@ export function renderResult(data) {
             <div class="result-row">
                 <span class="result-label">Outer Circumference:</span>
                 <span class="result-value">${data.outputs.outerCircumference.toFixed(1)} mm</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Stone Coverage:</span>
+                <span class="result-value">${data.inputs.coverage || 100}%</span>
             </div>`;
+
+        if (data.inputs.coverage && data.inputs.coverage < 100) {
+            dimensionRow += `
+            <div class="result-row">
+                <span class="result-label">Stone Setting Length:</span>
+                <span class="result-value">${(data.outputs.settingCircumference || (data.outputs.outerCircumference * (data.inputs.coverage / 100))).toFixed(1)} mm</span>
+            </div>`;
+        }
     }
 
     const finalStones = data.outputs.finalStonesPerItem || data.outputs.finalStonesPerBangle;

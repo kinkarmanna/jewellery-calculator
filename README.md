@@ -9,6 +9,7 @@ A specialized, offline-capable web application designed to calculate the precise
   - *Oval Average Formula*: `(Short Diameter + Long Diameter) / 2`
 - **Outer Circumference Math**: Unlike a simple circle, stones are set on the *outside* of the metal. 
   - *Formula*: `Outer Circumference = (Inner Diameter + (Metal Height × 2)) × π`
+- **Stone Coverage**: Calculate full bangle (100% default), half bangle (50%), or any custom percentage of stone area coverage around the bangle.
 - **Easy Select**: Pre-configured sizing codes (A-Z) commonly used in the jewelry industry for standard Round and Oval inner diameters.
 
 ### 2. Ring Calculator

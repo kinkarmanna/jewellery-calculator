@@ -1,5 +1,5 @@
-import { RING_SIZES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=13';
-import { calculatePricing } from './valueCalculator.js?v=13';
+import { RING_SIZES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=14';
+import { calculatePricing } from './valueCalculator.js?v=14';
 
 export function calculateRingDetails(params = {}) {
     const {

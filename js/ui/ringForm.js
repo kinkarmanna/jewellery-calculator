@@ -1,6 +1,6 @@
-import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=13';
-import { calculateRingDetails } from '../calculations/ringCalculator.js?v=13';
-import { renderResult } from './resultView.js?v=13';
+import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=14';
+import { calculateRingDetails } from '../calculations/ringCalculator.js?v=14';
+import { renderResult } from './resultView.js?v=14';
 
 const form = document.getElementById('ring-form');
 const errorBanner = document.getElementById('ring-form-errors');
@@ -93,11 +93,13 @@ export function initRingForm() {
     stoneWeightInput.addEventListener('input', updateSizeFromWeight);
     stoneSizeInput.addEventListener('input', updateWeightFromSize);
 
-    // Populate Nick Setting Diamond Sizes
+    // Populate Nick Setting Diamond Sizes (show mm + ct weight)
     NICK_SETTING_DATA.forEach(data => {
         const option = document.createElement('option');
         option.value = data.diamondSize;
-        option.textContent = `${data.diamondSize} mm`;
+        const weightEntry = STONE_WEIGHT_CHART.find(s => s.diameter === data.diamondSize);
+        const weightText = weightEntry ? ` — ${weightEntry.weight} ct` : '';
+        option.textContent = `${data.diamondSize} mm${weightText}`;
         stoneSizeNickSelect.appendChild(option);
     });
 

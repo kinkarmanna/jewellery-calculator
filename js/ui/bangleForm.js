@@ -1,6 +1,6 @@
-import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=13';
-import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=13';
-import { renderResult } from './resultView.js?v=13';
+import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=14';
+import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=14';
+import { renderResult } from './resultView.js?v=14';
 
 const form = document.getElementById('bangle-form');
 const errorBanner = document.getElementById('bangle-form-errors');
@@ -120,11 +120,13 @@ export function initBangleForm() {
     stoneWeightInput.addEventListener('input', updateSizeFromWeight);
     stoneSizeInput.addEventListener('input', updateWeightFromSize);
 
-    // Populate Nick Setting Diamond Sizes
+    // Populate Nick Setting Diamond Sizes (show mm + ct weight)
     NICK_SETTING_DATA.forEach(data => {
         const option = document.createElement('option');
         option.value = data.diamondSize;
-        option.textContent = `${data.diamondSize} mm`;
+        const weightEntry = STONE_WEIGHT_CHART.find(s => s.diameter === data.diamondSize);
+        const weightText = weightEntry ? ` — ${weightEntry.weight} ct` : '';
+        option.textContent = `${data.diamondSize} mm${weightText}`;
         stoneSizeNickSelect.appendChild(option);
     });
 

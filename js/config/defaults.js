@@ -78,9 +78,44 @@ export const BANGLE_CLOSING_CODES = [
     { code: 'Z', shape: 'Round', diameter: 80,   label: 'Z — Round 80+ mm' }
 ];
 
+// Easy-Select A–Z size codes for finger rings (Method: Inner Diameter by Ring Stick, Tolerance ±0.15 mm)
+export const RING_SIZE_CODES = [
+    // Baby (A–E)
+    { code: 'A', category: 'Baby',   diameter: 12.0, circumference: 38, label: 'A — Baby (12.0 mm / Circ 38 mm)' },
+    { code: 'B', category: 'Baby',   diameter: 12.4, circumference: 39, label: 'B — Baby (12.4 mm / Circ 39 mm)' },
+    { code: 'C', category: 'Baby',   diameter: 12.8, circumference: 40, label: 'C — Baby (12.8 mm / Circ 40 mm)' },
+    { code: 'D', category: 'Baby',   diameter: 13.2, circumference: 41, label: 'D — Baby (13.2 mm / Circ 41 mm)' },
+    { code: 'E', category: 'Baby',   diameter: 13.6, circumference: 43, label: 'E — Baby (13.6 mm / Circ 43 mm)' },
+    // Ladies (F–N)
+    { code: 'F', category: 'Ladies', diameter: 14.0, circumference: 44, label: 'F — Ladies (14.0 mm / Circ 44 mm)' },
+    { code: 'G', category: 'Ladies', diameter: 14.4, circumference: 45, label: 'G — Ladies (14.4 mm / Circ 45 mm)' },
+    { code: 'H', category: 'Ladies', diameter: 14.8, circumference: 47, label: 'H — Ladies (14.8 mm / Circ 47 mm)' },
+    { code: 'I', category: 'Ladies', diameter: 15.2, circumference: 48, label: 'I — Ladies (15.2 mm / Circ 48 mm)' },
+    { code: 'J', category: 'Ladies', diameter: 15.6, circumference: 49, label: 'J — Ladies (15.6 mm / Circ 49 mm)' },
+    { code: 'K', category: 'Ladies', diameter: 16.0, circumference: 50, label: 'K — Ladies (16.0 mm / Circ 50 mm)' },
+    { code: 'L', category: 'Ladies', diameter: 16.4, circumference: 52, label: 'L — Ladies (16.4 mm / Circ 52 mm)' },
+    { code: 'M', category: 'Ladies', diameter: 16.8, circumference: 53, label: 'M — Ladies (16.8 mm / Circ 53 mm)' },
+    { code: 'N', category: 'Ladies', diameter: 17.2, circumference: 54, label: 'N — Ladies (17.2 mm / Circ 54 mm)' },
+    // Gents (O–U)
+    { code: 'O', category: 'Gents',  diameter: 17.6, circumference: 55, label: 'O — Gents (17.6 mm / Circ 55 mm)' },
+    { code: 'P', category: 'Gents',  diameter: 18.0, circumference: 57, label: 'P — Gents (18.0 mm / Circ 57 mm)' },
+    { code: 'Q', category: 'Gents',  diameter: 18.4, circumference: 58, label: 'Q — Gents (18.4 mm / Circ 58 mm)' },
+    { code: 'R', category: 'Gents',  diameter: 18.8, circumference: 59, label: 'R — Gents (18.8 mm / Circ 59 mm)' },
+    { code: 'S', category: 'Gents',  diameter: 19.1, circumference: 60, label: 'S — Gents (19.1 mm / Circ 60 mm)' },
+    { code: 'T', category: 'Gents',  diameter: 19.5, circumference: 61, label: 'T — Gents (19.5 mm / Circ 61 mm)' },
+    { code: 'U', category: 'Gents',  diameter: 19.9, circumference: 63, label: 'U — Gents (19.9 mm / Circ 63 mm)' },
+    // Unisex (V–Z)
+    { code: 'V', category: 'Unisex', diameter: 20.3, circumference: 64, label: 'V — Unisex (20.3 mm / Circ 64 mm)' },
+    { code: 'W', category: 'Unisex', diameter: 20.7, circumference: 65, label: 'W — Unisex (20.7 mm / Circ 65 mm)' },
+    { code: 'X', category: 'Unisex', diameter: 21.1, circumference: 66, label: 'X — Unisex (21.1 mm / Circ 66 mm)' },
+    { code: 'Y', category: 'Unisex', diameter: 21.5, circumference: 68, label: 'Y — Unisex (21.5 mm / Circ 68 mm)' },
+    { code: 'Z', category: 'Unisex', diameter: 21.9, circumference: 69, label: 'Z — Unisex (21.9 mm / Circ 69 mm)' }
+];
+export const RING_SIZE_TOLERANCE = 0.15; // ±0.15 mm
+
 export const DEFAULT_RING_VALUES = {
-    sizeStandard: 'US',
-    sizeValue: 7.0,
+    sizeCode: '',
+    diameter: 18.0,
     coverage: 100, // 100% full eternity, 50% half eternity
     rows: 1,
     quantity: 1,

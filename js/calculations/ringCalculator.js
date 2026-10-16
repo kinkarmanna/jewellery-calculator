@@ -1,5 +1,11 @@
-import { RING_SIZES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=19';
-import { calculatePricing } from './valueCalculator.js?v=19';
+import { RING_SIZES, RING_SIZE_CODES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=20';
+import { calculatePricing } from './valueCalculator.js?v=20';
+
+export function getRingDiameterByCode(code) {
+    if (!code) return 0;
+    const entry = RING_SIZE_CODES.find(c => c.code === code.toUpperCase());
+    return entry ? entry.diameter : 0;
+}
 
 export function getRingDiameter(sizeStandard, sizeValue) {
     if (!RING_SIZES[sizeStandard]) return 0;
@@ -74,7 +80,7 @@ export function calculateRingDetails(params = {}) {
 
     const diameter = (typeof params.diameter === 'number' && params.diameter > 0)
         ? params.diameter
-        : getRingDiameter(sizeStandard, sizeValue);
+        : (params.sizeCode ? getRingDiameterByCode(params.sizeCode) : getRingDiameter(sizeStandard, sizeValue));
     const circumference = calculateRingCircumference(diameter, coverage);
 
     let effectiveElementSize = stoneSize;

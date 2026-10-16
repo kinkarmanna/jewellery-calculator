@@ -1,10 +1,22 @@
-import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=19';
-import { calculateRingDetails } from '../calculations/ringCalculator.js?v=19';
-import { renderResult } from './resultView.js?v=19';
+import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZE_CODES, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=20';
+import { calculateRingDetails } from '../calculations/ringCalculator.js?v=20';
+import { renderResult } from './resultView.js?v=20';
 
 const form = document.getElementById('ring-form');
 const errorBanner = document.getElementById('ring-form-errors');
+
+// Ring size mode elements (Easy Select vs Manual Entry)
+const ringSizeModeRadios = document.querySelectorAll('input[name="ringSizeMode"]');
+const ringEasySelectGroup = document.getElementById('ring-easy-select-group');
+const ringManualEntryGroup = document.getElementById('ring-manual-entry-group');
+const ringSizeCodeSelect = document.getElementById('ring-size-code-select');
+const ringEasySelectInfo = document.getElementById('ring-easy-select-info');
 const diameterInput = document.getElementById('ring-diameter');
+const coverageInput = document.getElementById('ring-coverage');
+const rowsInput = document.getElementById('ring-rows');
+const quantityInput = document.getElementById('ring-quantity');
+
+let activeRingSizeMode = 'easy'; // 'easy' or 'manual'
 
 // Nick setting elements
 const settingStyleRadios = document.querySelectorAll('input[name="settingStyleRing"]');
@@ -87,7 +99,67 @@ function updateWeightFromSize() {
     }
 }
 
+// ── Populate the A–Z dropdown ──
+function populateRingSizeCodes() {
+    ringSizeCodeSelect.innerHTML = '';
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = '— Choose a size code (A–Z) —';
+    ringSizeCodeSelect.appendChild(placeholder);
+
+    RING_SIZE_CODES.forEach(entry => {
+        const option = document.createElement('option');
+        option.value = entry.code;
+        option.textContent = entry.label;
+        ringSizeCodeSelect.appendChild(option);
+    });
+}
+
+// ── Apply selected size code ──
+function applyRingSizeCode() {
+    const code = ringSizeCodeSelect.value;
+    if (!code) {
+        ringEasySelectInfo.innerHTML = '';
+        diameterInput.value = '';
+        return;
+    }
+
+    const entry = RING_SIZE_CODES.find(c => c.code === code);
+    if (!entry) return;
+
+    diameterInput.value = entry.diameter;
+
+    ringEasySelectInfo.innerHTML = `
+        <span class="info-code">${entry.code}</span>
+        <span class="info-shape">${entry.category}</span>
+        <span class="info-dims">
+            Inner Dia: <strong>${entry.diameter} mm</strong> &nbsp;|&nbsp; Circumference: ${entry.circumference} mm
+            <br><span style="font-size: 0.78rem; opacity: 0.85; font-weight: normal;">Method: Inner Diameter by Ring Stick (Tolerance: ±0.15 mm)</span>
+        </span>`;
+}
+
+// ── Toggle between Easy Select and Manual Entry ──
+function switchRingSizeMode(mode) {
+    activeRingSizeMode = mode;
+
+    ringEasySelectGroup.classList.toggle('hidden', mode !== 'easy');
+    ringManualEntryGroup.classList.toggle('hidden', mode !== 'manual');
+
+    if (mode === 'easy') {
+        applyRingSizeCode();
+    }
+}
+
 export function initRingForm() {
+    // Ring size mode toggle (Easy Select ↔ Manual Entry)
+    ringSizeModeRadios.forEach(radio => {
+        radio.addEventListener('change', () => switchRingSizeMode(radio.value));
+    });
+
+    // Populate size codes
+    populateRingSizeCodes();
+    ringSizeCodeSelect.addEventListener('change', applyRingSizeCode);
+
     // Stone input mode toggle (Weight ↔ Size)
     btnSwapStoneMode.addEventListener('click', toggleStoneInputMode);
     stoneWeightInput.addEventListener('input', updateSizeFromWeight);
@@ -171,7 +243,15 @@ function updateNickSettingInfo() {
 }
 
 export function resetRingForm() {
-    diameterInput.value = 18.0;
+    // Reset ring size mode to Easy Select
+    const easyRadio = document.getElementById('ring-size-mode-easy');
+    if (easyRadio) easyRadio.checked = true;
+    switchRingSizeMode('easy');
+
+    // Reset size code dropdown
+    ringSizeCodeSelect.value = '';
+    ringEasySelectInfo.innerHTML = '';
+    diameterInput.value = '';
 
     // Reset setting style
     document.getElementById('setting-standard-ring').checked = true;
@@ -184,9 +264,9 @@ export function resetRingForm() {
     document.getElementById('prong-common-ring').checked = true;
     activeProngStyle = 'common';
 
-    document.getElementById('ring-coverage').value = DEFAULT_RING_VALUES.coverage;
-    document.getElementById('ring-rows').value = DEFAULT_RING_VALUES.rows;
-    document.getElementById('ring-quantity').value = DEFAULT_RING_VALUES.quantity;
+    coverageInput.value = DEFAULT_RING_VALUES.coverage;
+    rowsInput.value = DEFAULT_RING_VALUES.rows;
+    quantityInput.value = DEFAULT_RING_VALUES.quantity;
     
     stoneSizeInput.value = DEFAULT_RING_VALUES.stoneSize;
     const defaultWeight = sizeToWeight(DEFAULT_RING_VALUES.stoneSize);
@@ -199,6 +279,22 @@ export function resetRingForm() {
 function handleFormSubmit(e) {
     e.preventDefault();
     hideErrors();
+
+    // If Easy Select is active but no code is chosen, show an error
+    if (activeRingSizeMode === 'easy' && !ringSizeCodeSelect.value) {
+        showErrors(['Please select a ring size code (A–Z) or switch to Manual Entry.']);
+        return;
+    }
+
+    const selectedEntry = (activeRingSizeMode === 'easy')
+        ? RING_SIZE_CODES.find(c => c.code === ringSizeCodeSelect.value)
+        : null;
+
+    const diameter = parseFloat(diameterInput.value);
+    if (isNaN(diameter) || diameter <= 0) {
+        showErrors(['Please enter a valid inner diameter (mm).']);
+        return;
+    }
 
     let resolvedStoneSize;
     if (activeSettingStyle === 'nick') {
@@ -217,10 +313,14 @@ function handleFormSubmit(e) {
     const includeValue = document.getElementById('toggle-value-ring').checked;
 
     const params = {
-        diameter: parseFloat(diameterInput.value),
-        coverage: parseFloat(document.getElementById('ring-coverage').value),
-        rows: parseInt(document.getElementById('ring-rows').value, 10),
-        quantity: parseInt(document.getElementById('ring-quantity').value, 10),
+        sizeMode: activeRingSizeMode,
+        sizeCode: selectedEntry ? selectedEntry.code : null,
+        sizeCategory: selectedEntry ? selectedEntry.category : null,
+        chartCircumference: selectedEntry ? selectedEntry.circumference : null,
+        diameter: diameter,
+        coverage: parseFloat(coverageInput.value),
+        rows: parseInt(rowsInput.value, 10),
+        quantity: parseInt(quantityInput.value, 10),
         stoneShape: 'Round',
         stoneSize: resolvedStoneSize,
         useNickPlate: activeSettingStyle === 'nick',
@@ -248,6 +348,10 @@ function handleFormSubmit(e) {
 function validateRingParams(params) {
     const errors = [];
     
+    if (isNaN(params.diameter) || params.diameter <= 0) {
+        errors.push('Please enter a valid inner diameter (mm).');
+    }
+
     // Bounds checking
     const bounds = [
         { key: 'coverage', label: 'Coverage %' },
@@ -264,7 +368,7 @@ function validateRingParams(params) {
     });
 
     if (isNaN(params.quantity) || params.quantity < 1) {
-        errors.push(`Quantity must be at least 1.`);
+        errors.push('Quantity must be at least 1.');
     }
 
     return errors;

@@ -1,7 +1,7 @@
-import { showView } from './navigation.js?v=19';
-import { resetBangleForm } from './bangleForm.js?v=19';
-import { resetRingForm } from './ringForm.js?v=19';
-import { resetBraceletForm } from './braceletForm.js?v=19';
+import { showView } from './navigation.js?v=20';
+import { resetBangleForm } from './bangleForm.js?v=20';
+import { resetRingForm } from './ringForm.js?v=20';
+import { resetBraceletForm } from './braceletForm.js?v=20';
 
 let lastType = 'Bangle';
 
@@ -46,10 +46,23 @@ export function renderResult(data) {
     let dimensionRow = '';
     
     if (lastType === 'Ring') {
-        dimensionRow = `
+        const codeDisplay = data.inputs.sizeCode
+            ? `
             <div class="result-row">
-                <span class="result-label">Ring Size:</span>
-                <span class="result-value">Ø ${data.inputs.diameter} mm</span>
+                <span class="result-label">Size Code:</span>
+                <span class="result-value">Code ${data.inputs.sizeCode} (${data.inputs.sizeCategory})</span>
+            </div>`
+            : `
+            <div class="result-row">
+                <span class="result-label">Size Mode:</span>
+                <span class="result-value">Manual Entry</span>
+            </div>`;
+
+        dimensionRow = `
+            ${codeDisplay}
+            <div class="result-row">
+                <span class="result-label">Inner Diameter:</span>
+                <span class="result-value">Ø ${data.inputs.diameter} mm ${data.inputs.sizeCode ? '<span style="font-size: 0.8em; color: var(--text-muted);">(±0.15 mm)</span>' : ''}</span>
             </div>
             <div class="result-row">
                 <span class="result-label">Stone Coverage:</span>

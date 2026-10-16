@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Jewellery Calculator</title>
-    <link rel="stylesheet" href="css/styles.css?v=19">
+    <link rel="stylesheet" href="css/styles.css?v=20">
 </head>
 <body>
     <header>
@@ -272,14 +272,39 @@
                         <fieldset>
                             <legend>Ring Details</legend>
                             
-                            <div class="field-row">
+                            <!-- Size Mode Toggle -->
+                            <div class="input-mode-group full-width">
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="ringSizeMode" id="ring-size-mode-easy" value="easy" checked>
+                                    <label for="ring-size-mode-easy">Easy Select</label>
+                                    <input type="radio" name="ringSizeMode" id="ring-size-mode-manual" value="manual">
+                                    <label for="ring-size-mode-manual">Manual Entry</label>
+                                </div>
+                            </div>
+
+                            <!-- EASY SELECT: Code dropdown + info -->
+                            <div id="ring-easy-select-group">
+                                <label for="ring-size-code-select" class="group-label">Select Ring Size Code (A–Z):</label>
+                                <select id="ring-size-code-select"></select>
+                                <div id="ring-easy-select-info" class="easy-select-info"></div>
+                            </div>
+
+                            <!-- MANUAL ENTRY: Inner Diameter input (hidden by default) -->
+                            <div id="ring-manual-entry-group" class="hidden">
                                 <div class="field">
                                     <label for="ring-diameter">Inner Diameter (mm):</label>
-                                    <input type="number" id="ring-diameter" step="0.1" min="1" required>
+                                    <input type="number" id="ring-diameter" step="0.1" min="1">
                                 </div>
+                            </div>
+
+                            <div class="field-row">
                                 <div class="field">
                                     <label for="ring-coverage">Coverage (%):</label>
                                     <input type="number" id="ring-coverage" min="10" max="100" required>
+                                </div>
+                                <div class="field">
+                                    <label for="ring-rows">Rows:</label>
+                                    <input type="number" id="ring-rows" min="1" required>
                                 </div>
                             </div>
                             <span class="input-hint">Coverage: 100 = Full Eternity, 50 = Half</span>
@@ -572,6 +597,6 @@
         <p>&copy; 2026 Jewellery Calculator</p>
     </footer>
 
-    <script type="module" src="js/app.js?v=19"></script>
+    <script type="module" src="js/app.js?v=20"></script>
 </body>
 </html>

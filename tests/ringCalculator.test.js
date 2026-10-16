@@ -1,6 +1,7 @@
 import {
     getRingDiameter,
     getRingDiameterByCode,
+    calculateOuterCircumference,
     calculateRingCircumference,
     calculateRingDetails
 } from '../js/calculations/ringCalculator.js';
@@ -66,7 +67,10 @@ runTest("Get invalid standard", getRingDiameter('UK', 7), 0);
 runTest("Get invalid size", getRingDiameter('US', 99), 0);
 
 console.log("\n── Circumference ──");
+runTest("Outer Circ (18.0 dia, 1.5 height)", calculateOuterCircumference(18.0, 1.5), (18.0 + 3.0) * Math.PI);
+runTest("Outer Circ (18.0 dia, 0 height)", calculateOuterCircumference(18.0, 0), 18.0 * Math.PI);
 runTest("Full Eternity US 7 (17.3mm)", calculateRingCircumference(17.3, 100), Math.PI * 17.3);
+runTest("Full Eternity US 7 with 1.5mm height", calculateRingCircumference(17.3, 100, 1.5), (17.3 + 3.0) * Math.PI);
 runTest("Half Eternity US 7 (17.3mm)", calculateRingCircumference(17.3, 50), Math.PI * 17.3 * 0.5);
 runTest("Invalid diameter", calculateRingCircumference(-5, 100), 0);
 runTest("Invalid coverage", calculateRingCircumference(17.3, -10), 0);
@@ -102,9 +106,9 @@ runOutputTest("Half Eternity US 7", {
     totalStones: 12
 });
 
-// Size Code P (18.0 mm dia) Full Eternity
+// Size Code P (18.0 mm dia) Full Eternity without height
 // circ = PI * 18 = 56.548. Stones = floor(56.548 / 2.2) = 25
-runOutputTest("Easy Select Code P (18.0 mm)", {
+runOutputTest("Easy Select Code P without height", {
     sizeCode: 'P', coverage: 100,
     rows: 1, quantity: 1,
     stoneShape: 'Round', stoneSize: 2.0, stoneGap: 0.2
@@ -116,18 +120,34 @@ runOutputTest("Easy Select Code P (18.0 mm)", {
     totalStones: 25
 });
 
-// Manual Entry (16.5 mm dia) Full Eternity
-// circ = PI * 16.5 = 51.836. Stones = floor(51.836 / 2.2) = 23
-runOutputTest("Manual Entry 16.5 mm", {
-    diameter: 16.5, coverage: 100,
+// Size Code P (18.0 mm dia) Full Eternity WITH default height 1.5 mm
+// outerDia = 18.0 + 1.5*2 = 21.0. outerCirc = 21.0 * PI = 65.973. Stones = floor(65.973 / 2.2) = 29
+runOutputTest("Easy Select Code P with 1.5mm height", {
+    sizeCode: 'P', height: 1.5, coverage: 100,
+    rows: 1, quantity: 1,
+    stoneShape: 'Round', stoneSize: 2.0, stoneGap: 0.2
+}, {
+    diameter: 18.0,
+    height: 1.5,
+    stonesPerRow: 29,
+    baseStones: 29,
+    finalStonesPerItem: 29,
+    totalStones: 29
+});
+
+// Manual Entry (16.5 mm dia) Full Eternity WITH 1.5 mm height
+// outerDia = 16.5 + 3.0 = 19.5. outerCirc = 19.5 * PI = 61.261. Stones = floor(61.261 / 2.2) = 27
+runOutputTest("Manual Entry 16.5 mm with 1.5mm height", {
+    diameter: 16.5, height: 1.5, coverage: 100,
     rows: 1, quantity: 1,
     stoneShape: 'Round', stoneSize: 2.0, stoneGap: 0.2
 }, {
     diameter: 16.5,
-    stonesPerRow: 23,
-    baseStones: 23,
-    finalStonesPerItem: 23,
-    totalStones: 23
+    height: 1.5,
+    stonesPerRow: 27,
+    baseStones: 27,
+    finalStonesPerItem: 27,
+    totalStones: 27
 });
 
 console.log("\n═══════════════════════════════════════════");

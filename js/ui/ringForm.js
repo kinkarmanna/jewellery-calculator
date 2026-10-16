@@ -1,6 +1,6 @@
-import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZE_CODES, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=20';
-import { calculateRingDetails } from '../calculations/ringCalculator.js?v=20';
-import { renderResult } from './resultView.js?v=20';
+import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZE_CODES, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=21';
+import { calculateRingDetails } from '../calculations/ringCalculator.js?v=21';
+import { renderResult } from './resultView.js?v=21';
 
 const form = document.getElementById('ring-form');
 const errorBanner = document.getElementById('ring-form-errors');
@@ -12,6 +12,7 @@ const ringManualEntryGroup = document.getElementById('ring-manual-entry-group');
 const ringSizeCodeSelect = document.getElementById('ring-size-code-select');
 const ringEasySelectInfo = document.getElementById('ring-easy-select-info');
 const diameterInput = document.getElementById('ring-diameter');
+const heightInput = document.getElementById('ring-height');
 const coverageInput = document.getElementById('ring-coverage');
 const rowsInput = document.getElementById('ring-rows');
 const quantityInput = document.getElementById('ring-quantity');
@@ -264,6 +265,7 @@ export function resetRingForm() {
     document.getElementById('prong-common-ring').checked = true;
     activeProngStyle = 'common';
 
+    heightInput.value = DEFAULT_RING_VALUES.height || 1.5;
     coverageInput.value = DEFAULT_RING_VALUES.coverage;
     rowsInput.value = DEFAULT_RING_VALUES.rows;
     quantityInput.value = DEFAULT_RING_VALUES.quantity;
@@ -296,6 +298,12 @@ function handleFormSubmit(e) {
         return;
     }
 
+    const height = parseFloat(heightInput.value);
+    if (isNaN(height) || height < 0) {
+        showErrors(['Please enter a valid height (mm).']);
+        return;
+    }
+
     let resolvedStoneSize;
     if (activeSettingStyle === 'nick') {
         resolvedStoneSize = parseFloat(stoneSizeNickSelect.value);
@@ -318,6 +326,7 @@ function handleFormSubmit(e) {
         sizeCategory: selectedEntry ? selectedEntry.category : null,
         chartCircumference: selectedEntry ? selectedEntry.circumference : null,
         diameter: diameter,
+        height: height,
         coverage: parseFloat(coverageInput.value),
         rows: parseInt(rowsInput.value, 10),
         quantity: parseInt(quantityInput.value, 10),
@@ -354,6 +363,7 @@ function validateRingParams(params) {
 
     // Bounds checking
     const bounds = [
+        { key: 'height', label: 'Height' },
         { key: 'coverage', label: 'Coverage %' },
         { key: 'rows', label: 'Rows' },
         { key: 'stoneSize', label: 'Stone size' }

@@ -1,7 +1,7 @@
-import { showView } from './navigation.js?v=20';
-import { resetBangleForm } from './bangleForm.js?v=20';
-import { resetRingForm } from './ringForm.js?v=20';
-import { resetBraceletForm } from './braceletForm.js?v=20';
+import { showView } from './navigation.js?v=21';
+import { resetBangleForm } from './bangleForm.js?v=21';
+import { resetRingForm } from './ringForm.js?v=21';
+import { resetBraceletForm } from './braceletForm.js?v=21';
 
 let lastType = 'Bangle';
 
@@ -58,12 +58,25 @@ export function renderResult(data) {
                 <span class="result-value">Manual Entry</span>
             </div>`;
 
+        const heightDisplay = (typeof data.inputs.height === 'number' && data.inputs.height > 0)
+            ? `
+            <div class="result-row">
+                <span class="result-label">Metal Height:</span>
+                <span class="result-value">${data.inputs.height} mm</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Outer Circumference:</span>
+                <span class="result-value">${data.outputs.outerCircumference.toFixed(1)} mm</span>
+            </div>`
+            : '';
+
         dimensionRow = `
             ${codeDisplay}
             <div class="result-row">
                 <span class="result-label">Inner Diameter:</span>
                 <span class="result-value">Ø ${data.inputs.diameter} mm ${data.inputs.sizeCode ? '<span style="font-size: 0.8em; color: var(--text-muted);">(±0.15 mm)</span>' : ''}</span>
             </div>
+            ${heightDisplay}
             <div class="result-row">
                 <span class="result-label">Stone Coverage:</span>
                 <span class="result-value">${data.inputs.coverage}%</span>

@@ -116,6 +116,7 @@ export const RING_SIZE_TOLERANCE = 0.15; // ±0.15 mm
 export const DEFAULT_RING_VALUES = {
     sizeCode: '',
     diameter: 18.0,
+    height: 1.5,   // mm (default 1.5 mm)
     coverage: 100, // 100% full eternity, 50% half eternity
     rows: 1,
     quantity: 1,

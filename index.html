@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Jewellery Calculator</title>
-    <link rel="stylesheet" href="css/styles.css?v=20">
+    <link rel="stylesheet" href="css/styles.css?v=21">
 </head>
 <body>
     <header>
@@ -299,26 +299,26 @@
 
                             <div class="field-row">
                                 <div class="field">
-                                    <label for="ring-coverage">Coverage (%):</label>
-                                    <input type="number" id="ring-coverage" min="10" max="100" required>
+                                    <label for="ring-height">Height (mm):</label>
+                                    <input type="number" id="ring-height" name="height" step="0.1" min="0.1" value="1.5" required>
                                 </div>
                                 <div class="field">
                                     <label for="ring-rows">Rows:</label>
                                     <input type="number" id="ring-rows" min="1" required>
                                 </div>
                             </div>
-                            <span class="input-hint">Coverage: 100 = Full Eternity, 50 = Half</span>
 
                             <div class="field-row">
-                                <div class="field">
-                                    <label for="ring-rows">Rows:</label>
-                                    <input type="number" id="ring-rows" min="1" required>
-                                </div>
                                 <div class="field">
                                     <label for="ring-quantity">Quantity (Pieces):</label>
                                     <input type="number" id="ring-quantity" min="1" required>
                                 </div>
+                                <div class="field">
+                                    <label for="ring-coverage">Coverage (%):</label>
+                                    <input type="number" id="ring-coverage" min="10" max="100" required>
+                                </div>
                             </div>
+                            <span class="input-hint">Coverage: 100 = Full Eternity, 50 = Half</span>
                         </fieldset>
 
                         <fieldset>
@@ -597,6 +597,6 @@
         <p>&copy; 2026 Jewellery Calculator</p>
     </footer>
 
-    <script type="module" src="js/app.js?v=20"></script>
+    <script type="module" src="js/app.js?v=21"></script>
 </body>
 </html>

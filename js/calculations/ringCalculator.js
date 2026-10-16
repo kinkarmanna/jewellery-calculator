@@ -1,5 +1,5 @@
-import { RING_SIZES, RING_SIZE_CODES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=20';
-import { calculatePricing } from './valueCalculator.js?v=20';
+import { RING_SIZES, RING_SIZE_CODES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=21';
+import { calculatePricing } from './valueCalculator.js?v=21';
 
 export function getRingDiameterByCode(code) {
     if (!code) return 0;
@@ -13,13 +13,19 @@ export function getRingDiameter(sizeStandard, sizeValue) {
     return entry ? entry.diameter : 0;
 }
 
-export function calculateRingCircumference(diameter, coveragePercentage = 100) {
+export function calculateOuterCircumference(innerDiameter, height = 0) {
+    if (typeof innerDiameter !== 'number' || innerDiameter <= 0) return 0;
+    const effectiveHeight = (typeof height === 'number' && height >= 0) ? height : 0;
+    return (innerDiameter + effectiveHeight * 2) * Math.PI;
+}
+
+export function calculateRingCircumference(diameter, coveragePercentage = 100, height = 0) {
     if (typeof diameter !== 'number' || diameter <= 0 ||
         typeof coveragePercentage !== 'number' || coveragePercentage <= 0) {
         return 0;
     }
-    const fullCircumference = Math.PI * diameter;
-    return fullCircumference * (coveragePercentage / 100);
+    const outerCirc = calculateOuterCircumference(diameter, height);
+    return outerCirc * (coveragePercentage / 100);
 }
 
 export function calculateStonesPerRow(circumference, elementSize, gap) {
@@ -68,6 +74,7 @@ export function calculateRingDetails(params = {}) {
     const {
         sizeStandard = 'US',
         sizeValue = 7.0,
+        height = 0,
         coverage = 100,
         rows,
         quantity,
@@ -81,7 +88,10 @@ export function calculateRingDetails(params = {}) {
     const diameter = (typeof params.diameter === 'number' && params.diameter > 0)
         ? params.diameter
         : (params.sizeCode ? getRingDiameterByCode(params.sizeCode) : getRingDiameter(sizeStandard, sizeValue));
-    const circumference = calculateRingCircumference(diameter, coverage);
+    
+    const effectiveHeight = (typeof height === 'number' && height >= 0) ? height : 0;
+    const outerCircumference = calculateOuterCircumference(diameter, effectiveHeight);
+    const circumference = calculateRingCircumference(diameter, coverage, effectiveHeight);
 
     let effectiveElementSize = stoneSize;
     let nickPlateData = null;
@@ -112,9 +122,12 @@ export function calculateRingDetails(params = {}) {
 
     return {
         type: 'Ring',
-        inputs: { ...params, diameter },
+        inputs: { ...params, diameter, height: effectiveHeight },
         outputs: {
             diameter,
+            innerDiameter: diameter,
+            height: effectiveHeight,
+            outerCircumference,
             circumference,
             stonesPerRow,
             baseStones,

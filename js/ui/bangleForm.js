@@ -1,6 +1,6 @@
-import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=16';
-import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=16';
-import { renderResult } from './resultView.js?v=16';
+import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=17';
+import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=17';
+import { renderResult } from './resultView.js?v=17';
 
 const form = document.getElementById('bangle-form');
 const errorBanner = document.getElementById('bangle-form-errors');
@@ -142,16 +142,6 @@ export function initBangleForm() {
 
     // Populate closing code dropdown
     populateClosingCodes();
-
-    // Populate preset buttons
-    const presetsContainer = document.getElementById('bangle-presets');
-    BANGLE_SIZE_PRESETS.forEach(preset => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.textContent = preset.label;
-        btn.addEventListener('click', () => applyPreset(preset, btn));
-        presetsContainer.appendChild(btn);
-    });
 
     // Diameter mode toggle (Easy Select ↔ Manual Entry)
     diamModeRadios.forEach(radio => {
@@ -373,9 +363,6 @@ export function resetBangleForm() {
     targetInput.value = '';
     
     hideErrors();
-
-    // Clear preset highlight
-    document.querySelectorAll('#bangle-presets button').forEach(b => b.classList.remove('active'));
     updateCoverageState();
 }
 
@@ -392,20 +379,6 @@ function switchBangleShape(shape) {
     roundGroup.classList.toggle('hidden', shape !== 'Round');
     ovalGroup.classList.toggle('hidden', shape !== 'Oval');
     updateCoverageState();
-}
-
-function applyPreset(preset, btn) {
-    // Highlight active preset
-    document.querySelectorAll('#bangle-presets button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    // Set value based on current shape
-    if (activeBangleShape === 'Round') {
-        diameterInput.value = preset.diameter;
-    } else {
-        shortDiameterInput.value = preset.diameter;
-        longDiameterInput.value = preset.diameter;
-    }
 }
 
 function handleFormSubmit(e) {

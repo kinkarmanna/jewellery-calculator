@@ -130,19 +130,19 @@ console.log("\n── Stone Coverage (50% / Half Bangle & Custom %) ──");
 runTest("Setting Circ (200mm, 50% coverage)", calculateSettingCircumference(200, 50), 100);
 runTest("Setting Circ (200mm, 100% coverage)", calculateSettingCircumference(200, 100), 200);
 
-// Round Bangle with 50% coverage (half bangle): 82 / 2 = 41 stones
-runOutputTest("Round Bangle 50% Coverage (Half Bangle)", {
+// Round Bangle is always 100% full coverage (Size code K-Z): locked to full 82 stones even if 50% is passed
+runOutputTest("Round Bangle locked to 100% full coverage", {
     bangleShape: 'Round', diameter: 57.3, height: 4.0, coverage: 50,
     rows: 1, quantity: 1,
     stoneShape: 'Round', stoneSize: 2.0, stoneGap: 0.5
 }, {
     innerDiameter: 57.3,
     outerCircumference: 205.12,
-    settingCircumference: 102.56,
-    stonesPerRow: 41,
-    baseStones: 41,
-    finalStonesPerBangle: 41,
-    totalStones: 41
+    settingCircumference: 205.12,
+    stonesPerRow: 82,
+    baseStones: 82,
+    finalStonesPerBangle: 82,
+    totalStones: 82
 });
 
 // Oval Bangle with 50% coverage

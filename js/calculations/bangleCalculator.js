@@ -1,6 +1,6 @@
 // Pure bangle calculation functions — no DOM or UI logic
-import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=15';
-import { calculatePricing } from './valueCalculator.js?v=15';
+import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=16';
+import { calculatePricing } from './valueCalculator.js?v=16';
 
 export function calculateInnerDiameter(bangleShape, diameter, shortDiameter, longDiameter) {
     if (bangleShape === 'Oval') {
@@ -99,9 +99,11 @@ export function calculateBangleDetails(params = {}) {
     const innerDiameter = calculateInnerDiameter(bangleShape, diameter, shortDiameter, longDiameter);
     const outerCircumference = calculateOuterCircumference(innerDiameter, height);
 
-    // Stone setting area / circumference based on coverage percentage (100% = full, 50% = half, or any %)
+    // Round bangles (Size K–Z) are always 100% full coverage; Oval bangles support custom/half coverage
+    const isRound = (bangleShape === 'Round');
     const validCoverage = (typeof coverage === 'number' && coverage > 0 && coverage <= 100) ? coverage : 100;
-    const settingCircumference = calculateSettingCircumference(outerCircumference, validCoverage);
+    const effectiveCoverage = isRound ? 100 : validCoverage;
+    const settingCircumference = calculateSettingCircumference(outerCircumference, effectiveCoverage);
 
     // Determine the effective size for spacing calculation
     let effectiveElementSize = stoneSize;
@@ -154,7 +156,7 @@ export function calculateBangleDetails(params = {}) {
 
     return {
         type: 'Bangle',
-        inputs: { ...params, coverage: validCoverage },
+        inputs: { ...params, coverage: effectiveCoverage },
         outputs: {
             innerDiameter,
             outerCircumference,

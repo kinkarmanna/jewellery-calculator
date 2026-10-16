@@ -1,6 +1,6 @@
-import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=15';
-import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=15';
-import { renderResult } from './resultView.js?v=15';
+import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_SIZE_PRESETS, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=16';
+import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=16';
+import { renderResult } from './resultView.js?v=16';
 
 const form = document.getElementById('bangle-form');
 const errorBanner = document.getElementById('bangle-form-errors');
@@ -226,6 +226,7 @@ function applyClosingCode() {
     const code = closingCodeSelect.value;
     if (!code) {
         easySelectInfo.innerHTML = '';
+        updateCoverageState();
         return;
     }
 
@@ -264,6 +265,8 @@ function applyClosingCode() {
                 Inner Diameter: ${entry.diameter} mm
             </span>`;
     }
+
+    updateCoverageState();
 }
 
 // ── Toggle between Easy Select and Manual Entry ──
@@ -279,6 +282,42 @@ function switchDiameterMode(mode) {
     } else {
         // Sync the manual shape UI to whatever the internal state is
         switchBangleShape(activeBangleShape);
+    }
+}
+
+function updateCoverageState() {
+    const isRound = (activeBangleShape === 'Round');
+    const coverageHint = document.getElementById('bangle-coverage-hint');
+
+    if (isRound) {
+        setCoverageValue(100);
+        if (coverageInput) {
+            coverageInput.disabled = true;
+            coverageInput.title = 'Round bangles (Size K–Z) are always 100% full coverage';
+        }
+        if (btnCoverage100) {
+            btnCoverage100.disabled = true;
+        }
+        if (btnCoverage50) {
+            btnCoverage50.disabled = true;
+        }
+        if (coverageHint) {
+            coverageHint.textContent = 'Round bangles (Size K–Z) are always 100% full coverage';
+        }
+    } else {
+        if (coverageInput) {
+            coverageInput.disabled = false;
+            coverageInput.title = '';
+        }
+        if (btnCoverage100) {
+            btnCoverage100.disabled = false;
+        }
+        if (btnCoverage50) {
+            btnCoverage50.disabled = false;
+        }
+        if (coverageHint) {
+            coverageHint.textContent = '100% = Full Bangle, 50% = Half';
+        }
     }
 }
 
@@ -337,6 +376,7 @@ export function resetBangleForm() {
 
     // Clear preset highlight
     document.querySelectorAll('#bangle-presets button').forEach(b => b.classList.remove('active'));
+    updateCoverageState();
 }
 
 function switchSpacingMode(mode) {
@@ -351,6 +391,7 @@ function switchBangleShape(shape) {
 
     roundGroup.classList.toggle('hidden', shape !== 'Round');
     ovalGroup.classList.toggle('hidden', shape !== 'Oval');
+    updateCoverageState();
 }
 
 function applyPreset(preset, btn) {
@@ -400,7 +441,7 @@ function handleFormSubmit(e) {
         shortDiameter: parseFloat(shortDiameterInput.value),
         longDiameter: parseFloat(longDiameterInput.value),
         height: parseFloat(heightInput.value),
-        coverage: parseFloat(coverageInput ? coverageInput.value : 100) || 100,
+        coverage: (activeBangleShape === 'Round') ? 100 : (parseFloat(coverageInput ? coverageInput.value : 100) || 100),
         rows: parseInt(document.getElementById('bangle-rows').value, 10),
         quantity: parseInt(document.getElementById('bangle-quantity').value, 10),
         stoneShape: 'Round',

@@ -1,5 +1,5 @@
-import { RING_SIZES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=15';
-import { calculatePricing } from './valueCalculator.js?v=15';
+import { RING_SIZES, NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=16';
+import { calculatePricing } from './valueCalculator.js?v=16';
 
 export function getRingDiameter(sizeStandard, sizeValue) {
     if (!RING_SIZES[sizeStandard]) return 0;

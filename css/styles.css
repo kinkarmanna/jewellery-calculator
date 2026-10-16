@@ -259,6 +259,14 @@ input:focus, select:focus {
     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
 }
 
+input:disabled, select:disabled {
+    background: var(--surface-alt);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    border-color: var(--border);
+    opacity: 0.75;
+}
+
 /* Field rows — 2 inputs side by side */
 .field-row {
     display: grid;
@@ -350,6 +358,13 @@ input:focus, select:focus {
 .preset-buttons button.active {
     background: var(--accent);
     color: white;
+}
+
+.preset-buttons button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+    border-color: var(--border-strong);
 }
 
 /* ── Easy Select Info ── */

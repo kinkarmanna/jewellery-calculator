@@ -1,6 +1,6 @@
-import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=18';
-import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=18';
-import { renderResult } from './resultView.js?v=18';
+import { DEFAULT_BANGLE_VALUES, STONE_WEIGHT_CHART, VALIDATION_RULES, BANGLE_CLOSING_CODES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=19';
+import { calculateBangleDetails } from '../calculations/bangleCalculator.js?v=19';
+import { renderResult } from './resultView.js?v=19';
 
 const form = document.getElementById('bangle-form');
 const errorBanner = document.getElementById('bangle-form-errors');

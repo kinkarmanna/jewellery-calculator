@@ -1,5 +1,5 @@
-import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=18';
-import { calculatePricing } from './valueCalculator.js?v=18';
+import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=19';
+import { calculatePricing } from './valueCalculator.js?v=19';
 
 export function estimateCaratWeight(shape, sizeMm, totalStones) {
     if (shape !== 'Round') return null;

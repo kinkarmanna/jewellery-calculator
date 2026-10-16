@@ -1,6 +1,6 @@
-import { DEFAULT_BRACELET_VALUES, STONE_WEIGHT_CHART, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=17';
-import { calculateBraceletDetails } from '../calculations/braceletCalculator.js?v=17';
-import { renderResult } from './resultView.js?v=17';
+import { DEFAULT_BRACELET_VALUES, STONE_WEIGHT_CHART, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=18';
+import { calculateBraceletDetails } from '../calculations/braceletCalculator.js?v=18';
+import { renderResult } from './resultView.js?v=18';
 
 const form = document.getElementById('bracelet-form');
 const errorBanner = document.getElementById('bracelet-form-errors');
@@ -36,13 +36,12 @@ export function initBraceletForm() {
     stoneWeightInput.addEventListener('input', updateSizeFromWeight);
     stoneSizeInput.addEventListener('input', updateWeightFromSize);
 
-    // Populate Nick Setting Diamond Sizes (show mm + ct weight)
+    // Populate Nick Setting Diamond Sizes (show ct weight (mm))
     NICK_SETTING_DATA.forEach(data => {
         const option = document.createElement('option');
         option.value = data.diamondSize;
         const weightEntry = STONE_WEIGHT_CHART.find(s => s.diameter === data.diamondSize);
-        const weightText = weightEntry ? ` — ${weightEntry.weight} ct` : '';
-        option.textContent = `${data.diamondSize} mm${weightText}`;
+        option.textContent = weightEntry ? `${weightEntry.weight} ct (${data.diamondSize} mm)` : `${data.diamondSize} mm`;
         stoneSizeNickSelect.appendChild(option);
     });
     

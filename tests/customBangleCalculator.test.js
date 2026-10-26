@@ -120,6 +120,42 @@ runTest("Target Stone Mode on Custom Bangle", () => {
     assert.ok(Math.abs(result.custom.gap - 0.564) < 0.01);
 });
 
+runTest("Custom Bangle Valuation with Quantity and Scaled Gold Weight", () => {
+    // 1 bangle with 15g gold @ ₹8000/g => gold value = ₹120,000
+    const res1 = calculateCustomBangleComparison({
+        stdShape: 'Round',
+        stdDiameter: 57.3,
+        custShape: 'Round',
+        custDiameter: 60.0,
+        quantity: 1,
+        includeValue: true,
+        stoneRate: 20000,
+        goldWeight: 15,
+        goldRate: 8000,
+        makingPercent: 10
+    });
+
+    // 2 bangles with 30g gold (2x) @ ₹8000/g => gold value = ₹240,000
+    const res2 = calculateCustomBangleComparison({
+        stdShape: 'Round',
+        stdDiameter: 57.3,
+        custShape: 'Round',
+        custDiameter: 60.0,
+        quantity: 2,
+        includeValue: true,
+        stoneRate: 20000,
+        goldWeight: 30,
+        goldRate: 8000,
+        makingPercent: 10
+    });
+
+    assert.strictEqual(res1.custom.pricing.goldWeight, 15);
+    assert.strictEqual(res1.custom.pricing.goldValue, 120000);
+    assert.strictEqual(res2.custom.pricing.goldWeight, 30);
+    assert.strictEqual(res2.custom.pricing.goldValue, 240000);
+    assert.strictEqual(res2.custom.pricing.goldValue, res1.custom.pricing.goldValue * 2);
+});
+
 console.log("\n═══════════════════════════════════════════");
 console.log(`  Results: ${passed} passed, ${failed} failed`);
 console.log("═══════════════════════════════════════════");

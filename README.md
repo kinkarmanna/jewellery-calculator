@@ -97,7 +97,7 @@ For comprehensive architectural details, mathematical proofs, constraints, and c
     ringForm.js        - DOM controller for Finger Ring Form
     customBangleForm.js - DOM controller for Standard to Customized Bangle Form
     resultView.js      - Dynamic HTML generator for the Workshop Slip
-/tests/                - Node.js test suites (61 total unit tests)
+/tests/                - Node.js test suites (62 total unit tests)
 index.html             - The single-page application layout
 CONTEXT.md             - Full technical context and architecture documentation
 ```
@@ -106,7 +106,7 @@ CONTEXT.md             - Full technical context and architecture documentation
 
 ## Testing
 
-Run all 61 unit tests across all 5 test suites:
+Run all 62 unit tests across all 5 test suites:
 
 ```powershell
 node tests/bangleCalculator.test.js ; node tests/ringCalculator.test.js ; node tests/braceletCalculator.test.js ; node tests/customBangleCalculator.test.js ; node tests/stonePriceManager.test.js

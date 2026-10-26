@@ -1,6 +1,6 @@
-import { BANGLE_CLOSING_CODES, STONE_WEIGHT_CHART, PRONG_GAPS } from '../config/defaults.js?v=29';
-import { calculateCustomBangleComparison } from '../calculations/customBangleCalculator.js?v=29';
-import { renderResult } from './resultView.js?v=29';
+import { BANGLE_CLOSING_CODES, STONE_WEIGHT_CHART, PRONG_GAPS } from '../config/defaults.js?v=30';
+import { calculateCustomBangleComparison } from '../calculations/customBangleCalculator.js?v=30';
+import { renderResult } from './resultView.js?v=30';
 
 const form = document.getElementById('custom-bangle-form');
 const errorBanner = document.getElementById('custom-bangle-errors');
@@ -69,11 +69,13 @@ const custTargetStonesInput = document.getElementById('cust-target-stones');
 // Value calculation
 const toggleValue = document.getElementById('toggle-value-custom-bangle');
 const valueGroup = document.getElementById('value-group-custom-bangle');
+const custGoldWeightInput = document.getElementById('val-gold-weight-cust');
 
 // STATE
 let stdStoneMode = 'size'; // 'size' or 'weight'
 let custStoneMode = 'size'; // 'size' or 'weight'
 let custStoneOption = 'same'; // 'same' or 'change'
+let prevCustQuantity = 1;
 
 export function initCustomBangleForm() {
     // Populate dropdowns with A–Z codes
@@ -116,6 +118,15 @@ export function initCustomBangleForm() {
         custTargetStonesGroup.classList.toggle('hidden', e.target.value !== 'target_stones');
     }));
 
+    // Quantity listener: scale gold weight proportionally (e.g. 1 -> 2 doubles gold weight)
+    custQuantityInput.addEventListener('input', handleCustQuantityChange);
+    custQuantityInput.addEventListener('change', () => {
+        handleCustQuantityChange();
+        if (!errorBanner.classList.contains('hidden')) return;
+        const submitEvent = new Event('submit', { cancelable: true });
+        form.dispatchEvent(submitEvent);
+    });
+
     // Value toggle
     toggleValue.addEventListener('change', (e) => {
         valueGroup.classList.toggle('hidden', !e.target.checked);
@@ -126,6 +137,19 @@ export function initCustomBangleForm() {
     document.getElementById('btn-reset-custom-bangle').addEventListener('click', resetCustomBangleForm);
 
     resetCustomBangleForm();
+}
+
+function handleCustQuantityChange() {
+    const newQty = parseInt(custQuantityInput.value, 10);
+    if (isNaN(newQty) || newQty <= 0) return;
+
+    const currentWeight = parseFloat(custGoldWeightInput.value);
+    if (!isNaN(currentWeight) && currentWeight > 0 && prevCustQuantity > 0) {
+        const unitWeight = currentWeight / prevCustQuantity;
+        const newTotalWeight = parseFloat((unitWeight * newQty).toFixed(3));
+        custGoldWeightInput.value = newTotalWeight;
+    }
+    prevCustQuantity = newQty;
 }
 
 function populateClosingCodes(selectElement) {
@@ -440,6 +464,7 @@ export function resetCustomBangleForm() {
     custHeightInput.value = 4.0;
     custRowsInput.value = 1;
     custQuantityInput.value = 1;
+    prevCustQuantity = 1;
 
     // Custom stone
     document.getElementById('cust-stone-same').checked = true;

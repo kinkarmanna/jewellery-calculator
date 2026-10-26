@@ -263,7 +263,7 @@ Enables artisans and CAD modelers to adapt an existing standard reference bangle
 > [!IMPORTANT]
 > **2. CACHE BUSTING REQUIREMENT (GITHUB PAGES):**
 > Because this application runs purely on static vanilla ES modules without a bundler, GitHub Pages aggressively caches `.js` and `.css` files.
-> Whenever modifying any JavaScript or CSS file, you **must bump the version query parameter** (e.g., `?v=28` $\rightarrow$ `?v=29`) simultaneously across:
+> Whenever modifying any JavaScript or CSS file, you **must bump the version query parameter** (e.g., `?v=29` $\rightarrow$ `?v=30`) simultaneously across:
 > 1. `index.html` (script tag and stylesheet link)
 > 2. Every internal ES module `import ... from '...?v=X'` statement across all JS files.
 
@@ -288,18 +288,21 @@ Or via npm (in standard bash/cmd shells):
 npm test
 ```
 
-### Test Suites (61 Total Tests):
+### Test Suites (62 Total Tests):
 - `bangleCalculator.test.js` (14 tests): Validates Round/Oval inner diameters, outer circumference with metal height, standard stone capacity, target stones gap calculations, and 50%/100% stone coverage.
 - `ringCalculator.test.js` (21 tests): Validates Easy-Select A-Z codes (Baby, Ladies, Gents, Unisex), legacy diameter lookups, outer circumference with metal height, eternity circumferences, and stone capacity.
 - `braceletCalculator.test.js` (7 tests): Validates carat weight estimation, unit conversions (in, cm, mm), total length calculation, and financial valuation math.
-- `customBangleCalculator.test.js` (4 tests): Validates resizing with gap preservation, gap derivation from known existing stone counts, stone size upgrades, and target stone mode.
+- `customBangleCalculator.test.js` (5 tests): Validates resizing with gap preservation, gap derivation from known existing stone counts, stone size upgrades, target stone mode, and valuation with scaled gold weight.
 - `stonePriceManager.test.js` (15 tests): Validates price lookup, immutable mutations, and Indian Rupee currency formatting.
 
 ---
 
 ## 7. Version History & Changelog
 
-- **v29 (Current):**
+- **v30 (Current):**
+  - Standard to Customized Bangle: implemented proportional gold weight scaling on quantity change. When quantity changes (e.g. 1 $\rightarrow$ 2), the gold weight input and valuation automatically scale proportionally ($2\times$).
+  - Added unit test in `tests/customBangleCalculator.test.js` for custom bangle valuation with quantity and scaled gold weight (62 total unit tests).
+- **v29:**
   - Updated Bangle Sub-Menu styling: arranged "New Eternity Bangle" and "Standard to Customized Bangle" cards side-by-side using a responsive centered 2-column grid.
   - Removed obsolete `#card-custom-bangle { grid-column: 1; }` rule that was forcing the cards into a vertical stack.
 - **v28:**

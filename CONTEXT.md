@@ -195,7 +195,7 @@ The financial valuation calculates production estimates in Indian Rupees (INR, â
 - **Home Screen Dashboard:**
   - Modern card-based grid showcasing available calculators with circular product avatar images and subtle drop-shadows.
   - **Card Ordering:**
-    1. **Studded Bangle** (Featured product photo `images/bangle-card.jpg`)
+    1. **New Eternity Bangle** (Featured product photo `images/bangle-card.jpg`)
     2. **Tennis Bracelet** (Featured product photo `images/bracelet-card.jpg`)
     3. **Finger Ring** (Featured product photo `images/ring-card.png`)
     4. **Earring / Stud** (Coming Soon)
@@ -253,7 +253,9 @@ npm test
 
 ## 7. Version History & Changelog
 
-- **v22 (Current):**
+- **v23 (Current):**
+  - Renamed home screen card from "Studded Bangle" to "New Eternity Bangle".
+- **v22:**
   - Integrated full technical architecture into `CONTEXT.md` and updated `README.md`.
   - Fixed `STONE_WEIGHT_CHART` key lookups in `braceletCalculator.js` and `braceletForm.js` from `.size` to `.diameter`, enabling accurate carat weight estimation and valuation for Tennis Bracelets.
   - Added `tests/braceletCalculator.test.js` and updated `package.json` test script.

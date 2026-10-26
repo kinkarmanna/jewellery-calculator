@@ -1,6 +1,6 @@
-import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZE_CODES, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=21';
-import { calculateRingDetails } from '../calculations/ringCalculator.js?v=21';
-import { renderResult } from './resultView.js?v=21';
+import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZE_CODES, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=22';
+import { calculateRingDetails } from '../calculations/ringCalculator.js?v=22';
+import { renderResult } from './resultView.js?v=22';
 
 const form = document.getElementById('ring-form');
 const errorBanner = document.getElementById('ring-form-errors');

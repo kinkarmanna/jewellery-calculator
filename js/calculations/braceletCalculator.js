@@ -1,5 +1,5 @@
-import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=21';
-import { calculatePricing } from './valueCalculator.js?v=21';
+import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=22';
+import { calculatePricing } from './valueCalculator.js?v=22';
 
 export function estimateCaratWeight(shape, sizeMm, totalStones) {
     if (shape !== 'Round') return null;
@@ -7,7 +7,7 @@ export function estimateCaratWeight(shape, sizeMm, totalStones) {
     let minDiff = Infinity;
     
     for (const entry of STONE_WEIGHT_CHART) {
-        const diff = Math.abs(entry.size - sizeMm);
+        const diff = Math.abs(entry.diameter - sizeMm);
         if (diff < minDiff) {
             minDiff = diff;
             closest = entry;

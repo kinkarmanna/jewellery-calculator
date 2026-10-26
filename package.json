@@ -5,6 +5,6 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "test": "node tests/bangleCalculator.test.js"
+    "test": "node tests/bangleCalculator.test.js && node tests/ringCalculator.test.js && node tests/braceletCalculator.test.js && node tests/stonePriceManager.test.js"
   }
 }

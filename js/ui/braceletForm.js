@@ -1,6 +1,6 @@
-import { DEFAULT_BRACELET_VALUES, STONE_WEIGHT_CHART, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=21';
-import { calculateBraceletDetails } from '../calculations/braceletCalculator.js?v=21';
-import { renderResult } from './resultView.js?v=21';
+import { DEFAULT_BRACELET_VALUES, STONE_WEIGHT_CHART, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=22';
+import { calculateBraceletDetails } from '../calculations/braceletCalculator.js?v=22';
+import { renderResult } from './resultView.js?v=22';
 
 const form = document.getElementById('bracelet-form');
 const errorBanner = document.getElementById('bracelet-form-errors');
@@ -144,14 +144,14 @@ function weightToSize(carats) {
             closest = entry;
         }
     }
-    return closest ? closest.size : null;
+    return closest ? closest.diameter : null;
 }
 
 function sizeToWeight(mm) {
     let closest = null;
     let minDiff = Infinity;
     for (const entry of STONE_WEIGHT_CHART) {
-        const diff = Math.abs(entry.size - mm);
+        const diff = Math.abs(entry.diameter - mm);
         if (diff < minDiff) {
             minDiff = diff;
             closest = entry;

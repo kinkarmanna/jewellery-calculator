@@ -250,7 +250,7 @@ export const STONE_WEIGHT_CHART = [
 
 export const DEFAULT_BRACELET_VALUES = {
     length: 7.0,
-    lockLength: 10.0,
+    lengthUnit: 'in', // 'in', 'cm', or 'mm'
     rows: 1,
     quantity: 1,
     stoneShape: "Round",

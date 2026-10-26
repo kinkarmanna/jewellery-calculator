@@ -1,7 +1,7 @@
-import { showView } from './navigation.js?v=25';
-import { resetBangleForm } from './bangleForm.js?v=25';
-import { resetRingForm } from './ringForm.js?v=25';
-import { resetBraceletForm } from './braceletForm.js?v=25';
+import { showView } from './navigation.js?v=26';
+import { resetBangleForm } from './bangleForm.js?v=26';
+import { resetRingForm } from './ringForm.js?v=26';
+import { resetBraceletForm } from './braceletForm.js?v=26';
 
 let lastType = 'Bangle';
 
@@ -86,18 +86,17 @@ export function renderResult(data) {
                 <span class="result-value">${data.outputs.circumference.toFixed(1)} mm</span>
             </div>`;
     } else if (lastType === 'Tennis Bracelet') {
+        const unit = data.inputs.lengthUnit || 'in';
+        const unitLabel = unit === 'cm' ? 'cm' : (unit === 'mm' ? 'mm' : 'inches');
+        const mmEquiv = unit !== 'mm' ? ` (${data.outputs.lengthMm.toFixed(1)} mm)` : '';
         dimensionRow = `
             <div class="result-row">
                 <span class="result-label">Total Length:</span>
-                <span class="result-value">${data.inputs.lengthInches} inches (${data.outputs.lengthMm.toFixed(1)} mm)</span>
+                <span class="result-value">${data.inputs.length} ${unitLabel}${mmEquiv}</span>
             </div>
             <div class="result-row">
-                <span class="result-label">Lock Length:</span>
-                <span class="result-value">${data.inputs.lockLengthMm} mm</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Usable Setting Length:</span>
-                <span class="result-value">${data.outputs.usableLength.toFixed(1)} mm</span>
+                <span class="result-label">Setting Length:</span>
+                <span class="result-value">${data.outputs.lengthMm.toFixed(1)} mm</span>
             </div>`;
     } else {
         if (data.inputs.bangleShape === 'Oval') {

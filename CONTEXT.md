@@ -135,13 +135,15 @@ The application is engineered for jewellery artisans, CAD engineers, and manufac
 
 ### 3.3 Tennis Bracelet Calculator (`braceletCalculator.js`)
 
-1. **Straight-Line Usable Length:**
-   - Total length is entered in **inches** and converted to millimetres ($1\text{ in} = 25.4\text{ mm}$).
-   - The clasp/lock mechanism length ($\text{Lock Length in mm}$) does not host stones:
-     $$\text{Length}_{\text{mm}} = \text{Length}_{\text{inches}} \times 25.4$$
-     $$\text{Usable Setting Length} = \max\left(0, \, \text{Length}_{\text{mm}} - \text{Lock Length}_{\text{mm}}\right)$$
-2. **Stone Capacity:**
-     $$\text{Stones Per Row} = \left\lfloor \frac{\text{Usable Setting Length}}{\text{Effective Element Size} + \text{Gap}} \right\rfloor$$
+1. **Multi-Unit Length Input:**
+   - Total length can be entered in **Inches (in)**, **Centimeters (cm)**, or **Millimeters (mm)** with live bi-directional unit conversion.
+   - Standardized to millimetres internally:
+     $$\text{Length}_{\text{mm}} = \begin{cases} \text{Length} \times 25.4 & \text{if unit is Inch} \\ \text{Length} \times 10 & \text{if unit is cm} \\ \text{Length} & \text{if unit is mm} \end{cases}$$
+2. **Total Length Calculation (Lock Subtraction Removed):**
+   - Setting calculations are performed over the **Total Length** without deducting a lock clasp:
+     $$\text{Setting Length} = \text{Length}_{\text{mm}}$$
+3. **Stone Capacity:**
+     $$\text{Stones Per Row} = \left\lfloor \frac{\text{Setting Length}}{\text{Effective Element Size} + \text{Gap}} \right\rfloor$$
      $$\text{Total Stones} = \text{Stones Per Row} \times \text{Rows} \times \text{Quantity}$$
 
 ---
@@ -254,7 +256,9 @@ npm test
 
 ## 7. Version History & Changelog
 
-- **v25 (Current):**
+- **v26 (Current):**
+  - Updated Tennis Bracelet Calculator: removed Lock Length option (calculating with total length only) and added multi-unit length support (Inch, cm, mm) with auto-conversion.
+- **v25:**
   - Added new home screen button "Standard to Customized Bangle" positioned directly below New Eternity Bangle with the bangle image.
 - **v24:**
   - Renamed home screen card from "Earring / Stud" $\rightarrow$ "String Neckware".

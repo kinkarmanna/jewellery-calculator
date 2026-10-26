@@ -21,9 +21,9 @@ Live App on GitHub Pages: [https://kinkarmanna.github.io/jewellery-calculator/](
 - **Lock Mechanism Reminder**: Reminds craftsmen to reduce 2 stones if a hinge/lock clasp is used.
 
 ### 2. Tennis Bracelet Calculator
-- **Straight-Line Layout**: Calculates stones along a straight tennis bracelet track.
-- **Inches to Millimetres**: Enter bracelet length in standard inches with automatic conversion to mm.
-- **Clasp Subtraction**: Automatically deducts the lock/clasp length to calculate the exact usable stone setting length.
+- **Straight-Line Layout**: Calculates stones along a straight tennis bracelet track based on total length.
+- **Multi-Unit Length Options**: Choose to input length in **Inches**, **Centimeters (cm)**, or **Millimeters (mm)** with instant unit conversion.
+- **Total Length Calculation**: Directly calculates stone capacity over the full bracelet length without lock deduction.
 
 ### 3. Finger Ring Calculator
 - **Dual Sizing Modes**:

@@ -1,4 +1,4 @@
-import { estimateCaratWeight, calculateBraceletDetails } from '../js/calculations/braceletCalculator.js';
+import { estimateCaratWeight, calculateBraceletDetails, convertLengthToMm } from '../js/calculations/braceletCalculator.js';
 import { calculatePricing } from '../js/calculations/valueCalculator.js';
 import assert from 'assert';
 
@@ -32,13 +32,17 @@ runTest("Carat Weight returns null for non-round shapes", () => {
     assert.strictEqual(weight, null);
 });
 
-runTest("Bracelet Stones Calculation (7 inches, 10mm lock, 2mm stone, 0.5mm gap)", () => {
-    // 7 inches = 177.8 mm; usable = 177.8 - 10 = 167.8 mm
-    // pitch = 2.0 + 0.5 = 2.5 mm
-    // stones = floor(167.8 / 2.5) = 67
+runTest("convertLengthToMm conversions (in, cm, mm)", () => {
+    assert.strictEqual(convertLengthToMm(7.0, 'in'), 177.8);
+    assert.strictEqual(convertLengthToMm(18.0, 'cm'), 180);
+    assert.strictEqual(convertLengthToMm(175.0, 'mm'), 175);
+});
+
+runTest("Bracelet Calculation in Inches (7 inches, 2mm stone, 0.5mm gap)", () => {
+    // 7 inches = 177.8 mm; pitch = 2.0 + 0.5 = 2.5 mm; stones = floor(177.8 / 2.5) = 71
     const result = calculateBraceletDetails({
-        lengthInches: 7.0,
-        lockLengthMm: 10.0,
+        length: 7.0,
+        lengthUnit: 'in',
         rows: 1,
         quantity: 1,
         stoneShape: 'Round',
@@ -47,9 +51,46 @@ runTest("Bracelet Stones Calculation (7 inches, 10mm lock, 2mm stone, 0.5mm gap)
         stoneGap: 0.5,
         prongStyle: 'self'
     });
-    assert.strictEqual(result.outputs.stonesPerRow, 67);
-    assert.strictEqual(result.outputs.totalStones, 67);
-    assert.strictEqual(result.outputs.totalCaratWeight, '2.21'); // 67 * 0.033 = 2.211 => 2.21
+    assert.strictEqual(result.outputs.lengthMm, 177.8);
+    assert.strictEqual(result.outputs.stonesPerRow, 71);
+    assert.strictEqual(result.outputs.totalStones, 71);
+    assert.strictEqual(result.outputs.totalCaratWeight, '2.34'); // 71 * 0.033 = 2.343 => 2.34
+});
+
+runTest("Bracelet Calculation in cm (18 cm, 2mm stone, 0.5mm gap)", () => {
+    // 18 cm = 180 mm; pitch = 2.5 mm; stones = floor(180 / 2.5) = 72
+    const result = calculateBraceletDetails({
+        length: 18.0,
+        lengthUnit: 'cm',
+        rows: 1,
+        quantity: 1,
+        stoneShape: 'Round',
+        stoneSize: 2.0,
+        useNickPlate: false,
+        stoneGap: 0.5,
+        prongStyle: 'self'
+    });
+    assert.strictEqual(result.outputs.lengthMm, 180);
+    assert.strictEqual(result.outputs.stonesPerRow, 72);
+    assert.strictEqual(result.outputs.totalStones, 72);
+});
+
+runTest("Bracelet Calculation in mm (175 mm, 2mm stone, 0.5mm gap)", () => {
+    // 175 mm; pitch = 2.5 mm; stones = floor(175 / 2.5) = 70
+    const result = calculateBraceletDetails({
+        length: 175.0,
+        lengthUnit: 'mm',
+        rows: 1,
+        quantity: 1,
+        stoneShape: 'Round',
+        stoneSize: 2.0,
+        useNickPlate: false,
+        stoneGap: 0.5,
+        prongStyle: 'self'
+    });
+    assert.strictEqual(result.outputs.lengthMm, 175);
+    assert.strictEqual(result.outputs.stonesPerRow, 70);
+    assert.strictEqual(result.outputs.totalStones, 70);
 });
 
 runTest("Value Calculator Pricing (Stone value + Gold value + Making charge on total material + 3% GST)", () => {

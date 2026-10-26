@@ -1,6 +1,6 @@
-import { DEFAULT_BRACELET_VALUES, STONE_WEIGHT_CHART, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=25';
-import { calculateBraceletDetails } from '../calculations/braceletCalculator.js?v=25';
-import { renderResult } from './resultView.js?v=25';
+import { DEFAULT_BRACELET_VALUES, STONE_WEIGHT_CHART, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=26';
+import { calculateBraceletDetails } from '../calculations/braceletCalculator.js?v=26';
+import { renderResult } from './resultView.js?v=26';
 
 const form = document.getElementById('bracelet-form');
 const errorBanner = document.getElementById('bracelet-form-errors');
@@ -8,7 +8,9 @@ const errorList = document.getElementById('bracelet-error-list');
 
 // Inputs
 const lengthInput = document.getElementById('bracelet-length');
-const lockInput = document.getElementById('bracelet-lock');
+const lengthLabel = document.getElementById('bracelet-length-label');
+const unitRadios = document.querySelectorAll('input[name="braceletUnit"]');
+let activeLengthUnit = 'in'; // 'in', 'cm', or 'mm'
 
 // Stones
 const stoneWeightInput = document.getElementById('stone-weight-bracelet');
@@ -45,6 +47,11 @@ export function initBraceletForm() {
         stoneSizeNickSelect.appendChild(option);
     });
     
+    // Length unit toggle (in, cm, mm)
+    unitRadios.forEach(radio => {
+        radio.addEventListener('change', () => switchLengthUnit(radio.value));
+    });
+
     // Setting style toggle
     settingStyleRadios.forEach(radio => {
         radio.addEventListener('change', () => switchSettingStyle(radio.value));
@@ -68,6 +75,36 @@ export function initBraceletForm() {
     document.getElementById('btn-reset-bracelet').addEventListener('click', resetBraceletForm);
 
     resetBraceletForm();
+}
+
+function switchLengthUnit(newUnit) {
+    if (activeLengthUnit === newUnit) return;
+    const oldUnit = activeLengthUnit;
+    activeLengthUnit = newUnit;
+
+    const currentVal = parseFloat(lengthInput.value);
+    if (!isNaN(currentVal) && currentVal > 0) {
+        let inMm;
+        if (oldUnit === 'in') inMm = currentVal * 25.4;
+        else if (oldUnit === 'cm') inMm = currentVal * 10;
+        else inMm = currentVal;
+
+        if (newUnit === 'in') {
+            lengthInput.value = parseFloat((inMm / 25.4).toFixed(2));
+        } else if (newUnit === 'cm') {
+            lengthInput.value = parseFloat((inMm / 10).toFixed(2));
+        } else {
+            lengthInput.value = parseFloat(inMm.toFixed(1));
+        }
+    }
+
+    if (newUnit === 'in') {
+        lengthLabel.textContent = 'Total Length (inches):';
+    } else if (newUnit === 'cm') {
+        lengthLabel.textContent = 'Total Length (cm):';
+    } else {
+        lengthLabel.textContent = 'Total Length (mm):';
+    }
 }
 
 function switchSettingStyle(style) {
@@ -192,8 +229,8 @@ function handleFormSubmit(e) {
     const includeValue = document.getElementById('toggle-value-bracelet').checked;
 
     const params = {
-        lengthInches: parseFloat(lengthInput.value),
-        lockLengthMm: parseFloat(lockInput.value),
+        length: parseFloat(lengthInput.value),
+        lengthUnit: activeLengthUnit,
         rows: parseInt(document.getElementById('bracelet-rows').value, 10),
         quantity: parseInt(document.getElementById('bracelet-quantity').value, 10),
         stoneShape: 'Round',
@@ -220,8 +257,8 @@ function handleFormSubmit(e) {
 
 function validateBraceletParams(params) {
     const errors = [];
-    if (isNaN(params.lengthInches) || params.lengthInches <= 0) errors.push("Valid bracelet length (inches) is required.");
-    if (isNaN(params.lockLengthMm) || params.lockLengthMm < 0) errors.push("Valid lock length (mm) is required.");
+    const unitText = params.lengthUnit === 'in' ? 'inches' : params.lengthUnit;
+    if (isNaN(params.length) || params.length <= 0) errors.push(`Valid bracelet length (${unitText}) is required.`);
     if (isNaN(params.stoneSize) || params.stoneSize <= 0) errors.push("Valid stone size is required.");
     if (isNaN(params.rows) || params.rows <= 0) errors.push("Rows must be at least 1.");
     if (isNaN(params.quantity) || params.quantity <= 0) errors.push("Quantity must be at least 1.");
@@ -233,8 +270,11 @@ export function resetBraceletForm() {
     hideErrors();
     
     // Reset defaults
+    activeLengthUnit = DEFAULT_BRACELET_VALUES.lengthUnit || 'in';
+    const unitRadio = document.getElementById(`unit-${activeLengthUnit === 'in' ? 'inch' : activeLengthUnit}-bracelet`);
+    if (unitRadio) unitRadio.checked = true;
+    lengthLabel.textContent = activeLengthUnit === 'in' ? 'Total Length (inches):' : (activeLengthUnit === 'cm' ? 'Total Length (cm):' : 'Total Length (mm):');
     lengthInput.value = DEFAULT_BRACELET_VALUES.length;
-    lockInput.value = DEFAULT_BRACELET_VALUES.lockLength;
     document.getElementById('bracelet-rows').value = DEFAULT_BRACELET_VALUES.rows;
     document.getElementById('bracelet-quantity').value = DEFAULT_BRACELET_VALUES.quantity;
     

@@ -1,5 +1,5 @@
-import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=25';
-import { calculatePricing } from './valueCalculator.js?v=25';
+import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=26';
+import { calculatePricing } from './valueCalculator.js?v=26';
 
 export function estimateCaratWeight(shape, sizeMm, totalStones) {
     if (shape !== 'Round') return null;
@@ -20,24 +20,40 @@ export function estimateCaratWeight(shape, sizeMm, totalStones) {
     return null;
 }
 
+export function convertLengthToMm(length, unit = 'in') {
+    const val = typeof length === 'number' && length > 0 ? length : 0;
+    switch (unit) {
+        case 'cm':
+            return Math.round(val * 10 * 1000) / 1000;
+        case 'mm':
+            return val;
+        case 'in':
+        case 'inch':
+        default:
+            return Math.round(val * 25.4 * 1000) / 1000;
+    }
+}
+
 export function calculateBraceletDetails(params = {}) {
     const {
+        length,
+        lengthUnit = 'in',
         lengthInches,
-        lockLengthMm,
-        rows,
-        quantity,
-        stoneShape,
+        rows = 1,
+        quantity = 1,
+        stoneShape = 'Round',
         stoneSize,
-        useNickPlate,
-        stoneGap,
-        prongStyle
+        useNickPlate = false,
+        stoneGap = 0,
+        prongStyle = 'common'
     } = params;
 
-    // Convert inches to mm (1 inch = 25.4 mm)
-    const lengthMm = lengthInches * 25.4;
-    
-    // Calculate usable length (subtract lock mechanism)
-    const usableLength = Math.max(0, lengthMm - lockLengthMm);
+    const rawLength = typeof length === 'number' && length > 0
+        ? length
+        : (typeof lengthInches === 'number' && lengthInches > 0 ? lengthInches : 0);
+
+    const lengthMm = convertLengthToMm(rawLength, lengthUnit);
+    const usableLength = lengthMm;
 
     let effectiveElementSize = stoneSize;
     let nickPlateData = null;
@@ -70,8 +86,10 @@ export function calculateBraceletDetails(params = {}) {
 
     return {
         type: 'Tennis Bracelet',
-        inputs: { ...params, lengthMm, usableLength },
+        inputs: { ...params, length: rawLength, lengthUnit, lengthMm, usableLength },
         outputs: {
+            length: rawLength,
+            lengthUnit,
             lengthMm,
             usableLength,
             stonesPerRow,

@@ -64,7 +64,7 @@ Live App on GitHub Pages: [https://kinkarmanna.github.io/jewellery-calculator/](
 - **GST Calculation**: Automatic 3% statutory GST applied to the subtotal with an itemized breakdown.
 
 ### 8. UI & Workshop Slips
-- **Modern Dashboard**: Clean card-based home view with high-res product photography (`bangle-card.jpg`, `bracelet-card.jpg`, `ring-card.png`).
+- **Modern Dashboard**: Clean card-based home view with high-res product photography (`bangle-card.jpg`, `bracelet-card.jpg`, `ring-card.png`), featuring a unified Bangle category that opens a sub-menu for Eternity and Customized bangles.
 - **Workshop Slip**: Generates an instant, printable summary card detailing input parameters, stone breakdowns, totals, and valuation slips.
 - **Dark Mode**: Persisted local-storage dark theme for varying workshop and retail lighting environments.
 

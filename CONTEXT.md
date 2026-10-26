@@ -233,11 +233,15 @@ Enables artisans and CAD modelers to adapt an existing standard reference bangle
 - **Home Screen Dashboard:**
   - Modern card-based grid showcasing available calculators with circular product avatar images and subtle drop-shadows.
   - **Card Ordering:**
-    1. **New Eternity Bangle** (Featured product photo `images/bangle-card.jpg`)
+    1. **Bangle** (Featured product photo `images/bangle-card.jpg` — opens Bangle Sub-Menu view)
     2. **Tennis Bracelet** (Featured product photo `images/bracelet-card.jpg`)
     3. **Finger Ring** (Featured product photo `images/ring-card.png`)
     4. **String Neckware** (Coming Soon)
-    5. **Standard to Customized Bangle** (Positioned below New Eternity Bangle, photo `images/bangle-card.jpg`, fully functional)
+- **Bangle Sub-Menu View (`#view-bangle-menu`):**
+  - When the user selects **Bangle** from the home screen, this dedicated view displays:
+    1. **New Eternity Bangle** (Studded Bangle Calculator)
+    2. **Standard to Customized Bangle** (Custom Bangle Comparison Calculator)
+  - Both sub-calculators' Back buttons return the user directly to this Bangle Sub-Menu, which in turn has a Back button returning to the Home screen.
 - **Split-Screen Layout:**
   - On desktop and tablet devices, the left side houses the active configuration form, while the right side renders the real-time **Workshop Slip** (`resultView.js`).
 - **Workshop Slip:**
@@ -258,7 +262,7 @@ Enables artisans and CAD modelers to adapt an existing standard reference bangle
 > [!IMPORTANT]
 > **2. CACHE BUSTING REQUIREMENT (GITHUB PAGES):**
 > Because this application runs purely on static vanilla ES modules without a bundler, GitHub Pages aggressively caches `.js` and `.css` files.
-> Whenever modifying any JavaScript or CSS file, you **must bump the version query parameter** (e.g., `?v=26` $\rightarrow$ `?v=27`) simultaneously across:
+> Whenever modifying any JavaScript or CSS file, you **must bump the version query parameter** (e.g., `?v=27` $\rightarrow$ `?v=28`) simultaneously across:
 > 1. `index.html` (script tag and stylesheet link)
 > 2. Every internal ES module `import ... from '...?v=X'` statement across all JS files.
 
@@ -294,7 +298,11 @@ npm test
 
 ## 7. Version History & Changelog
 
-- **v27 (Current):**
+- **v28 (Current):**
+  - Unified Bangle navigation: replaced separate "New Eternity Bangle" and "Standard to Customized Bangle" home screen cards with a single **"Bangle"** card.
+  - Added intermediate **Bangle Sub-Menu View** (`#view-bangle-menu`) showing both "New Eternity Bangle" and "Standard to Customized Bangle" sub-cards.
+  - Updated Back button routing: both bangle calculators navigate back to the Bangle Sub-Menu, which in turn returns to the Home screen.
+- **v27:**
   - Fully implemented **"Standard to Customized Bangle"** calculator:
     - Standard reference bangle inputs (Easy-Select `A`–`Z` or manual Round/Oval, height, existing stone count, stone weight/size).
     - Customized target bangle inputs with "Copy Size from Standard" helper.

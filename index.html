@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Jewellery Calculator</title>
-    <link rel="stylesheet" href="css/styles.css?v=27">
+    <link rel="stylesheet" href="css/styles.css?v=28">
 </head>
 <body>
     <header>
@@ -20,10 +20,10 @@
         <section id="view-home">
             <h2>Choose a calculator:</h2>
             <div class="cards-container">
-                <div class="card active" id="card-bangle">
-                    <img src="images/bangle-card.jpg" class="card-image" alt="New Eternity Bangle">
-                    <h3>New Eternity Bangle</h3>
-                    <p>Calculate stones for round & oval bangles</p>
+                <div class="card active" id="card-bangle-menu">
+                    <img src="images/bangle-card.jpg" class="card-image" alt="Bangle">
+                    <h3>Bangle</h3>
+                    <p>Eternity bangle &amp; customized bangle calculators</p>
                 </div>
                 <div class="card" id="card-bracelet">
                     <img src="images/bracelet-card.jpg" class="card-image" alt="Tennis Bracelet">
@@ -33,12 +33,27 @@
                 <div class="card" id="card-ring">
                     <img src="images/ring-card.png" class="card-image" alt="Finger Ring">
                     <h3>Finger Ring</h3>
-                    <p>Full & half eternity ring calculations</p>
+                    <p>Full &amp; half eternity ring calculations</p>
                 </div>
                 <div class="card disabled" id="card-earring">
                     <div class="card-icon">📿</div>
                     <h3>String Neckware</h3>
                     <p>Coming Soon</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bangle Sub-Menu View -->
+        <section id="view-bangle-menu" class="hidden">
+            <div class="view-toolbar">
+                <button class="btn-back" id="btn-bangle-menu-back">&larr; Back</button>
+                <h2>Bangle Calculators</h2>
+            </div>
+            <div class="cards-container">
+                <div class="card active" id="card-bangle">
+                    <img src="images/bangle-card.jpg" class="card-image" alt="New Eternity Bangle">
+                    <h3>New Eternity Bangle</h3>
+                    <p>Calculate stones for round &amp; oval bangles</p>
                 </div>
                 <div class="card" id="card-custom-bangle">
                     <img src="images/bangle-card.jpg" class="card-image" alt="Standard to Customized Bangle">
@@ -891,6 +906,6 @@
         <p>&copy; 2026 Jewellery Calculator</p>
     </footer>
 
-    <script type="module" src="js/app.js?v=27"></script>
+    <script type="module" src="js/app.js?v=28"></script>
 </body>
 </html>

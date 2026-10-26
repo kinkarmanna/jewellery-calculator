@@ -1,9 +1,9 @@
-import { showView } from './ui/navigation.js?v=27';
-import { initBangleForm } from './ui/bangleForm.js?v=27';
-import { initRingForm } from './ui/ringForm.js?v=27';
-import { initBraceletForm } from './ui/braceletForm.js?v=27';
-import { initCustomBangleForm } from './ui/customBangleForm.js?v=27';
-import { initResultView } from './ui/resultView.js?v=27';
+import { showView } from './ui/navigation.js?v=28';
+import { initBangleForm } from './ui/bangleForm.js?v=28';
+import { initRingForm } from './ui/ringForm.js?v=28';
+import { initBraceletForm } from './ui/braceletForm.js?v=28';
+import { initCustomBangleForm } from './ui/customBangleForm.js?v=28';
+import { initResultView } from './ui/resultView.js?v=28';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Theme toggle logic
@@ -33,11 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initCustomBangleForm();
     initResultView();
 
-    // Bind Home screen cards
-    const bangleCard = document.getElementById('card-bangle');
-    if (bangleCard) {
-        bangleCard.addEventListener('click', () => {
-            showView('view-bangle');
+    // ── Home Screen Cards ──
+
+    // Bangle card on home → Bangle sub-menu
+    const bangleMenuCard = document.getElementById('card-bangle-menu');
+    if (bangleMenuCard) {
+        bangleMenuCard.addEventListener('click', () => {
+            showView('view-bangle-menu');
         });
     }
 
@@ -55,13 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const customBangleCard = document.getElementById('card-custom-bangle');
-    if (customBangleCard) {
-        customBangleCard.addEventListener('click', () => {
-            showView('view-custom-bangle');
-        });
-    }
-
     const comingSoonCards = ['card-earring'];
     comingSoonCards.forEach(id => {
         const card = document.getElementById(id);
@@ -72,10 +67,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Bind Back buttons
-    document.getElementById('btn-bangle-back').addEventListener('click', () => {
+    // ── Bangle Sub-Menu Cards ──
+
+    const bangleCard = document.getElementById('card-bangle');
+    if (bangleCard) {
+        bangleCard.addEventListener('click', () => {
+            showView('view-bangle');
+        });
+    }
+
+    const customBangleCard = document.getElementById('card-custom-bangle');
+    if (customBangleCard) {
+        customBangleCard.addEventListener('click', () => {
+            showView('view-custom-bangle');
+        });
+    }
+
+    // ── Back Buttons ──
+
+    // Bangle sub-menu → Home
+    document.getElementById('btn-bangle-menu-back').addEventListener('click', () => {
         showView('view-home');
     });
+
+    // Bangle calculator → Bangle sub-menu
+    document.getElementById('btn-bangle-back').addEventListener('click', () => {
+        showView('view-bangle-menu');
+    });
+
+    // Custom Bangle calculator → Bangle sub-menu
+    const btnCustomBangleBack = document.getElementById('btn-custom-bangle-back');
+    if (btnCustomBangleBack) {
+        btnCustomBangleBack.addEventListener('click', () => {
+            showView('view-bangle-menu');
+        });
+    }
 
     const btnRingBack = document.getElementById('btn-ring-back');
     if (btnRingBack) {
@@ -87,13 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnBraceletBack = document.getElementById('btn-bracelet-back');
     if (btnBraceletBack) {
         btnBraceletBack.addEventListener('click', () => {
-            showView('view-home');
-        });
-    }
-
-    const btnCustomBangleBack = document.getElementById('btn-custom-bangle-back');
-    if (btnCustomBangleBack) {
-        btnCustomBangleBack.addEventListener('click', () => {
             showView('view-home');
         });
     }

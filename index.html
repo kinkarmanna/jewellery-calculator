@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Jewellery Calculator</title>
-    <link rel="stylesheet" href="css/styles.css?v=26">
+    <link rel="stylesheet" href="css/styles.css?v=27">
 </head>
 <body>
     <header>
@@ -43,7 +43,7 @@
                 <div class="card" id="card-custom-bangle">
                     <img src="images/bangle-card.jpg" class="card-image" alt="Standard to Customized Bangle">
                     <h3>Standard to Customized Bangle</h3>
-                    <p>Coming Soon</p>
+                    <p>Resize, re-space, or customize standard bangles</p>
                 </div>
             </div>
         </section>
@@ -581,6 +581,290 @@
             </div>
         </section>
 
+        <!-- Standard to Customized Bangle View -->
+        <section id="view-custom-bangle" class="hidden">
+            <div class="view-toolbar">
+                <button class="btn-back" id="btn-custom-bangle-back">&larr; Back</button>
+                <h2>Standard to Customized Bangle</h2>
+            </div>
+
+            <div class="split-layout">
+                <div class="split-left">
+                    <form id="custom-bangle-form">
+                        <div class="error-banner hidden" id="custom-bangle-errors">
+                            <strong>Please correct the following:</strong>
+                            <ul id="custom-bangle-error-list"></ul>
+                        </div>
+
+                        <!-- 1. Existing Standard Bangle -->
+                        <fieldset>
+                            <legend>1. Existing Standard Bangle (Reference)</legend>
+
+                            <div class="input-mode-group full-width" style="margin-bottom: 0.75rem;">
+                                <label class="group-label">Size Selection:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="stdDiamMode" id="std-diam-mode-easy" value="easy" checked>
+                                    <label for="std-diam-mode-easy">Easy-Select (Codes A–Z)</label>
+                                    <input type="radio" name="stdDiamMode" id="std-diam-mode-manual" value="manual">
+                                    <label for="std-diam-mode-manual">Manual Entry</label>
+                                </div>
+                            </div>
+
+                            <div id="std-easy-select-group">
+                                <label for="std-code-select" class="group-label">Select Standard Size Code:</label>
+                                <select id="std-code-select"></select>
+                                <div id="std-easy-select-info" class="easy-select-info"></div>
+                            </div>
+
+                            <div id="std-manual-entry-group" class="hidden">
+                                <div class="input-mode-group full-width">
+                                    <label class="group-label">Shape:</label>
+                                    <div class="segmented-toggle">
+                                        <input type="radio" name="stdShape" id="std-shape-round" value="Round" checked>
+                                        <label for="std-shape-round">Round</label>
+                                        <input type="radio" name="stdShape" id="std-shape-oval" value="Oval">
+                                        <label for="std-shape-oval">Oval</label>
+                                    </div>
+                                </div>
+
+                                <div id="std-input-round-group">
+                                    <label for="std-bangle-diameter">Inner Diameter (mm):</label>
+                                    <input type="number" id="std-bangle-diameter" step="0.1" value="57.3">
+                                </div>
+
+                                <div id="std-input-oval-group" class="hidden">
+                                    <div class="field-row">
+                                        <div class="field">
+                                            <label for="std-bangle-short-diameter">Short Dia (mm):</label>
+                                            <input type="number" id="std-bangle-short-diameter" step="0.1" value="54.0">
+                                        </div>
+                                        <div class="field">
+                                            <label for="std-bangle-long-diameter">Long Dia (mm):</label>
+                                            <input type="number" id="std-bangle-long-diameter" step="0.1" value="60.0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field-row" style="margin-top: 0.75rem;">
+                                <div class="field">
+                                    <label for="std-bangle-height">Metal Height (mm):</label>
+                                    <input type="number" id="std-bangle-height" step="0.1" value="4.0" required>
+                                </div>
+                                <div class="field">
+                                    <label for="std-stone-count">Existing Stones per Row:</label>
+                                    <input type="number" id="std-stone-count" min="1" placeholder="Auto if blank">
+                                </div>
+                            </div>
+                            <span class="input-hint">Enter existing stones to calculate exact bangle gap</span>
+
+                            <!-- Standard Stone Size with Weight/Size swap -->
+                            <div class="field-row with-swap" style="margin-top: 0.75rem;">
+                                <div class="field" id="std-stone-weight-group">
+                                    <label for="std-stone-weight">Stone Weight (ct):</label>
+                                    <input type="number" id="std-stone-weight" step="0.001" min="0.004">
+                                </div>
+                                <div class="field hidden" id="std-stone-size-group">
+                                    <label for="std-stone-size">Stone Size (mm):</label>
+                                    <input type="number" id="std-stone-size" step="0.1" min="0.5">
+                                </div>
+                                <div class="swap-button-container">
+                                    <button type="button" class="btn-swap" id="btn-std-stone-swap" title="Switch Input Mode">⇄</button>
+                                </div>
+                                <div class="field" id="std-stone-display-group">
+                                    <label id="std-stone-display-label">Size (mm):</label>
+                                    <input type="text" id="std-stone-display" readonly disabled>
+                                </div>
+                            </div>
+
+                            <div class="input-mode-group full-width" style="margin-top: 0.75rem;">
+                                <label class="group-label">Standard Prong Style:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="stdProngStyle" id="std-prong-common" value="common" checked>
+                                    <label for="std-prong-common">Common (0.2mm)</label>
+                                    <input type="radio" name="stdProngStyle" id="std-prong-self" value="self">
+                                    <label for="std-prong-self">Self (0.5mm)</label>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- 2. Required Customized Bangle -->
+                        <fieldset>
+                            <legend>2. Required Customized Bangle</legend>
+
+                            <div style="display: flex; justify-content: flex-end; margin-bottom: 0.5rem;">
+                                <button type="button" id="btn-copy-std-to-cust" style="height: 28px; padding: 0 0.75rem; font-size: 0.8rem; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; color: var(--text);">📋 Copy Size from Standard</button>
+                            </div>
+
+                            <div class="input-mode-group full-width" style="margin-bottom: 0.75rem;">
+                                <label class="group-label">Target Size Selection:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="custDiamMode" id="cust-diam-mode-easy" value="easy" checked>
+                                    <label for="cust-diam-mode-easy">Easy-Select (Codes A–Z)</label>
+                                    <input type="radio" name="custDiamMode" id="cust-diam-mode-manual" value="manual">
+                                    <label for="cust-diam-mode-manual">Manual Entry</label>
+                                </div>
+                            </div>
+
+                            <div id="cust-easy-select-group">
+                                <label for="cust-code-select" class="group-label">Select Target Size Code:</label>
+                                <select id="cust-code-select"></select>
+                                <div id="cust-easy-select-info" class="easy-select-info"></div>
+                            </div>
+
+                            <div id="cust-manual-entry-group" class="hidden">
+                                <div class="input-mode-group full-width">
+                                    <label class="group-label">Target Shape:</label>
+                                    <div class="segmented-toggle">
+                                        <input type="radio" name="custShape" id="cust-shape-round" value="Round" checked>
+                                        <label for="cust-shape-round">Round</label>
+                                        <input type="radio" name="custShape" id="cust-shape-oval" value="Oval">
+                                        <label for="cust-shape-oval">Oval</label>
+                                    </div>
+                                </div>
+
+                                <div id="cust-input-round-group">
+                                    <label for="cust-bangle-diameter">Target Inner Diameter (mm):</label>
+                                    <input type="number" id="cust-bangle-diameter" step="0.1" value="60.0">
+                                </div>
+
+                                <div id="cust-input-oval-group" class="hidden">
+                                    <div class="field-row">
+                                        <div class="field">
+                                            <label for="cust-bangle-short-diameter">Short Dia (mm):</label>
+                                            <input type="number" id="cust-bangle-short-diameter" step="0.1" value="54.0">
+                                        </div>
+                                        <div class="field">
+                                            <label for="cust-bangle-long-diameter">Long Dia (mm):</label>
+                                            <input type="number" id="cust-bangle-long-diameter" step="0.1" value="60.0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field-row" style="margin-top: 0.75rem;">
+                                <div class="field">
+                                    <label for="cust-bangle-height">Metal Height (mm):</label>
+                                    <input type="number" id="cust-bangle-height" step="0.1" value="4.0" required>
+                                </div>
+                                <div class="field">
+                                    <label for="cust-bangle-rows">Rows:</label>
+                                    <input type="number" id="cust-bangle-rows" min="1" value="1" required>
+                                </div>
+                            </div>
+
+                            <!-- Target Stone Size: Option to Keep Same or Change -->
+                            <div class="input-mode-group full-width" style="margin-top: 0.75rem;">
+                                <label class="group-label">Custom Stone Size:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="custStoneOption" id="cust-stone-same" value="same" checked>
+                                    <label for="cust-stone-same">Same as Standard</label>
+                                    <input type="radio" name="custStoneOption" id="cust-stone-change" value="change">
+                                    <label for="cust-stone-change">Change Stone Size</label>
+                                </div>
+                            </div>
+
+                            <div id="cust-stone-custom-group" class="hidden" style="margin-top: 0.5rem;">
+                                <div class="field-row with-swap">
+                                    <div class="field" id="cust-stone-weight-group">
+                                        <label for="cust-stone-weight">Stone Weight (ct):</label>
+                                        <input type="number" id="cust-stone-weight" step="0.001" min="0.004">
+                                    </div>
+                                    <div class="field hidden" id="cust-stone-size-group">
+                                        <label for="cust-stone-size">Stone Size (mm):</label>
+                                        <input type="number" id="cust-stone-size" step="0.1" min="0.5">
+                                    </div>
+                                    <div class="swap-button-container">
+                                        <button type="button" class="btn-swap" id="btn-cust-stone-swap" title="Switch Input Mode">⇄</button>
+                                    </div>
+                                    <div class="field" id="cust-stone-display-group">
+                                        <label id="cust-stone-display-label">Size (mm):</label>
+                                        <input type="text" id="cust-stone-display" readonly disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Spacing / Calculation Mode -->
+                            <div class="input-mode-group full-width" style="margin-top: 0.75rem;">
+                                <label class="group-label">Spacing & Gap Calculation:</label>
+                                <div class="segmented-toggle">
+                                    <input type="radio" name="custSpacingMode" id="mode-keep-gap" value="keep_gap" checked>
+                                    <label for="mode-keep-gap">Maintain Standard Gap</label>
+                                    <input type="radio" name="custSpacingMode" id="mode-std-prong" value="standard_prong">
+                                    <label for="mode-std-prong">Prong Gap</label>
+                                    <input type="radio" name="custSpacingMode" id="mode-target-stones" value="target_stones">
+                                    <label for="mode-target-stones">Target Stones</label>
+                                </div>
+                            </div>
+
+                            <div id="cust-target-stones-group" class="hidden" style="margin-top: 0.5rem;">
+                                <label for="cust-target-stones">Target Stones (per row):</label>
+                                <input type="number" id="cust-target-stones" min="1" placeholder="e.g. 95">
+                                <span class="input-hint">Calculates the required gap to fit exactly this many stones</span>
+                            </div>
+
+                            <div class="field" style="margin-top: 0.75rem;">
+                                <label for="cust-quantity">Quantity (Pieces):</label>
+                                <input type="number" id="cust-quantity" min="1" value="1" required>
+                            </div>
+                        </fieldset>
+
+                        <!-- Value Calculation Toggle (Optional) -->
+                        <div class="toggle-container">
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-value-custom-bangle">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="toggle-label">Calculate Estimated Value</span>
+                        </div>
+
+                        <fieldset id="value-group-custom-bangle" class="hidden">
+                            <legend>Value Estimation (Custom Bangle)</legend>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="val-stone-rate-cust">Stone Rate (₹/ct):</label>
+                                    <input type="number" id="val-stone-rate-cust" step="any" min="0">
+                                </div>
+                                <div class="field">
+                                    <label for="val-gold-weight-cust">Gold Weight (g):</label>
+                                    <input type="number" id="val-gold-weight-cust" step="any" min="0">
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="val-gold-rate-cust">Gold Rate (₹/g):</label>
+                                    <input type="number" id="val-gold-rate-cust" step="any" min="0">
+                                </div>
+                                <div class="field">
+                                    <label for="val-making-cust">Making Charge (%):</label>
+                                    <input type="number" id="val-making-cust" step="any" min="0">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>GST (%):</label>
+                                <input type="number" value="3" readonly disabled>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-calculate">CALCULATE COMPARISON</button>
+                            <button type="button" class="btn-reset" id="btn-reset-custom-bangle">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- RIGHT: Result Panel -->
+                <div class="split-right">
+                    <div id="custom-bangle-result-panel" class="result-panel">
+                        <div class="result-placeholder">
+                            <div class="placeholder-icon">📐</div>
+                            <h3>Comparison will appear here</h3>
+                            <p>Fill standard and custom details, then click CALCULATE</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Result View (kept for print only) -->
         <section id="view-result" class="hidden">
@@ -607,6 +891,6 @@
         <p>&copy; 2026 Jewellery Calculator</p>
     </footer>
 
-    <script type="module" src="js/app.js?v=26"></script>
+    <script type="module" src="js/app.js?v=27"></script>
 </body>
 </html>

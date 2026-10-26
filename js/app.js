@@ -1,8 +1,9 @@
-import { showView } from './ui/navigation.js?v=26';
-import { initBangleForm } from './ui/bangleForm.js?v=26';
-import { initRingForm } from './ui/ringForm.js?v=26';
-import { initBraceletForm } from './ui/braceletForm.js?v=26';
-import { initResultView } from './ui/resultView.js?v=26';
+import { showView } from './ui/navigation.js?v=27';
+import { initBangleForm } from './ui/bangleForm.js?v=27';
+import { initRingForm } from './ui/ringForm.js?v=27';
+import { initBraceletForm } from './ui/braceletForm.js?v=27';
+import { initCustomBangleForm } from './ui/customBangleForm.js?v=27';
+import { initResultView } from './ui/resultView.js?v=27';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Theme toggle logic
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initBangleForm();
     initRingForm();
     initBraceletForm();
+    initCustomBangleForm();
     initResultView();
 
     // Bind Home screen cards
@@ -53,7 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const comingSoonCards = ['card-earring', 'card-custom-bangle'];
+    const customBangleCard = document.getElementById('card-custom-bangle');
+    if (customBangleCard) {
+        customBangleCard.addEventListener('click', () => {
+            showView('view-custom-bangle');
+        });
+    }
+
+    const comingSoonCards = ['card-earring'];
     comingSoonCards.forEach(id => {
         const card = document.getElementById(id);
         if (card) {
@@ -78,6 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnBraceletBack = document.getElementById('btn-bracelet-back');
     if (btnBraceletBack) {
         btnBraceletBack.addEventListener('click', () => {
+            showView('view-home');
+        });
+    }
+
+    const btnCustomBangleBack = document.getElementById('btn-custom-bangle-back');
+    if (btnCustomBangleBack) {
+        btnCustomBangleBack.addEventListener('click', () => {
             showView('view-home');
         });
     }

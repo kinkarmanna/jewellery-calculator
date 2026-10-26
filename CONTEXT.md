@@ -51,6 +51,7 @@ jewellery-calculator/
 │   │   ├── bangleCalculator.js     # Pure math: Bangle geometry, circumference, and stone capacity
 │   │   ├── braceletCalculator.js   # Pure math: Tennis bracelet usable length and stone counts
 │   │   ├── ringCalculator.js       # Pure math: Ring circumference, height wall thickness, and capacity
+│   │   ├── customBangleCalculator.js # Pure math: Standard-to-Custom comparison and delta engine
 │   │   ├── valueCalculator.js      # Pure math: Material valuation, making charges, GST, and totals
 │   │   ├── stonePriceManager.js    # Utility: Stone pricing lookup, mutations, and INR currency formatting
 │   │   ├── earringCalculator.js    # Placeholder: Coming Soon module for earring math
@@ -61,12 +62,14 @@ jewellery-calculator/
 │       ├── bangleForm.js           # Form handling, Nick plate logic, and DOM events for Bangles
 │       ├── braceletForm.js         # Form handling, inch/mm conversion, and DOM events for Bracelets
 │       ├── ringForm.js             # Form handling, size codes, height, and DOM events for Rings
+│       ├── customBangleForm.js     # Form handling, copy size, mode toggles for Custom Bangle
 │       └── resultView.js           # Dynamic HTML generator for the live Workshop Slip & print slips
 │
 └── tests/
     ├── bangleCalculator.test.js    # Unit tests for bangle circumference and spacing logic (14 tests)
     ├── ringCalculator.test.js      # Unit tests for ring diameter, circumference, codes & height (21 tests)
-    ├── braceletCalculator.test.js  # Unit tests for bracelet length, usable setting & valuation (4 tests)
+    ├── braceletCalculator.test.js  # Unit tests for bracelet length, usable setting & valuation (7 tests)
+    ├── customBangleCalculator.test.js # Unit tests for resize, gap preservation, and stone deltas (4 tests)
     └── stonePriceManager.test.js   # Unit tests for stone price management and currency formatting (15 tests)
 ```
 
@@ -192,6 +195,39 @@ The financial valuation calculates production estimates in Indian Rupees (INR, �
 
 ---
 
+### 3.7 Standard to Customized Bangle Calculator (`customBangleCalculator.js`)
+
+Enables artisans and CAD modelers to adapt an existing standard reference bangle into a customized piece (resizing, stone change, gap maintenance, or target stone specification) and see an instant side-by-side comparison with the exact difference in stone count, spacing, and carat weight.
+
+1. **Standard Reference Bangle Modeling:**
+   - **Dimensions:** Selected via Easy-Select (`A`–`Z`) or Manual Entry (Round diameter $D_{\text{std}}$ or Oval short/long axes) with metal height $h_{\text{std}}$:
+     $$\text{Outer Circ}_{\text{std}} = (\text{Inner Dia}_{\text{std}} + 2 \times h_{\text{std}}) \times \pi$$
+   - **Existing Gap Derivation:**
+     - If the user knows the actual stone count on the standard bangle ($N_{\text{std}}$):
+       $$\text{Standard Effective Gap} = \left(\frac{\text{Outer Circ}_{\text{std}}}{N_{\text{std}}}\right) - \text{Stone Size}_{\text{std}}$$
+     - If blank, standard prong gap is applied ($0.2\text{ mm}$ for common prong, $0.5\text{ mm}$ for self prong):
+       $$N_{\text{std}} = \left\lfloor \frac{\text{Outer Circ}_{\text{std}}}{\text{Stone Size}_{\text{std}} + \text{Prong Gap}_{\text{std}}} \right\rfloor$$
+
+2. **Customized Bangle Modeling & Spacing Modes:**
+   - **Dimensions:** Target inner diameter (or Oval axes) with metal height $h_{\text{cust}}$:
+     $$\text{Outer Circ}_{\text{cust}} = (\text{Inner Dia}_{\text{cust}} + 2 \times h_{\text{cust}}) \times \pi$$
+   - **Stone Size Options:** Keep same stone as standard or change to a different size/weight.
+   - **Spacing Modes:**
+     - **Maintain Standard Gap (`keep_gap`):** Applies the exact effective gap from the standard bangle to the customized circumference:
+       $$N_{\text{cust}} = \left\lfloor \frac{\text{Outer Circ}_{\text{cust}}}{\text{Stone Size}_{\text{cust}} + \text{Standard Effective Gap}} \right\rfloor$$
+     - **Prong Gap (`standard_prong`):** Uses default prong spacing ($0.2\text{ mm}$ or $0.5\text{ mm}$).
+     - **Target Stones (`target_stones`):** Solves for the required gap to fit exactly $N_{\text{target}}$ stones per row:
+       $$\text{Required Gap} = \left(\frac{\text{Outer Circ}_{\text{cust}}}{N_{\text{target}}}\right) - \text{Stone Size}_{\text{cust}}$$
+
+3. **Comparison & Delta Metrics:**
+   - $\Delta \text{Stones Per Row} = N_{\text{cust}} - N_{\text{std}}$
+   - $\Delta \text{Total Stones} = \Delta \text{Stones Per Row} \times \text{Rows} \times \text{Quantity}$
+   - $\Delta \text{Carat Weight} = \text{Carat Weight}_{\text{cust}} - \text{Carat Weight}_{\text{std}}$
+   - $\Delta \text{Circumference} = \text{Outer Circ}_{\text{cust}} - \text{Outer Circ}_{\text{std}}$
+   - $\Delta \text{Gap} = \text{Gap}_{\text{cust}} - \text{Gap}_{\text{std}}$
+
+---
+
 ## 4. UI / UX Design & Navigation
 
 - **Home Screen Dashboard:**
@@ -201,11 +237,12 @@ The financial valuation calculates production estimates in Indian Rupees (INR, �
     2. **Tennis Bracelet** (Featured product photo `images/bracelet-card.jpg`)
     3. **Finger Ring** (Featured product photo `images/ring-card.png`)
     4. **String Neckware** (Coming Soon)
-    5. **Standard to Customized Bangle** (Positioned below New Eternity Bangle, photo `images/bangle-card.jpg`, Coming Soon)
+    5. **Standard to Customized Bangle** (Positioned below New Eternity Bangle, photo `images/bangle-card.jpg`, fully functional)
 - **Split-Screen Layout:**
   - On desktop and tablet devices, the left side houses the active configuration form, while the right side renders the real-time **Workshop Slip** (`resultView.js`).
 - **Workshop Slip:**
-  - Clean summary card featuring Input Summary, Stone Calculation breakdown, Total Stones Required banner, Estimated Carat Weight, and optional Financial Valuation card. Includes a one-click **Print** button formatted for printing clean shop floor receipts.
+  - Standard Calculators: Clean summary card featuring Input Summary, Stone Calculation breakdown, Total Stones Required banner, Estimated Carat Weight, and optional Financial Valuation card.
+  - Standard to Customized Bangle: Renders a dedicated Comparison Workshop Slip with a prominent stone difference banner ($\pm$ stone count and carat weight difference), a 4-column side-by-side comparison table (Metric | Standard | Customized | Difference), workshop notes, and customized bangle financial valuation.
 - **Dark Mode Support:**
   - Toggle button in the header switches between light and dark themes. The user preference is preserved in browser `localStorage`.
 
@@ -221,7 +258,7 @@ The financial valuation calculates production estimates in Indian Rupees (INR, �
 > [!IMPORTANT]
 > **2. CACHE BUSTING REQUIREMENT (GITHUB PAGES):**
 > Because this application runs purely on static vanilla ES modules without a bundler, GitHub Pages aggressively caches `.js` and `.css` files.
-> Whenever modifying any JavaScript or CSS file, you **must bump the version query parameter** (e.g., `?v=22` $\rightarrow$ `?v=23`) simultaneously across:
+> Whenever modifying any JavaScript or CSS file, you **must bump the version query parameter** (e.g., `?v=26` $\rightarrow$ `?v=27`) simultaneously across:
 > 1. `index.html` (script tag and stylesheet link)
 > 2. Every internal ES module `import ... from '...?v=X'` statement across all JS files.
 
@@ -239,24 +276,33 @@ All calculation modules are protected by unit test suites in `/tests/`.
 
 To run all unit tests locally via Node.js:
 ```powershell
-node tests/bangleCalculator.test.js ; node tests/ringCalculator.test.js ; node tests/braceletCalculator.test.js ; node tests/stonePriceManager.test.js
+node tests/bangleCalculator.test.js ; node tests/ringCalculator.test.js ; node tests/braceletCalculator.test.js ; node tests/customBangleCalculator.test.js ; node tests/stonePriceManager.test.js
 ```
 Or via npm (in standard bash/cmd shells):
 ```bash
 npm test
 ```
 
-### Test Suites (54 Total Tests):
+### Test Suites (61 Total Tests):
 - `bangleCalculator.test.js` (14 tests): Validates Round/Oval inner diameters, outer circumference with metal height, standard stone capacity, target stones gap calculations, and 50%/100% stone coverage.
 - `ringCalculator.test.js` (21 tests): Validates Easy-Select A-Z codes (Baby, Ladies, Gents, Unisex), legacy diameter lookups, outer circumference with metal height, eternity circumferences, and stone capacity.
-- `braceletCalculator.test.js` (4 tests): Validates inch-to-mm conversion, lock mechanism subtraction, stone count, carat weight estimation, and value calculator pricing math.
+- `braceletCalculator.test.js` (7 tests): Validates carat weight estimation, unit conversions (in, cm, mm), total length calculation, and financial valuation math.
+- `customBangleCalculator.test.js` (4 tests): Validates resizing with gap preservation, gap derivation from known existing stone counts, stone size upgrades, and target stone mode.
 - `stonePriceManager.test.js` (15 tests): Validates price lookup, immutable mutations, and Indian Rupee currency formatting.
 
 ---
 
 ## 7. Version History & Changelog
 
-- **v26 (Current):**
+- **v27 (Current):**
+  - Fully implemented **"Standard to Customized Bangle"** calculator:
+    - Standard reference bangle inputs (Easy-Select `A`–`Z` or manual Round/Oval, height, existing stone count, stone weight/size).
+    - Customized target bangle inputs with "Copy Size from Standard" helper.
+    - Custom stone selection: keep same stone size or customize.
+    - Three spacing modes: "Maintain Standard Gap", "Prong Gap", and "Target Stones".
+    - Dedicated Comparison Workshop Slip displaying prominent $\pm$ stone count and carat weight difference callout banner, 4-column side-by-side comparison table (Metric | Standard | Customized | Difference), and optional financial valuation.
+    - Added unit test suite `tests/customBangleCalculator.test.js` (4 tests, total suite: 61 tests passing).
+- **v26:**
   - Updated Tennis Bracelet Calculator: removed Lock Length option (calculating with total length only) and added multi-unit length support (Inch, cm, mm) with auto-conversion.
 - **v25:**
   - Added new home screen button "Standard to Customized Bangle" positioned directly below New Eternity Bangle with the bangle image.

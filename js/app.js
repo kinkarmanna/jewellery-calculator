@@ -1,8 +1,8 @@
-import { showView } from './ui/navigation.js?v=24';
-import { initBangleForm } from './ui/bangleForm.js?v=24';
-import { initRingForm } from './ui/ringForm.js?v=24';
-import { initBraceletForm } from './ui/braceletForm.js?v=24';
-import { initResultView } from './ui/resultView.js?v=24';
+import { showView } from './ui/navigation.js?v=25';
+import { initBangleForm } from './ui/bangleForm.js?v=25';
+import { initRingForm } from './ui/ringForm.js?v=25';
+import { initBraceletForm } from './ui/braceletForm.js?v=25';
+import { initResultView } from './ui/resultView.js?v=25';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Theme toggle logic
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const comingSoonCards = ['card-earring'];
+    const comingSoonCards = ['card-earring', 'card-custom-bangle'];
     comingSoonCards.forEach(id => {
         const card = document.getElementById(id);
         if (card) {

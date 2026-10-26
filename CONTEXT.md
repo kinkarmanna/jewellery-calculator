@@ -199,6 +199,7 @@ The financial valuation calculates production estimates in Indian Rupees (INR, â
     2. **Tennis Bracelet** (Featured product photo `images/bracelet-card.jpg`)
     3. **Finger Ring** (Featured product photo `images/ring-card.png`)
     4. **String Neckware** (Coming Soon)
+    5. **Standard to Customized Bangle** (Positioned below New Eternity Bangle, photo `images/bangle-card.jpg`, Coming Soon)
 - **Split-Screen Layout:**
   - On desktop and tablet devices, the left side houses the active configuration form, while the right side renders the real-time **Workshop Slip** (`resultView.js`).
 - **Workshop Slip:**
@@ -253,7 +254,9 @@ npm test
 
 ## 7. Version History & Changelog
 
-- **v24 (Current):**
+- **v25 (Current):**
+  - Added new home screen button "Standard to Customized Bangle" positioned directly below New Eternity Bangle with the bangle image.
+- **v24:**
   - Renamed home screen card from "Earring / Stud" $\rightarrow$ "String Neckware".
 - **v23:**
   - Renamed home screen card from "Studded Bangle" $\rightarrow$ "New Eternity Bangle".

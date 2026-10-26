@@ -198,7 +198,7 @@ The financial valuation calculates production estimates in Indian Rupees (INR, â
     1. **New Eternity Bangle** (Featured product photo `images/bangle-card.jpg`)
     2. **Tennis Bracelet** (Featured product photo `images/bracelet-card.jpg`)
     3. **Finger Ring** (Featured product photo `images/ring-card.png`)
-    4. **Earring / Stud** (Coming Soon)
+    4. **String Neckware** (Coming Soon)
 - **Split-Screen Layout:**
   - On desktop and tablet devices, the left side houses the active configuration form, while the right side renders the real-time **Workshop Slip** (`resultView.js`).
 - **Workshop Slip:**
@@ -253,8 +253,10 @@ npm test
 
 ## 7. Version History & Changelog
 
-- **v23 (Current):**
-  - Renamed home screen card from "Studded Bangle" to "New Eternity Bangle".
+- **v24 (Current):**
+  - Renamed home screen card from "Earring / Stud" $\rightarrow$ "String Neckware".
+- **v23:**
+  - Renamed home screen card from "Studded Bangle" $\rightarrow$ "New Eternity Bangle".
 - **v22:**
   - Integrated full technical architecture into `CONTEXT.md` and updated `README.md`.
   - Fixed `STONE_WEIGHT_CHART` key lookups in `braceletCalculator.js` and `braceletForm.js` from `.size` to `.diameter`, enabling accurate carat weight estimation and valuation for Tennis Bracelets.

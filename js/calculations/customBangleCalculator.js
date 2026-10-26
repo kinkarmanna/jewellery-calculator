@@ -1,6 +1,6 @@
-import { PRONG_GAPS, STONE_WEIGHT_CHART } from '../config/defaults.js?v=28';
-import { calculateInnerDiameter, calculateOuterCircumference, estimateCaratWeight } from './bangleCalculator.js?v=28';
-import { calculatePricing } from './valueCalculator.js?v=28';
+import { PRONG_GAPS, STONE_WEIGHT_CHART } from '../config/defaults.js?v=29';
+import { calculateInnerDiameter, calculateOuterCircumference, estimateCaratWeight } from './bangleCalculator.js?v=29';
+import { calculatePricing } from './valueCalculator.js?v=29';
 
 export function calculateCustomBangleComparison(params = {}) {
     const {

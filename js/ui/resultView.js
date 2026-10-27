@@ -1,8 +1,8 @@
-import { showView } from './navigation.js?v=30';
-import { resetBangleForm } from './bangleForm.js?v=30';
-import { resetRingForm } from './ringForm.js?v=30';
-import { resetBraceletForm } from './braceletForm.js?v=30';
-import { resetCustomBangleForm } from './customBangleForm.js?v=30';
+import { showView } from './navigation.js?v=31';
+import { resetBangleForm } from './bangleForm.js?v=31';
+import { resetRingForm } from './ringForm.js?v=31';
+import { resetBraceletForm } from './braceletForm.js?v=31';
+import { resetCustomBangleForm } from './customBangleForm.js?v=31';
 
 let lastType = 'Bangle';
 
@@ -285,10 +285,24 @@ export function renderResult(data) {
         const unit = data.inputs.lengthUnit || 'in';
         const unitLabel = unit === 'cm' ? 'cm' : (unit === 'mm' ? 'mm' : 'inches');
         const mmEquiv = unit !== 'mm' ? ` (${data.outputs.lengthMm.toFixed(1)} mm)` : '';
+        
+        const codeDisplay = data.inputs.sizeCode
+            ? `
+            <div class="result-row">
+                <span class="result-label">Size Code:</span>
+                <span class="result-value">Code ${data.inputs.sizeCode} (${data.inputs.sizeCategory})</span>
+            </div>`
+            : `
+            <div class="result-row">
+                <span class="result-label">Size Mode:</span>
+                <span class="result-value">Manual Entry</span>
+            </div>`;
+
         dimensionRow = `
+            ${codeDisplay}
             <div class="result-row">
                 <span class="result-label">Total Length:</span>
-                <span class="result-value">${data.inputs.length} ${unitLabel}${mmEquiv}</span>
+                <span class="result-value">${data.inputs.length} ${unitLabel}${mmEquiv} ${data.inputs.sizeCode ? '<span style="font-size: 0.8em; color: var(--text-muted);">(±0.20 cm)</span>' : ''}</span>
             </div>
             <div class="result-row">
                 <span class="result-label">Setting Length:</span>

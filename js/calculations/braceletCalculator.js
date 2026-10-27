@@ -1,5 +1,10 @@
-import { NICK_SETTING_DATA, STONE_WEIGHT_CHART } from '../config/defaults.js?v=30';
-import { calculatePricing } from './valueCalculator.js?v=30';
+import { NICK_SETTING_DATA, STONE_WEIGHT_CHART, BRACELET_SIZE_CODES } from '../config/defaults.js?v=31';
+import { calculatePricing } from './valueCalculator.js?v=31';
+
+export function getBraceletSizeEntry(code) {
+    if (!code || typeof code !== 'string') return null;
+    return BRACELET_SIZE_CODES.find(c => c.code === code.toUpperCase()) || null;
+}
 
 export function estimateCaratWeight(shape, sizeMm, totalStones) {
     if (shape !== 'Round') return null;
@@ -36,8 +41,10 @@ export function convertLengthToMm(length, unit = 'in') {
 
 export function calculateBraceletDetails(params = {}) {
     const {
+        sizeMode = 'easy',
+        sizeCode,
         length,
-        lengthUnit = 'in',
+        lengthUnit = 'cm',
         lengthInches,
         rows = 1,
         quantity = 1,
@@ -48,11 +55,21 @@ export function calculateBraceletDetails(params = {}) {
         prongStyle = 'common'
     } = params;
 
-    const rawLength = typeof length === 'number' && length > 0
+    let resolvedLength = typeof length === 'number' && length > 0
         ? length
         : (typeof lengthInches === 'number' && lengthInches > 0 ? lengthInches : 0);
+    let resolvedUnit = lengthUnit;
+    let sizeEntry = null;
 
-    const lengthMm = convertLengthToMm(rawLength, lengthUnit);
+    if (sizeMode === 'easy' && sizeCode) {
+        sizeEntry = getBraceletSizeEntry(sizeCode);
+        if (sizeEntry && typeof sizeEntry.lengthCm === 'number') {
+            resolvedLength = sizeEntry.lengthCm;
+            resolvedUnit = 'cm';
+        }
+    }
+
+    const lengthMm = convertLengthToMm(resolvedLength, resolvedUnit);
     const usableLength = lengthMm;
 
     let effectiveElementSize = stoneSize;
@@ -86,10 +103,21 @@ export function calculateBraceletDetails(params = {}) {
 
     return {
         type: 'Tennis Bracelet',
-        inputs: { ...params, length: rawLength, lengthUnit, lengthMm, usableLength },
+        inputs: {
+            ...params,
+            sizeMode,
+            sizeCode: sizeEntry ? sizeEntry.code : (sizeCode || null),
+            sizeCategory: sizeEntry ? sizeEntry.category : null,
+            length: resolvedLength,
+            lengthUnit: resolvedUnit,
+            lengthMm,
+            usableLength
+        },
         outputs: {
-            length: rawLength,
-            lengthUnit,
+            sizeCode: sizeEntry ? sizeEntry.code : (sizeCode || null),
+            sizeCategory: sizeEntry ? sizeEntry.category : null,
+            length: resolvedLength,
+            lengthUnit: resolvedUnit,
             lengthMm,
             usableLength,
             stonesPerRow,

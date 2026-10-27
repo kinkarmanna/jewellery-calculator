@@ -248,9 +248,47 @@ export const STONE_WEIGHT_CHART = [
     { diameter: 9.2, weight: 2.90 }, { diameter: 9.3, weight: 2.99 }, { diameter: 9.4, weight: 3.09 }
 ];
 
+// Easy-Select A–Z size codes for Tennis Bracelet (Tolerance ±0.20 cm / ±2.0 mm)
+export const BRACELET_SIZE_CODES = [
+    // Ladies (A–E)
+    { code: 'A', category: 'Ladies', lengthCm: null, lengthMm: null, lengthInches: null, label: 'A — Ladies (NA)' },
+    { code: 'B', category: 'Ladies', lengthCm: 18.0, lengthMm: 180,  lengthInches: 7.09, label: 'B — Ladies (18.0 cm / 180 mm / 7.09")' },
+    { code: 'C', category: 'Ladies', lengthCm: 18.5, lengthMm: 185,  lengthInches: 7.28, label: 'C — Ladies (18.5 cm / 185 mm / 7.28")' },
+    { code: 'D', category: 'Ladies', lengthCm: 19.0, lengthMm: 190,  lengthInches: 7.48, label: 'D — Ladies (19.0 cm / 190 mm / 7.48")' },
+    { code: 'E', category: 'Ladies', lengthCm: 19.5, lengthMm: 195,  lengthInches: 7.68, label: 'E — Ladies (19.5 cm / 195 mm / 7.68")' },
+    // Gents (F–N)
+    { code: 'F', category: 'Gents',  lengthCm: 20.0, lengthMm: 200,  lengthInches: 7.87, label: 'F — Gents (20.0 cm / 200 mm / 7.87")' },
+    { code: 'G', category: 'Gents',  lengthCm: 20.5, lengthMm: 205,  lengthInches: 8.07, label: 'G — Gents (20.5 cm / 205 mm / 8.07")' },
+    { code: 'H', category: 'Gents',  lengthCm: 21.0, lengthMm: 210,  lengthInches: 8.27, label: 'H — Gents (21.0 cm / 210 mm / 8.27")' },
+    { code: 'I', category: 'Gents',  lengthCm: 21.5, lengthMm: 215,  lengthInches: 8.46, label: 'I — Gents (21.5 cm / 215 mm / 8.46")' },
+    { code: 'J', category: 'Gents',  lengthCm: 22.0, lengthMm: 220,  lengthInches: 8.66, label: 'J — Gents (22.0 cm / 220 mm / 8.66")' },
+    { code: 'K', category: 'Gents',  lengthCm: 22.5, lengthMm: 225,  lengthInches: 8.86, label: 'K — Gents (22.5 cm / 225 mm / 8.86")' },
+    { code: 'L', category: 'Gents',  lengthCm: 23.0, lengthMm: 230,  lengthInches: 9.06, label: 'L — Gents (23.0 cm / 230 mm / 9.06")' },
+    { code: 'M', category: 'Gents',  lengthCm: 23.5, lengthMm: 235,  lengthInches: 9.25, label: 'M — Gents (23.5 cm / 235 mm / 9.25")' },
+    { code: 'N', category: 'Gents',  lengthCm: 24.0, lengthMm: 240,  lengthInches: 9.45, label: 'N — Gents (24.0 cm / 240 mm / 9.45")' },
+    // Baby (O–U)
+    { code: 'O', category: 'Baby',   lengthCm: 12.0, lengthMm: 120,  lengthInches: 4.72, label: 'O — Baby (12.0 cm / 120 mm / 4.72")' },
+    { code: 'P', category: 'Baby',   lengthCm: 12.5, lengthMm: 125,  lengthInches: 4.92, label: 'P — Baby (12.5 cm / 125 mm / 4.92")' },
+    { code: 'Q', category: 'Baby',   lengthCm: 13.0, lengthMm: 130,  lengthInches: 5.12, label: 'Q — Baby (13.0 cm / 130 mm / 5.12")' },
+    { code: 'R', category: 'Baby',   lengthCm: 13.5, lengthMm: 135,  lengthInches: 5.31, label: 'R — Baby (13.5 cm / 135 mm / 5.31")' },
+    { code: 'S', category: 'Baby',   lengthCm: 14.0, lengthMm: 140,  lengthInches: 5.51, label: 'S — Baby (14.0 cm / 140 mm / 5.51")' },
+    { code: 'T', category: 'Baby',   lengthCm: 14.5, lengthMm: 145,  lengthInches: 5.71, label: 'T — Baby (14.5 cm / 145 mm / 5.71")' },
+    { code: 'U', category: 'Baby',   lengthCm: 15.0, lengthMm: 150,  lengthInches: 5.91, label: 'U — Baby (15.0 cm / 150 mm / 5.91")' },
+    // Ladies (V–Z)
+    { code: 'V', category: 'Ladies', lengthCm: 15.5, lengthMm: 155,  lengthInches: 6.10, label: 'V — Ladies (15.5 cm / 155 mm / 6.10")' },
+    { code: 'W', category: 'Ladies', lengthCm: 16.0, lengthMm: 160,  lengthInches: 6.30, label: 'W — Ladies (16.0 cm / 160 mm / 6.30")' },
+    { code: 'X', category: 'Ladies', lengthCm: 16.5, lengthMm: 165,  lengthInches: 6.50, label: 'X — Ladies (16.5 cm / 165 mm / 6.50")' },
+    { code: 'Y', category: 'Ladies', lengthCm: 17.0, lengthMm: 170,  lengthInches: 6.69, label: 'Y — Ladies (17.0 cm / 170 mm / 6.69")' },
+    { code: 'Z', category: 'Ladies', lengthCm: 17.5, lengthMm: 175,  lengthInches: 6.89, label: 'Z — Ladies (17.5 cm / 175 mm / 6.89")' }
+];
+
+export const BRACELET_SIZE_TOLERANCE = 0.20; // ±0.20 cm (±2.0 mm)
+
 export const DEFAULT_BRACELET_VALUES = {
-    length: 7.0,
-    lengthUnit: 'in', // 'in', 'cm', or 'mm'
+    sizeMode: 'easy',
+    sizeCode: 'B',
+    length: 18.0,
+    lengthUnit: 'cm', // 'in', 'cm', or 'mm'
     rows: 1,
     quantity: 1,
     stoneShape: "Round",

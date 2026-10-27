@@ -68,7 +68,7 @@ jewellery-calculator/
 └── tests/
     ├── bangleCalculator.test.js    # Unit tests for bangle circumference and spacing logic (14 tests)
     ├── ringCalculator.test.js      # Unit tests for ring diameter, circumference, codes & height (21 tests)
-    ├── braceletCalculator.test.js  # Unit tests for bracelet length, usable setting & valuation (7 tests)
+    ├── braceletCalculator.test.js  # Unit tests for bracelet length, codes, usable setting & valuation (17 tests)
     ├── customBangleCalculator.test.js # Unit tests for resize, gap preservation, and stone deltas (4 tests)
     └── stonePriceManager.test.js   # Unit tests for stone price management and currency formatting (15 tests)
 ```
@@ -138,14 +138,21 @@ The application is engineered for jewellery artisans, CAD engineers, and manufac
 
 ### 3.3 Tennis Bracelet Calculator (`braceletCalculator.js`)
 
-1. **Multi-Unit Length Input:**
-   - Total length can be entered in **Inches (in)**, **Centimeters (cm)**, or **Millimeters (mm)** with live bi-directional unit conversion.
+1. **Dual Sizing Modes:**
+   - **Easy-Select Size Codes (`A`–`Z`):** Standard manufacturing presets directly derived from the workshop chart:
+     - **Ladies (`A`–`E`):** `A` (N/A / Custom), `B` ($18.0\text{ cm} / 180\text{ mm}$), `C` ($18.5\text{ cm} / 185\text{ mm}$), `D` ($19.0\text{ cm} / 190\text{ mm}$), `E` ($19.5\text{ cm} / 195\text{ mm}$).
+     - **Gents (`F`–`N`):** `F` ($20.0\text{ cm} / 200\text{ mm}$), `G` ($20.5\text{ cm} / 205\text{ mm}$), `H` ($21.0\text{ cm} / 210\text{ mm}$), `I` ($21.5\text{ cm} / 215\text{ mm}$), `J` ($22.0\text{ cm} / 220\text{ mm}$), `K` ($22.5\text{ cm} / 225\text{ mm}$), `L` ($23.0\text{ cm} / 230\text{ mm}$), `M` ($23.5\text{ cm} / 235\text{ mm}$), `N` ($24.0\text{ cm} / 240\text{ mm}$).
+     - **Baby (`O`–`U`):** `O` ($12.0\text{ cm} / 120\text{ mm}$), `P` ($12.5\text{ cm} / 125\text{ mm}$), `Q` ($13.0\text{ cm} / 130\text{ mm}$), `R` ($13.5\text{ cm} / 135\text{ mm}$), `S` ($14.0\text{ cm} / 140\text{ mm}$), `T` ($14.5\text{ cm} / 145\text{ mm}$), `U` ($15.0\text{ cm} / 150\text{ mm}$).
+     - **Ladies (`V`–`Z`):** `V` ($15.5\text{ cm} / 155\text{ mm}$), `W` ($16.0\text{ cm} / 160\text{ mm}$), `X` ($16.5\text{ cm} / 165\text{ mm}$), `Y` ($17.0\text{ cm} / 170\text{ mm}$), `Z` ($17.5\text{ cm} / 175\text{ mm}$).
+     - **Standard Manufacturing Tolerance:** $\pm 0.20\text{ cm}$ ($\pm 2.0\text{ mm}$).
+   - **Manual Entry:** Direct entry with unit selector (**Inch**, **cm**, **mm**) and live bi-directional unit conversion.
+2. **Standardized Length Conversion:**
    - Standardized to millimetres internally:
      $$\text{Length}_{\text{mm}} = \begin{cases} \text{Length} \times 25.4 & \text{if unit is Inch} \\ \text{Length} \times 10 & \text{if unit is cm} \\ \text{Length} & \text{if unit is mm} \end{cases}$$
-2. **Total Length Calculation (Lock Subtraction Removed):**
+3. **Total Length Calculation (Lock Subtraction Removed):**
    - Setting calculations are performed over the **Total Length** without deducting a lock clasp:
      $$\text{Setting Length} = \text{Length}_{\text{mm}}$$
-3. **Stone Capacity:**
+4. **Stone Capacity:**
      $$\text{Stones Per Row} = \left\lfloor \frac{\text{Setting Length}}{\text{Effective Element Size} + \text{Gap}} \right\rfloor$$
      $$\text{Total Stones} = \text{Stones Per Row} \times \text{Rows} \times \text{Quantity}$$
 
@@ -299,7 +306,13 @@ npm test
 
 ## 7. Version History & Changelog
 
-- **v30 (Current):**
+- **v31 (Current):**
+  - Integrated **Tennis Bracelet Easy-Select** option based on user-provided workshop chart:
+    - Added 26 standard size codes (`A`–`Z`) mapped to categories **Baby** (`O`–`U`: 12.0–15.0 cm), **Ladies** (`A`–`E` & `V`–`Z`: 15.5–19.5 cm), and **Gents** (`F`–`N`: 20.0–24.0 cm) with standard tolerance $\pm 0.20\text{ cm}$ ($\pm 2.0\text{ mm}$).
+    - Added segmented toggle between **Easy Select** and **Manual Entry** in the Tennis Bracelet form.
+    - Updated Workshop Result Slip to display Size Code and Category (e.g. `Code B (Ladies)` with $\pm 0.20\text{ cm}$ tolerance).
+    - Added 10 new unit tests for Tennis Bracelet Easy-Select code lookup, lengths, and calculations in `tests/braceletCalculator.test.js` (72 total tests passing across 5 suites).
+- **v30:**
   - Standard to Customized Bangle: implemented proportional gold weight scaling on quantity change. When quantity changes (e.g. 1 $\rightarrow$ 2), the gold weight input and valuation automatically scale proportionally ($2\times$).
   - Added unit test in `tests/customBangleCalculator.test.js` for custom bangle valuation with quantity and scaled gold weight (62 total unit tests).
 - **v29:**

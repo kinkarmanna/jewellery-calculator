@@ -1,6 +1,6 @@
-import { BANGLE_CLOSING_CODES, STONE_WEIGHT_CHART, PRONG_GAPS } from '../config/defaults.js?v=30';
-import { calculateCustomBangleComparison } from '../calculations/customBangleCalculator.js?v=30';
-import { renderResult } from './resultView.js?v=30';
+import { BANGLE_CLOSING_CODES, STONE_WEIGHT_CHART, PRONG_GAPS } from '../config/defaults.js?v=31';
+import { calculateCustomBangleComparison } from '../calculations/customBangleCalculator.js?v=31';
+import { renderResult } from './resultView.js?v=31';
 
 const form = document.getElementById('custom-bangle-form');
 const errorBanner = document.getElementById('custom-bangle-errors');

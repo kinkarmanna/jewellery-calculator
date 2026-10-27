@@ -21,9 +21,10 @@ Live App on GitHub Pages: [https://kinkarmanna.github.io/jewellery-calculator/](
 - **Lock Mechanism Reminder**: Reminds craftsmen to reduce 2 stones if a hinge/lock clasp is used.
 
 ### 2. Tennis Bracelet Calculator
-- **Straight-Line Layout**: Calculates stones along a straight tennis bracelet track based on total length.
-- **Multi-Unit Length Options**: Choose to input length in **Inches**, **Centimeters (cm)**, or **Millimeters (mm)** with instant unit conversion.
-- **Total Length Calculation**: Directly calculates stone capacity over the full bracelet length without lock deduction.
+- **Dual Sizing Modes**:
+  - **Easy-Select Codes (A–Z)**: Standard workshop sizing codes categorized into **Baby** (`O`–`U`: 12.0–15.0 cm), **Ladies** (`A`–`E` & `V`–`Z`: 15.5–19.5 cm), and **Gents** (`F`–`N`: 20.0–24.0 cm) with standard $\pm 0.20\text{ cm}$ ($\pm 2.0\text{ mm}$) tolerance.
+  - **Manual Entry**: Choose to input length in **Inches**, **Centimeters (cm)**, or **Millimeters (mm)** with instant bi-directional conversion.
+- **Straight-Line Layout**: Calculates stones along a straight tennis bracelet track based on total length without lock clasp deduction.
 
 ### 3. Finger Ring Calculator
 - **Dual Sizing Modes**:
@@ -97,7 +98,7 @@ For comprehensive architectural details, mathematical proofs, constraints, and c
     ringForm.js        - DOM controller for Finger Ring Form
     customBangleForm.js - DOM controller for Standard to Customized Bangle Form
     resultView.js      - Dynamic HTML generator for the Workshop Slip
-/tests/                - Node.js test suites (62 total unit tests)
+/tests/                - Node.js test suites (72 total unit tests)
 index.html             - The single-page application layout
 CONTEXT.md             - Full technical context and architecture documentation
 ```
@@ -106,7 +107,7 @@ CONTEXT.md             - Full technical context and architecture documentation
 
 ## Testing
 
-Run all 62 unit tests across all 5 test suites:
+Run all 72 unit tests across all 5 test suites:
 
 ```powershell
 node tests/bangleCalculator.test.js ; node tests/ringCalculator.test.js ; node tests/braceletCalculator.test.js ; node tests/customBangleCalculator.test.js ; node tests/stonePriceManager.test.js

@@ -1,16 +1,24 @@
-import { DEFAULT_BRACELET_VALUES, STONE_WEIGHT_CHART, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=30';
-import { calculateBraceletDetails } from '../calculations/braceletCalculator.js?v=30';
-import { renderResult } from './resultView.js?v=30';
+import { DEFAULT_BRACELET_VALUES, STONE_WEIGHT_CHART, NICK_SETTING_DATA, PRONG_GAPS, BRACELET_SIZE_CODES, BRACELET_SIZE_TOLERANCE } from '../config/defaults.js?v=31';
+import { calculateBraceletDetails, getBraceletSizeEntry } from '../calculations/braceletCalculator.js?v=31';
+import { renderResult } from './resultView.js?v=31';
 
 const form = document.getElementById('bracelet-form');
 const errorBanner = document.getElementById('bracelet-form-errors');
 const errorList = document.getElementById('bracelet-error-list');
 
-// Inputs
+// Size mode elements (Easy Select vs Manual Entry)
+const braceletSizeModeRadios = document.querySelectorAll('input[name="braceletSizeMode"]');
+const braceletEasySelectGroup = document.getElementById('bracelet-easy-select-group');
+const braceletManualEntryGroup = document.getElementById('bracelet-manual-entry-group');
+const braceletSizeCodeSelect = document.getElementById('bracelet-size-code-select');
+const braceletEasySelectInfo = document.getElementById('bracelet-easy-select-info');
+let activeBraceletSizeMode = 'easy'; // 'easy' or 'manual'
+
+// Manual Length Inputs
 const lengthInput = document.getElementById('bracelet-length');
 const lengthLabel = document.getElementById('bracelet-length-label');
 const unitRadios = document.querySelectorAll('input[name="braceletUnit"]');
-let activeLengthUnit = 'in'; // 'in', 'cm', or 'mm'
+let activeLengthUnit = 'cm'; // 'cm', 'in', or 'mm'
 
 // Stones
 const stoneWeightInput = document.getElementById('stone-weight-bracelet');
@@ -32,7 +40,86 @@ let activeStoneInputMode = 'size'; // 'weight' or 'size'
 let activeSettingStyle = 'standard';
 let activeProngStyle = 'common';
 
+// ── Populate Easy Select dropdown ──
+function populateBraceletSizeCodes() {
+    braceletSizeCodeSelect.innerHTML = '';
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = '— Choose a size code (A–Z) —';
+    braceletSizeCodeSelect.appendChild(placeholder);
+
+    BRACELET_SIZE_CODES.forEach(entry => {
+        const option = document.createElement('option');
+        option.value = entry.code;
+        option.textContent = entry.label;
+        braceletSizeCodeSelect.appendChild(option);
+    });
+}
+
+// ── Apply selected size code ──
+function applyBraceletSizeCode() {
+    const code = braceletSizeCodeSelect.value;
+    if (!code) {
+        braceletEasySelectInfo.innerHTML = '';
+        lengthInput.value = '';
+        return;
+    }
+
+    const entry = getBraceletSizeEntry(code);
+    if (!entry) return;
+
+    if (entry.lengthCm === null) {
+        braceletEasySelectInfo.innerHTML = `
+            <span class="info-code">${entry.code}</span>
+            <span class="info-shape">${entry.category}</span>
+            <span class="info-dims">
+                Standard Length: <strong>N/A</strong>
+                <br><span style="font-size: 0.78rem; opacity: 0.85; font-weight: normal;">No standard length defined. Please switch to Manual Entry to specify custom length.</span>
+            </span>`;
+        lengthInput.value = '';
+        return;
+    }
+
+    // Sync length to manual input
+    if (activeLengthUnit === 'in') {
+        lengthInput.value = parseFloat((entry.lengthCm / 2.54).toFixed(2));
+    } else if (activeLengthUnit === 'mm') {
+        lengthInput.value = entry.lengthMm;
+    } else {
+        lengthInput.value = entry.lengthCm;
+    }
+
+    braceletEasySelectInfo.innerHTML = `
+        <span class="info-code">${entry.code}</span>
+        <span class="info-shape">${entry.category}</span>
+        <span class="info-dims">
+            Length: <strong>${entry.lengthCm} cm</strong> (${entry.lengthMm} mm / ${entry.lengthInches.toFixed(2)}")
+            <br><span style="font-size: 0.78rem; opacity: 0.85; font-weight: normal;">Tolerance: ±0.20 cm (±2.0 mm)</span>
+        </span>`;
+}
+
+// ── Toggle between Easy Select and Manual Entry ──
+function switchBraceletSizeMode(mode) {
+    activeBraceletSizeMode = mode;
+
+    braceletEasySelectGroup.classList.toggle('hidden', mode !== 'easy');
+    braceletManualEntryGroup.classList.toggle('hidden', mode !== 'manual');
+
+    if (mode === 'easy') {
+        applyBraceletSizeCode();
+    }
+}
+
 export function initBraceletForm() {
+    // Size mode toggle (Easy Select ↔ Manual Entry)
+    braceletSizeModeRadios.forEach(radio => {
+        radio.addEventListener('change', () => switchBraceletSizeMode(radio.value));
+    });
+
+    // Populate size codes
+    populateBraceletSizeCodes();
+    braceletSizeCodeSelect.addEventListener('change', applyBraceletSizeCode);
+
     // Stone input mode toggle (Weight ↔ Size)
     btnSwapStoneMode.addEventListener('click', toggleStoneInputMode);
     stoneWeightInput.addEventListener('input', updateSizeFromWeight);
@@ -90,7 +177,7 @@ function switchLengthUnit(newUnit) {
         else inMm = currentVal;
 
         if (newUnit === 'in') {
-            lengthInput.value = parseFloat((inMm / 25.4).toFixed(2));
+            lengthInput.value = parseFloat((inMm / 2.54).toFixed(2));
         } else if (newUnit === 'cm') {
             lengthInput.value = parseFloat((inMm / 10).toFixed(2));
         } else {
@@ -212,6 +299,21 @@ function handleFormSubmit(e) {
     e.preventDefault();
     hideErrors();
 
+    if (activeBraceletSizeMode === 'easy') {
+        if (!braceletSizeCodeSelect.value) {
+            showErrors(['Please select a bracelet size code (A–Z) or switch to Manual Entry.']);
+            return;
+        }
+        if (braceletSizeCodeSelect.value === 'A') {
+            showErrors(['Code A has no standard length. Please choose another size code (B–Z) or switch to Manual Entry.']);
+            return;
+        }
+    }
+
+    const selectedEntry = (activeBraceletSizeMode === 'easy')
+        ? getBraceletSizeEntry(braceletSizeCodeSelect.value)
+        : null;
+
     let resolvedStoneSize;
     if (activeSettingStyle === 'nick') {
         resolvedStoneSize = parseFloat(stoneSizeNickSelect.value);
@@ -228,9 +330,23 @@ function handleFormSubmit(e) {
 
     const includeValue = document.getElementById('toggle-value-bracelet').checked;
 
+    let braceletLength;
+    let braceletUnit;
+
+    if (activeBraceletSizeMode === 'easy' && selectedEntry) {
+        braceletLength = selectedEntry.lengthCm;
+        braceletUnit = 'cm';
+    } else {
+        braceletLength = parseFloat(lengthInput.value);
+        braceletUnit = activeLengthUnit;
+    }
+
     const params = {
-        length: parseFloat(lengthInput.value),
-        lengthUnit: activeLengthUnit,
+        sizeMode: activeBraceletSizeMode,
+        sizeCode: selectedEntry ? selectedEntry.code : null,
+        sizeCategory: selectedEntry ? selectedEntry.category : null,
+        length: braceletLength,
+        lengthUnit: braceletUnit,
         rows: parseInt(document.getElementById('bracelet-rows').value, 10),
         quantity: parseInt(document.getElementById('bracelet-quantity').value, 10),
         stoneShape: 'Round',
@@ -269,12 +385,22 @@ export function resetBraceletForm() {
     form.reset();
     hideErrors();
     
-    // Reset defaults
-    activeLengthUnit = DEFAULT_BRACELET_VALUES.lengthUnit || 'in';
-    const unitRadio = document.getElementById(`unit-${activeLengthUnit === 'in' ? 'inch' : activeLengthUnit}-bracelet`);
-    if (unitRadio) unitRadio.checked = true;
-    lengthLabel.textContent = activeLengthUnit === 'in' ? 'Total Length (inches):' : (activeLengthUnit === 'cm' ? 'Total Length (cm):' : 'Total Length (mm):');
-    lengthInput.value = DEFAULT_BRACELET_VALUES.length;
+    // Reset size mode to Easy Select
+    activeBraceletSizeMode = DEFAULT_BRACELET_VALUES.sizeMode || 'easy';
+    const easyRadio = document.getElementById('bracelet-size-mode-easy');
+    if (easyRadio) easyRadio.checked = true;
+    switchBraceletSizeMode('easy');
+
+    // Default code to 'B' (Ladies 18 cm)
+    braceletSizeCodeSelect.value = DEFAULT_BRACELET_VALUES.sizeCode || 'B';
+    applyBraceletSizeCode();
+
+    // Reset manual unit
+    activeLengthUnit = 'cm';
+    const unitCmRadio = document.getElementById('unit-cm-bracelet');
+    if (unitCmRadio) unitCmRadio.checked = true;
+    lengthLabel.textContent = 'Total Length (cm):';
+
     document.getElementById('bracelet-rows').value = DEFAULT_BRACELET_VALUES.rows;
     document.getElementById('bracelet-quantity').value = DEFAULT_BRACELET_VALUES.quantity;
     

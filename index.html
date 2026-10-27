@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Jewellery Calculator</title>
-    <link rel="stylesheet" href="css/styles.css?v=30">
+    <link rel="stylesheet" href="css/styles.css?v=31">
 </head>
 <body>
     <header>
@@ -465,21 +465,43 @@
                         <!-- 1. Dimensions -->
                         <fieldset>
                             <legend>Bracelet Dimensions</legend>
+                            
+                            <!-- Size Mode Toggle -->
                             <div class="input-mode-group full-width" style="margin-bottom: 0.75rem;">
-                                <label class="group-label">Length Unit:</label>
                                 <div class="segmented-toggle">
-                                    <input type="radio" name="braceletUnit" id="unit-inch-bracelet" value="in" checked>
-                                    <label for="unit-inch-bracelet">Inch</label>
-                                    <input type="radio" name="braceletUnit" id="unit-cm-bracelet" value="cm">
-                                    <label for="unit-cm-bracelet">cm</label>
-                                    <input type="radio" name="braceletUnit" id="unit-mm-bracelet" value="mm">
-                                    <label for="unit-mm-bracelet">mm</label>
+                                    <input type="radio" name="braceletSizeMode" id="bracelet-size-mode-easy" value="easy" checked>
+                                    <label for="bracelet-size-mode-easy">Easy Select</label>
+                                    <input type="radio" name="braceletSizeMode" id="bracelet-size-mode-manual" value="manual">
+                                    <label for="bracelet-size-mode-manual">Manual Entry</label>
                                 </div>
                             </div>
-                            <div class="field" style="margin-bottom: 0.75rem;">
-                                <label for="bracelet-length" id="bracelet-length-label">Total Length (inches):</label>
-                                <input type="number" id="bracelet-length" name="length" step="0.01" min="0.1" required>
+
+                            <!-- EASY SELECT: Code dropdown + info -->
+                            <div id="bracelet-easy-select-group">
+                                <label for="bracelet-size-code-select" class="group-label">Select Bracelet Size Code (A–Z):</label>
+                                <select id="bracelet-size-code-select"></select>
+                                <div id="bracelet-easy-select-info" class="easy-select-info"></div>
                             </div>
+
+                            <!-- MANUAL ENTRY: Length Unit and Total Length (hidden when in Easy Select mode) -->
+                            <div id="bracelet-manual-entry-group" class="hidden">
+                                <div class="input-mode-group full-width" style="margin-bottom: 0.75rem;">
+                                    <label class="group-label">Length Unit:</label>
+                                    <div class="segmented-toggle">
+                                        <input type="radio" name="braceletUnit" id="unit-inch-bracelet" value="in">
+                                        <label for="unit-inch-bracelet">Inch</label>
+                                        <input type="radio" name="braceletUnit" id="unit-cm-bracelet" value="cm" checked>
+                                        <label for="unit-cm-bracelet">cm</label>
+                                        <input type="radio" name="braceletUnit" id="unit-mm-bracelet" value="mm">
+                                        <label for="unit-mm-bracelet">mm</label>
+                                    </div>
+                                </div>
+                                <div class="field" style="margin-bottom: 0.75rem;">
+                                    <label for="bracelet-length" id="bracelet-length-label">Total Length (cm):</label>
+                                    <input type="number" id="bracelet-length" name="length" step="0.01" min="0.1">
+                                </div>
+                            </div>
+
                             <div class="field-row">
                                 <div class="field">
                                     <label for="bracelet-rows">Number of Rows:</label>
@@ -906,6 +928,6 @@
         <p>&copy; 2026 Jewellery Calculator</p>
     </footer>
 
-    <script type="module" src="js/app.js?v=30"></script>
+    <script type="module" src="js/app.js?v=31"></script>
 </body>
 </html>

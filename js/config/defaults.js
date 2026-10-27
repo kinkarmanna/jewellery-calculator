@@ -109,7 +109,14 @@ export const RING_SIZE_CODES = [
     { code: 'W', category: 'Unisex', diameter: 20.7, circumference: 65, label: 'W — Unisex (20.7 mm / Circ 65 mm)' },
     { code: 'X', category: 'Unisex', diameter: 21.1, circumference: 66, label: 'X — Unisex (21.1 mm / Circ 66 mm)' },
     { code: 'Y', category: 'Unisex', diameter: 21.5, circumference: 68, label: 'Y — Unisex (21.5 mm / Circ 68 mm)' },
-    { code: 'Z', category: 'Unisex', diameter: 21.9, circumference: 69, label: 'Z — Unisex (21.9 mm / Circ 69 mm)' }
+    { code: 'Z', category: 'Unisex', diameter: 21.9, circumference: 69, label: 'Z — Unisex (21.9 mm / Circ 69 mm)' },
+    // Unisex (AA–AF)
+    { code: 'AA', category: 'Unisex', diameter: 22.3, circumference: 70, label: 'AA — Unisex (22.30 mm / Circ 70 mm)' },
+    { code: 'AB', category: 'Unisex', diameter: 22.7, circumference: 71, label: 'AB — Unisex (22.70 mm / Circ 71 mm)' },
+    { code: 'AC', category: 'Unisex', diameter: 23.1, circumference: 73, label: 'AC — Unisex (23.10 mm / Circ 73 mm)' },
+    { code: 'AD', category: 'Unisex', diameter: 23.5, circumference: 74, label: 'AD — Unisex (23.50 mm / Circ 74 mm)' },
+    { code: 'AE', category: 'Unisex', diameter: 23.9, circumference: 75, label: 'AE — Unisex (23.90 mm / Circ 75 mm)' },
+    { code: 'AF', category: 'Unisex', diameter: 24.3, circumference: 76, label: 'AF — Unisex (24.30 mm / Circ 76 mm)' }
 ];
 export const RING_SIZE_TOLERANCE = 0.15; // ±0.15 mm
 

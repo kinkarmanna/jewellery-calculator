@@ -53,12 +53,18 @@ console.log("══════════════════════�
 console.log("  Ring Calculator Tests");
 console.log("═══════════════════════════════════════════\n");
 
-console.log("── Size Code Lookup (A–Z) ──");
+console.log("── Size Code Lookup (A–AF) ──");
 runTest("Get Code A Diameter (Baby)", getRingDiameterByCode('A'), 12.0);
 runTest("Get Code F Diameter (Ladies)", getRingDiameterByCode('F'), 14.0);
 runTest("Get Code P Diameter (Gents)", getRingDiameterByCode('P'), 18.0);
 runTest("Get Code Z Diameter (Unisex)", getRingDiameterByCode('Z'), 21.9);
-runTest("Get Invalid Code", getRingDiameterByCode('QQ'), 0);
+runTest("Get Code AA Diameter (Unisex)", getRingDiameterByCode('AA'), 22.3);
+runTest("Get Code AB Diameter (Unisex)", getRingDiameterByCode('AB'), 22.7);
+runTest("Get Code AC Diameter (Unisex)", getRingDiameterByCode('AC'), 23.1);
+runTest("Get Code AD Diameter (Unisex)", getRingDiameterByCode('AD'), 23.5);
+runTest("Get Code AE Diameter (Unisex)", getRingDiameterByCode('AE'), 23.9);
+runTest("Get Code AF Diameter (Unisex)", getRingDiameterByCode('AF'), 24.3);
+runTest("Get Invalid Code", getRingDiameterByCode('AG'), 0);
 
 console.log("\n── Legacy Diameter Lookup ──");
 runTest("Get US Size 7 Diameter", getRingDiameter('US', 7), 17.3);

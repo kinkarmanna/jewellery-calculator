@@ -1,6 +1,6 @@
-import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZE_CODES, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=31';
-import { calculateRingDetails } from '../calculations/ringCalculator.js?v=31';
-import { renderResult } from './resultView.js?v=31';
+import { DEFAULT_RING_VALUES, STONE_WEIGHT_CHART, RING_SIZE_CODES, RING_SIZES, VALIDATION_RULES, NICK_SETTING_DATA, PRONG_GAPS } from '../config/defaults.js?v=32';
+import { calculateRingDetails } from '../calculations/ringCalculator.js?v=32';
+import { renderResult } from './resultView.js?v=32';
 
 const form = document.getElementById('ring-form');
 const errorBanner = document.getElementById('ring-form-errors');
@@ -105,7 +105,7 @@ function populateRingSizeCodes() {
     ringSizeCodeSelect.innerHTML = '';
     const placeholder = document.createElement('option');
     placeholder.value = '';
-    placeholder.textContent = '— Choose a size code (A–Z) —';
+    placeholder.textContent = '— Choose a size code (A–AF) —';
     ringSizeCodeSelect.appendChild(placeholder);
 
     RING_SIZE_CODES.forEach(entry => {
@@ -284,7 +284,7 @@ function handleFormSubmit(e) {
 
     // If Easy Select is active but no code is chosen, show an error
     if (activeRingSizeMode === 'easy' && !ringSizeCodeSelect.value) {
-        showErrors(['Please select a ring size code (A–Z) or switch to Manual Entry.']);
+        showErrors(['Please select a ring size code (A–AF) or switch to Manual Entry.']);
         return;
     }
 

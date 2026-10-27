@@ -28,7 +28,7 @@ Live App on GitHub Pages: [https://kinkarmanna.github.io/jewellery-calculator/](
 
 ### 3. Finger Ring Calculator
 - **Dual Sizing Modes**:
-  - **Easy-Select Codes (A–Z)**: Categorized into Baby (`A`–`E`), Ladies (`F`–`N`), Gents (`O`–`U`), and Unisex (`V`–`Z`) with $\pm 0.15\text{ mm}$ tolerance.
+  - **Easy-Select Codes (A–AF)**: Categorized into Baby (`A`–`E`), Ladies (`F`–`N`), Gents (`O`–`U`), and Unisex (`V`–`Z` & `AA`–`AF`: 20.30–24.30 mm) with $\pm 0.15\text{ mm}$ tolerance.
   - **Manual Entry**: Direct millimetre entry for exact inner diameter measurements.
 - **Metal Height (Wall Thickness)**: Configurable metal height (default 1.5 mm) calculating the true outer setting circumference.
 - **Stone Coverage**: Calculate full eternity (100%), half eternity (50%), or custom percentage stone coverage around the band.
@@ -98,7 +98,7 @@ For comprehensive architectural details, mathematical proofs, constraints, and c
     ringForm.js        - DOM controller for Finger Ring Form
     customBangleForm.js - DOM controller for Standard to Customized Bangle Form
     resultView.js      - Dynamic HTML generator for the Workshop Slip
-/tests/                - Node.js test suites (72 total unit tests)
+/tests/                - Node.js test suites (78 total unit tests)
 index.html             - The single-page application layout
 CONTEXT.md             - Full technical context and architecture documentation
 ```
@@ -107,7 +107,7 @@ CONTEXT.md             - Full technical context and architecture documentation
 
 ## Testing
 
-Run all 72 unit tests across all 5 test suites:
+Run all 78 unit tests across all 5 test suites:
 
 ```powershell
 node tests/bangleCalculator.test.js ; node tests/ringCalculator.test.js ; node tests/braceletCalculator.test.js ; node tests/customBangleCalculator.test.js ; node tests/stonePriceManager.test.js

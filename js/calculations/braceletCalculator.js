@@ -1,5 +1,5 @@
-import { NICK_SETTING_DATA, STONE_WEIGHT_CHART, BRACELET_SIZE_CODES } from '../config/defaults.js?v=31';
-import { calculatePricing } from './valueCalculator.js?v=31';
+import { NICK_SETTING_DATA, STONE_WEIGHT_CHART, BRACELET_SIZE_CODES } from '../config/defaults.js?v=32';
+import { calculatePricing } from './valueCalculator.js?v=32';
 
 export function getBraceletSizeEntry(code) {
     if (!code || typeof code !== 'string') return null;

@@ -67,7 +67,7 @@ jewellery-calculator/
 │
 └── tests/
     ├── bangleCalculator.test.js    # Unit tests for bangle circumference and spacing logic (14 tests)
-    ├── ringCalculator.test.js      # Unit tests for ring diameter, circumference, codes & height (21 tests)
+    ├── ringCalculator.test.js      # Unit tests for ring diameter, circumference, codes & height (27 tests)
     ├── braceletCalculator.test.js  # Unit tests for bracelet length, codes, usable setting & valuation (17 tests)
     ├── customBangleCalculator.test.js # Unit tests for resize, gap preservation, and stone deltas (4 tests)
     └── stonePriceManager.test.js   # Unit tests for stone price management and currency formatting (15 tests)
@@ -114,11 +114,18 @@ The application is engineered for jewellery artisans, CAD engineers, and manufac
 ### 3.2 Finger Ring Calculator (`ringCalculator.js`)
 
 1. **Ring Sizing Modes:**
-   - **Easy-Select Codes (A–Z):** Based on the Ring Stick Inner Diameter method (Tolerance $\pm 0.15\text{ mm}$):
+   - **Easy-Select Codes (A–AF):** Based on the Ring Stick Inner Diameter method (Tolerance $\pm 0.15\text{ mm}$):
      - **Baby (`A`–`E`):** $12.0\text{ mm}$ (Circ $38\text{ mm}$) to $13.6\text{ mm}$ (Circ $43\text{ mm}$)
      - **Ladies (`F`–`N`):** $14.0\text{ mm}$ (Circ $44\text{ mm}$) to $17.2\text{ mm}$ (Circ $54\text{ mm}$)
      - **Gents (`O`–`U`):** $17.6\text{ mm}$ (Circ $55\text{ mm}$) to $19.9\text{ mm}$ (Circ $63\text{ mm}$)
-     - **Unisex (`V`–`Z`):** $20.3\text{ mm}$ (Circ $64\text{ mm}$) to $21.9\text{ mm}$ (Circ $69\text{ mm}$)
+     - **Unisex (`V`–`Z` & `AA`–`AF`):**
+       - `V`–`Z`: $20.3\text{ mm}$ (Circ $64\text{ mm}$) to $21.9\text{ mm}$ (Circ $69\text{ mm}$)
+       - `AA`: $22.30\text{ mm}$ (Circ $70\text{ mm}$)
+       - `AB`: $22.70\text{ mm}$ (Circ $71\text{ mm}$)
+       - `AC`: $23.10\text{ mm}$ (Circ $73\text{ mm}$)
+       - `AD`: $23.50\text{ mm}$ (Circ $74\text{ mm}$)
+       - `AE`: $23.90\text{ mm}$ (Circ $75\text{ mm}$)
+       - `AF`: $24.30\text{ mm}$ (Circ $76\text{ mm}$)
    - **Manual Entry:** Direct inner diameter in millimetres (default $18.0\text{ mm}$).
    - **Legacy Standards:** US ($3$–$13$) and Indian ($1$–$30$) sizes retained for backward compatibility.
 
@@ -306,7 +313,17 @@ npm test
 
 ## 7. Version History & Changelog
 
-- **v31 (Current):**
+- **v32 (Current):**
+  - Expanded Finger Ring Easy-Select size codes with 6 additional large unisex sizes:
+    - `AA`: $22.30\text{ mm}$ (Circumference: $70\text{ mm}$)
+    - `AB`: $22.70\text{ mm}$ (Circumference: $71\text{ mm}$)
+    - `AC`: $23.10\text{ mm}$ (Circumference: $73\text{ mm}$)
+    - `AD`: $23.50\text{ mm}$ (Circumference: $74\text{ mm}$)
+    - `AE`: $23.90\text{ mm}$ (Circumference: $75\text{ mm}$)
+    - `AF`: $24.30\text{ mm}$ (Circumference: $76\text{ mm}$)
+  - Updated UI labels and dropdown options in `index.html` and `ringForm.js` to `(A–AF)`.
+  - Added 6 new unit tests in `tests/ringCalculator.test.js` (27 ring tests, 78 total tests across all 5 suites).
+- **v31:**
   - Integrated **Tennis Bracelet Easy-Select** option based on user-provided workshop chart:
     - Added 26 standard size codes (`A`–`Z`) mapped to categories **Baby** (`O`–`U`: 12.0–15.0 cm), **Ladies** (`A`–`E` & `V`–`Z`: 15.5–19.5 cm), and **Gents** (`F`–`N`: 20.0–24.0 cm) with standard tolerance $\pm 0.20\text{ cm}$ ($\pm 2.0\text{ mm}$).
     - Added segmented toggle between **Easy Select** and **Manual Entry** in the Tennis Bracelet form.

@@ -78,7 +78,7 @@ For comprehensive architectural details, mathematical proofs, constraints, and c
 ### Directory Structure
 ```text
 /css/                  - Application stylesheets (styles.css)
-/images/               - Product photography for cards (bangle-card.jpg, bracelet-card.jpg, ring-card.png)
+/images/               - Product photography for cards (bangle-card.jpg, bracelet-card.jpg, ring-card.png, necklace-card.jpg)
 /js/
   app.js               - Entry point, bootstraps UI components and handles theme logic
   /config/

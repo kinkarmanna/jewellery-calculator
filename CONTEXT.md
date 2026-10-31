@@ -38,7 +38,8 @@ jewellery-calculator/
 ├── images/
 │   ├── bangle-card.jpg             # High-resolution product photo for Studded Bangle card
 │   ├── bracelet-card.jpg           # High-resolution product photo for Tennis Bracelet card
-│   └── ring-card.png               # High-resolution product photo for Finger Ring card
+│   ├── ring-card.png               # High-resolution product photo for Finger Ring card
+│   └── necklace-card.jpg           # High-resolution product photo for String Neckware card
 │
 ├── js/
 │   ├── app.js                      # Application bootstrap, routing, card navigation, theme controller
@@ -313,7 +314,9 @@ npm test
 
 ## 7. Version History & Changelog
 
-- **v32 (Current):**
+- **v33 (Current):**
+  - Updated home screen **String Neckware** button avatar: replaced emoji icon with high-resolution circular product photo (`images/necklace-card.jpg`) of a sparkling diamond tennis string necklace.
+- **v32:**
   - Expanded Finger Ring Easy-Select size codes with 6 additional large unisex sizes:
     - `AA`: $22.30\text{ mm}$ (Circumference: $70\text{ mm}$)
     - `AB`: $22.70\text{ mm}$ (Circumference: $71\text{ mm}$)

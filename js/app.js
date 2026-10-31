@@ -1,9 +1,9 @@
-import { showView } from './ui/navigation.js?v=32';
-import { initBangleForm } from './ui/bangleForm.js?v=32';
-import { initRingForm } from './ui/ringForm.js?v=32';
-import { initBraceletForm } from './ui/braceletForm.js?v=32';
-import { initCustomBangleForm } from './ui/customBangleForm.js?v=32';
-import { initResultView } from './ui/resultView.js?v=32';
+import { showView } from './ui/navigation.js?v=33';
+import { initBangleForm } from './ui/bangleForm.js?v=33';
+import { initRingForm } from './ui/ringForm.js?v=33';
+import { initBraceletForm } from './ui/braceletForm.js?v=33';
+import { initCustomBangleForm } from './ui/customBangleForm.js?v=33';
+import { initResultView } from './ui/resultView.js?v=33';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Theme toggle logic
